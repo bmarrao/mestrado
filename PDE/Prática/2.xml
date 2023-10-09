@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<top xml:lang="pt" xmlns:xhtml="http://www.w3.org/1999/xhtml ">
+    <xhtml:p>
+        Hello
+    </xhtml:p>
+    <data ano='2023' mes='Setembro' dia='27'/>
+    <texto>
+        Processamento de documentos estruturados
+        <![CDATA[
+        <p> Isto é o <u> tudo </u> texto </p>
+        ]]>
+    </texto>
+</top>

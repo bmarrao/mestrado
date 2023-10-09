@@ -1,0 +1,46 @@
+<!ELEMENT receitas  (resumo?, parte*)>
+        <!ATTLIST receitas
+                titulo	        CDATA #REQUIRED
+                autor           CDATA #REQUIRED
+                data-publicacao CDATA #REQUIRED
+                resumo          CDATA #IMPLIED >
+<!ELEMENT resumo  (#PCDATA)>
+<!ELEMENT parte (receita | seção)*>
+        <!ATTLIST parte
+                titulo	        CDATA #REQUIRED
+                texto           CDATA #IMPLIED
+                image           CDATA #IMPLIED>
+<!ELEMENT seção (receita | sub-seção)* >
+        <!ATTLIST seção
+                titulo	        CDATA #REQUIRED
+                texto           CDATA #IMPLIED
+                image           CDATA #IMPLIED>
+<!ELEMENT sub-seção (receita)* >
+        <!ATTLIST seção
+                titulo	        CDATA #REQUIRED
+                texto           CDATA #IMPLIED
+                image           CDATA #IMPLIED>
+<!ELEMENT receita (#PCDATA | ingrediente | passo)* >
+        <!ATTLIST receita
+                nome	        CDATA #REQUIRED
+                id              ID    #IMPLIED
+                categoria       (entrada | sobremesa | prato-principal) #IMPLIED
+                dificuldade     (simples | médio | díficil) #IMPLIED
+                tempo           (rápido | médio | lento) #IMPLIED
+                custo           (barato | médio | caro) #IMPLIED
+                calorias        CDATA #IMPLIED
+                ilustracao      CDATA #IMPLIED>
+<!ELEMENT ingrediente (#PCDATA) >
+        <!ATTLIST ingediente
+                id                  ID       #IMPLIED
+                quantidade          CDATA    #IMPLIED
+                unidade-medida      CDATA    #IMPLIED>
+
+<!ELEMENT passo (#PCDATA) >
+        <!ATTLIST passo
+                ilustracao         ID       #IMPLIED>
+
+
+
+
+

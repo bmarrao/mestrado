@@ -1,0 +1,114 @@
+out 03, 2023 10:37:31 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:37:31 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:37:47 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:37:47 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:37:47 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = 1300514598]
+out 03, 2023 10:38:38 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:38:38 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:38:54 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:38:54 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:38:54 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = -1750904596]
+out 03, 2023 10:40:14 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:40:14 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:40:30 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:40:30 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:40:30 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = sub 1771365193 y]
+out 03, 2023 10:40:56 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:40:56 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:41:11 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:41:11 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:41:11 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = sub 335410611 y]
+out 03, 2023 10:41:18 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:41:18 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:41:34 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:41:34 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:41:34 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = add -130376792 715718985]
+out 03, 2023 10:41:37 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:41:37 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:41:37 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = mul -1810029559 -525494592]
+out 03, 2023 10:41:49 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:41:49 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:41:49 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = add 614027682 678058550]
+out 03, 2023 10:41:59 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:41:59 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:41:59 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = mul -596341467 1412297697]
+out 03, 2023 10:42:10 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:42:10 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:42:10 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = add -1087592890 -838275045]
+out 03, 2023 10:42:15 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:42:15 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:42:15 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = div 974679743 746052675]
+out 03, 2023 10:42:20 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:42:20 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:42:20 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = div 577107429 -1100492904]
+out 03, 2023 10:43:02 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: endpoint running ...
+
+out 03, 2023 10:43:02 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: endpoint running at port 3000 ...
+out 03, 2023 10:43:18 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:43:18 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:43:18 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = sub -1887652521 -548105785]
+out 03, 2023 10:43:21 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:43:21 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:43:21 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = mul -1919217191 -1453716150]
+out 03, 2023 10:43:34 DA MANHÃ ds.examples.sockets.peer.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3000]
+out 03, 2023 10:43:34 DA MANHÃ ds.examples.sockets.peer.Server run
+INFO: server: new connection from 127.0.0.1
+out 03, 2023 10:43:34 DA MANHÃ ds.examples.sockets.peer.Connection run
+INFO: server: message from host 127.0.0.1[command = add -879599397 505830279]

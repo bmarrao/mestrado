@@ -1,0 +1,42 @@
+<!ELEMENT receitas  (cabecalho, parte+)>
+<!ELEMENT cabecalho  (titulo, autor+, data-publicacao,  resumo?)>
+<!ELEMENT resumo  (#PCDATA)>
+<!ELEMENT autor  (#PCDATA)>
+<!ELEMENT data-publicacao  (ano, mes, dia)>
+<!ELEMENT ano  (#PCDATA)>
+<!ELEMENT mes  (#PCDATA)>
+<!ELEMENT dia  (#PCDATA)>
+<!ELEMENT titulo  (#PCDATA)>
+<!ELEMENT texto-introdutorio  (#PCDATA)>
+<!ELEMENT parte (titulo,texto-introdutorio?,(receita | seção)*)>
+<!ATTLIST parte
+        image           CDATA #IMPLIED>
+<!ELEMENT seção (titulo,texto-introdutorio?,(receita | sub-seção)*) >
+<!ATTLIST seção
+        image           CDATA #IMPLIED>
+<!ELEMENT sub-seção (titulo,texto-introdutorio?,receita*) >
+<!ATTLIST sub-seção
+        image           CDATA #IMPLIED>
+<!ELEMENT receita (nome, calorias, (#PCDATA,ingrediente,#PCDATA?)+ , (passo| #PCDATA)*) >
+<!ATTLIST receita
+        id              ID    #IMPLIED
+        categoria       (entrada | sobremesa | prato-principal) #IMPLIED
+        dificuldade     (simples | médio | díficil) #IMPLIED
+        tempo           (rápido | médio | lento) #IMPLIED
+        custo           (barato | médio | caro) #IMPLIED
+        image        CDATA #IMPLIED>
+<!ELEMENT ingrediente (nome+, quantidade, unidade-medida) >
+<!ATTLIST ingediente
+        id     ID       #IMPLIED>
+<!ELEMENT quantidade (#PCDATA) >
+<!ELEMENT nome (#PCDATA)>
+<!ELEMENT calorias (#PCDATA)>
+<!ELEMENT unidade-medida (#PCDATA)>
+<!ELEMENT passo (#PCDATA) >
+<!ATTLIST passo
+        ilustracao         ID       #IMPLIED>
+
+
+
+
+

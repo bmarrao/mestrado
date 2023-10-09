@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE receitas SYSTEM "receitasAtrib.dtd">
+<receitas>
+    <cabecalho>
+        <titulo>Livro de receitas do Breno</titulo>
+        <autor>Breno Fernando Guerra Marrão</autor>
+        <autor>Se quiser posso adicionar outros autores</autor>
+        <data-publicacao>
+            <ano>2023</ano>
+            <mes>10</mes>
+            <dia>8</dia>
+        </data-publicacao>
+        <resumo>
+            Esse é o resumo opcional
+        </resumo>
+    </cabecalho>
+
+    <parte image="uri">
+        <titulo>Comida italiana</titulo>
+        <texto-introdutorio>Esse é o texto-introdutorio opcional</texto-introdutorio>
+        <receita nome="Spaghetti">
+            <!-- aqui irei adicionar uma receita como exemplo -->
+            <ingrediente>
+                <nome>
+                    spaghetti
+                </nome>
+                <!-- Opcional -->
+
+                <quantidade>
+                    100
+                </quantidade>
+                <!-- Opcional -->
+
+                <unidade-medida>
+                    gramas
+                </unidade-medida>
+
+            </ingrediente>
+            Posso também escrever algo ou antes de um ingrediente para fornecer um pouco de contexto
+            <ingrediente >
+                <nome>Molho </nome>
+                <quantidade>100</quantidade>
+                <unidade-medida>ml</unidade-medida>
+            </ingrediente>
+            Antes e depois dos passos também
+            <passo>
+                Colocar agua na panela
+            </passo>
+            Posso fazer entre passos também
+            <passo>
+                Colocar macarrão na agua fervendo
+            </passo>
+        </receita>
+    </parte>
+
+</receitas>
