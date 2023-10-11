@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xs:targetNamespace="http://www.dcc.fc.up.pt/~zp/Documento"
-        xs:attributFormDefault="qualified">
-    xs:elementFormDefault="qualified">
+        xs:targetNamespace="receitas.xsd"
+        xs:attributFormDefault="qualified"
+        xs:elementFormDefault="qualified">
+
+    <xs:element name="data-publicacao" type="xs:date"/>
+    <xs:element name="ilustração" type="xs:anyURI"/>
+    <xs:element name="resumo" type="xs:string"/>
+    <xs:element name="titulo" type="xs:string"/>
+    <xs:element name="texto-introdutorio" type="xs:string"/>
+    <xs:element name="autor" type="xs:string"/>
+    <xs:element name="nome" type="xs:string"/>
+    <xs:element name="unidade-medida" type="xs:string"/>
+    <xs:element name="passo" type="xs:string"/>
+    <xs:element name="calorias" type="xs:int"/>
+    <xs:element name="quantidade" type="xs:int"/>
+
+
+
+

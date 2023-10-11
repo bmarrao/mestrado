@@ -18,7 +18,10 @@
     <parte image="uri">
         <titulo>Comida italiana</titulo>
         <texto-introdutorio>Esse é o texto-introdutorio opcional</texto-introdutorio>
-        <receita nome="Spaghetti">
+        <receita id ="1" image="./images/spaghetti" dificuldade="simples" categoria="prato-principal" custo="barato" tempo="médio">
+            <nome>
+                Spaghetti Bolonhesa
+            </nome>
             <!-- aqui irei adicionar uma receita como exemplo -->
             <ingrediente>
                 <nome>
@@ -37,7 +40,7 @@
 
             </ingrediente>
             Posso também escrever algo ou antes de um ingrediente para fornecer um pouco de contexto
-            <ingrediente >
+            <ingrediente   >
                 <nome>Molho </nome>
                 <quantidade>100</quantidade>
                 <unidade-medida>ml</unidade-medida>

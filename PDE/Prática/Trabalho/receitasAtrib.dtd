@@ -34,7 +34,7 @@
 <!ELEMENT unidade-medida (#PCDATA)>
 <!ELEMENT passo (#PCDATA) >
 <!ATTLIST passo
-        ilustracao         ID       #IMPLIED>
+        ilustracao         CDATA       #IMPLIED>
 
 
 
