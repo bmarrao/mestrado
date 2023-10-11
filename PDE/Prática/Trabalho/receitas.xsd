@@ -5,6 +5,39 @@
         xs:attributFormDefault="qualified"
         xs:elementFormDefault="qualified">
 
+    <xs:element name="categoria">
+        <xs:simpleType>
+            <xs:restriction>
+                <xs:pattern value="entrada | sobremesa | prato-principal"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="dificuldade">
+        <xs:simpleType>
+            <xs:restriction>
+                <xs:pattern value="simples | médio | díficil"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="tempo">
+        <xs:simpleType>
+            <xs:restriction>
+                <xs:pattern value="rápido | médio | lento"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="custo">
+        <xs:simpleType>
+            <xs:restriction>
+                <xs:pattern value="barato | médio | caro"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+
     <xs:element name="data-publicacao" type="xs:date"/>
     <xs:element name="ilustração" type="xs:anyURI"/>
     <xs:element name="resumo" type="xs:string"/>
@@ -19,4 +52,40 @@
 
 
 
+    <xs:element name="cabecalho">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="titulo"/>
+                <xs:element ref="autor" maxOccurs="unbounded" minOccurs="1"/>
+                <xs:element ref="data-publicacao"/>
+                <xs:element ref="resumo" maxOccurs="1" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="receita">
+        
+    </xs:element>
+    <xs:element name="parte">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="titulo"/>
+                <xs:element ref="texto-introdutorio" maxOccurs="1" minOccurs="0"/>
+
+                <xs:choice maxOccurs="unbounded" minOccurs="0">
+                    <xs:element ref="receita"/>
+                    <xs:element ref="seção"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="receitas">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="cabecalho"/>
+                <xs:element ref="parte" maxOccurs="unbounded" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
 
