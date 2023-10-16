@@ -20,52 +20,23 @@ import java.util.Random;
 
 import ds.assign.poisson.PoissonProcess;
 
-class Messager
+class Data 
 {
-	ArrayList <String> messages = new ArrayList<String>();
-	Lock lock = new ReentrantLock();
-	Condition tenhoToken = lock.newCondition();
-	int flag = 0;
+    private String message;
 
-	public	Messager()
-	{
+    public void send(String message) {
+        this.message = message;
+    }
 
-	}
-	public String getAMessage()
-	{
-		String message ="";
-		try{
-			tenhoToken.await();
-			while(flag != 1)
-			{
-			}
-			message = messages.get(0);
-			messages.remove(0);
-			flag = 0;
-		}
-		catch ( Exception e ) {
-			e.printStackTrace();
-	   }
-	   finally{
-		return message;
-	   }
-
-
-	}
-	
-	public void putAMessage(String message)
-	{
-		messages.add(message);
-		flag = 1;
-		tenhoToken.notifyAll();
-	}
+    public String receive() {
+        return message;
+    }
 }
 
-public class Peer {
+public class Peer 
+{
     String host;
     Logger logger;
-	//ArrayList <String> messages = new ArrayList<String>();
-	static Messager messages = new Messager();
     public Peer(String hostname) {
 	host   = hostname;
 	logger = Logger.getLogger("logfile");
@@ -81,18 +52,23 @@ public class Peer {
 
     public static void main(String[] args) throws Exception
 	{
-		System.out.println(args	);
+		Data data = new Data();
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
-		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,messages)).start();
+		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,data)).start();
 		System.out.println(args[1] + args);
-        new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),messages,peer.logger)).start();
+        new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),data,peer.logger)).start();
 		if (args.length == 4)
 		{
 			if (args[3].equals("first"))
 			{
 				Thread.sleep(600 * 1000);
-				messages.putAMessage("token");
+				synchronized (data) 
+				{
+					data.send("test");
+		
+					data.notifyAll();
+				}
 			}
 		}
 
@@ -106,19 +82,19 @@ class ServerPeer implements Runnable {
     int          port;
     ServerSocket server;
     Logger       logger;
-	Messager messages;
+    private final Data data;
 	int flag;
 
-    public ServerPeer(String host, int port, Logger logger, Messager messages) throws Exception {
+    public ServerPeer(String host, int port, Logger logger, Data data) throws Exception {
 	this.host   = host;
 	this.port   = port;
 	this.logger = logger;
-    this.messages = messages ;
+    this.data= data;
     server = new ServerSocket(port, 1, InetAddress.getByName(host));
     }
 
     @Override
-    public synchronized void run()
+    public void run()
     {
 	try
     {
@@ -133,9 +109,14 @@ class ServerPeer implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 	            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 String command;
-                command = in.readLine();
+				command = in.readLine();
                 logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
-				messages.putAMessage(command);
+				if(command.equals("token"))
+				synchronized (data) {
+					data.send("test");
+		
+					data.notifyAll();
+				}
 
             }
             catch(Exception e)
@@ -161,14 +142,14 @@ class Client implements Runnable
 	String M6ip;
 	int Mport;
 	int M6port;
-	Messager messages;
+	private final Data data;
     Logger  logger;
     Scanner scanner;
 	PoissonProcess pp;
 
 
 
-    public Client(String host, String Mip , int Mport , String M6ip , int M6porto,Messager messages, Logger logger) throws Exception
+    public Client(String host, String Mip , int Mport , String M6ip , int M6porto,Data data, Logger logger) throws Exception
 	{
 		this.host    = host;
 		this.logger  = logger;
@@ -176,14 +157,14 @@ class Client implements Runnable
 		this.Mport = Mport;
 		this.M6ip = M6ip;
 		this.M6ip = M6ip;
-		this.messages= messages;
+		this.data= data;
 		this.logger = logger;
 		this.pp = new PoissonProcess(4, new Random(0));
 
     }
 
     @Override
-    public synchronized void run()
+    public  void run()
 	{
 	try
 	{
@@ -195,6 +176,7 @@ class Client implements Runnable
 		int x;
 		int y;
 		String[]operations = {"add","sub","mul","div"};
+		String message ="";
 	    while (true)
 		{
 		try
@@ -208,25 +190,40 @@ class Client implements Runnable
 				op = rand.nextInt(4);
 				x= rand.nextInt();
 				y = rand.nextInt();
-				String message = this.messages.getAMessage();
-				Socket socket  = new Socket(InetAddress.getByName(M6ip), M6port);
-				logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+				synchronized (data) 
+				{
+					try 
+					{
+						data.wait();
+						message = data.receive();
+					} 
+					catch(Exception e) 
+					{
+						e.printStackTrace();
+					}
+				}
+				if(message.equals("token"))
+				{
+					Socket socket  = new Socket(InetAddress.getByName(M6ip), M6port);
+					logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 
-				PrintWriter   out = new PrintWriter(socket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));    
+					PrintWriter   out = new PrintWriter(socket.getOutputStream(), true);
+					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));    
+					
+					out.println(operations[op]+" "+x+" "+y+'\n');
+					out.flush();	    
+
+					String result = in.readLine();
+					System.out.printf(result +"\n");
+					socket.close();
+
+					socket  = new Socket(InetAddress.getByName(Mip), Mport);
+					out = new PrintWriter(socket.getOutputStream(), true);
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
+					out.println("token\n");
+					out.flush();
+				}
 				
-				out.println(operations[op]+" "+x+" "+y+'\n');
-				out.flush();	    
-
-				String result = in.readLine();
-				System.out.printf(result +"\n");
-				socket.close();
-
-				socket  = new Socket(InetAddress.getByName(Mip), Mport);
-				out = new PrintWriter(socket.getOutputStream(), true);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
-				out.println("token\n");
-				out.flush();
 			}
 			catch(Exception e) {
 		    e.printStackTrace();
