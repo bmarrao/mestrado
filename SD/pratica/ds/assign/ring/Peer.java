@@ -20,17 +20,52 @@ import java.util.Random;
 
 import ds.assign.poisson.PoissonProcess;
 
-public class messager
+class Messager
 {
 	ArrayList <String> messages = new ArrayList<String>();
+	Lock lock = new ReentrantLock();
+	Condition tenhoToken = lock.newCondition();
+	int flag = 0;
+
+	public	Messager()
+	{
+
+	}
+	public String getAMessage()
+	{
+		String message ="";
+		try{
+			tenhoToken.await();
+			while(flag != 1)
+			{
+			}
+			message = messages.get(0);
+			messages.remove(0);
+			flag = 0;
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+	   }
+	   finally{
+		return message;
+	   }
+
+
+	}
 	
+	public void putAMessage(String message)
+	{
+		messages.add(message);
+		flag = 1;
+		tenhoToken.notifyAll();
+	}
 }
 
 public class Peer {
     String host;
     Logger logger;
-	ArrayList <String> messages = new ArrayList<String>();
-
+	//ArrayList <String> messages = new ArrayList<String>();
+	Messager messages = new Messager();
     public Peer(String hostname) {
 	host   = hostname;
 	logger = Logger.getLogger("logfile");
@@ -44,13 +79,12 @@ public class Peer {
 	}
     }
 
-    public static void main(String[] args) throws Exception
+    public void main(String[] args) throws Exception
 	{
 		System.out.println(args	);
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
         Lock lock = new ReentrantLock();
-        Condition tenhoToken = lock.newCondition();
 		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,messages)).start();
 		System.out.println(args[1] + args);
         new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),messages,peer.logger)).start();
@@ -59,7 +93,7 @@ public class Peer {
 			if (args[3].equals("first"))
 			{
 				Thread.sleep(600 * 1000);
-				tenhoToken.notify();
+				messages.putAMessage("token");
 			}
 		}
 
@@ -73,10 +107,10 @@ class ServerPeer implements Runnable {
     int          port;
     ServerSocket server;
     Logger       logger;
-	ArrayList <String> messages;
+	Messager messages;
 	int flag;
 
-    public ServerPeer(String host, int port, Logger logger, ArrayList<String> messages) throws Exception {
+    public ServerPeer(String host, int port, Logger logger, Messager messages) throws Exception {
 	this.host   = host;
 	this.port   = port;
 	this.logger = logger;
@@ -102,11 +136,7 @@ class ServerPeer implements Runnable {
                 String command;
                 command = in.readLine();
                 logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
-				if (command.equals("token"))
-				{
-					tenhoToken.notify();
-				}
-
+				messages.putAMessage(command);
 
             }
             catch(Exception e)
@@ -132,14 +162,14 @@ class Client implements Runnable
 	String M6ip;
 	int Mport;
 	int M6port;
-	ArrayList <String> messages;
+	Messager messages;
     Logger  logger;
     Scanner scanner;
 	PoissonProcess pp;
 
 
 
-    public Client(String host, String Mip , int Mport , String M6ip , int M6porto,ArrayList<String> messages, Logger logger) throws Exception
+    public Client(String host, String Mip , int Mport , String M6ip , int M6porto,Messager messages, Logger logger) throws Exception
 	{
 		this.host    = host;
 		this.logger  = logger;
@@ -176,7 +206,7 @@ class Client implements Runnable
 			{
 				t = (int)(this.pp.timeForNextEvent()*60.0*1000.0);
 				Thread.sleep(t);
-				tenhoToken.await();
+				String message = this.messages.getAMessage();
 				Socket socket  = new Socket(InetAddress.getByName(M6ip), M6port);
 				logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 
