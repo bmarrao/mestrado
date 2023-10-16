@@ -20,52 +20,14 @@ import java.util.Random;
 
 import ds.assign.poisson.PoissonProcess;
 
-class Messager
+class flag 
 {
-	ArrayList <String> messages = new ArrayList<String>();
-	Lock lock = new ReentrantLock();
-	Condition tenhoToken = lock.newCondition();
-	int flag = 0;
-
-	public	Messager()
-	{
-
-	}
-	public String getAMessage()
-	{
-		String message ="";
-		try{
-			tenhoToken.await();
-			while(flag != 1)
-			{
-			}
-			message = messages.get(0);
-			messages.remove(0);
-			flag = 0;
-		}
-		catch ( Exception e ) {
-			e.printStackTrace();
-	   }
-	   finally{
-		return message;
-	   }
-
-
-	}
 	
-	public void putAMessage(String message)
-	{
-		messages.add(message);
-		flag = 1;
-		tenhoToken.notifyAll();
-	}
 }
-
 public class Peer {
     String host;
     Logger logger;
-	//ArrayList <String> messages = new ArrayList<String>();
-	Messager messages = new Messager();
+	static boolean flag ;
     public Peer(String hostname) {
 	host   = hostname;
 	logger = Logger.getLogger("logfile");
@@ -90,11 +52,11 @@ public class Peer {
         new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),messages,peer.logger)).start();
 		if (args.length == 4)
 		{
-			if (args[3].equals("first"))
-			{
-				Thread.sleep(600 * 1000);
-				messages.putAMessage("token");
-			}
+			flag = true;
+		}
+		else
+		{
+			flag = false;
 		}
 
     }
@@ -107,8 +69,9 @@ class ServerPeer implements Runnable {
     int          port;
     ServerSocket server;
     Logger       logger;
-	Messager messages;
 	int flag;
+	Socket clientProprio;
+	static String message;
 
     public ServerPeer(String host, int port, Logger logger, Messager messages) throws Exception {
 	this.host   = host;
@@ -119,7 +82,7 @@ class ServerPeer implements Runnable {
     }
 
     @Override
-    public synchronized void run()
+    public void run()
     {
 	try
     {
@@ -135,6 +98,10 @@ class ServerPeer implements Runnable {
 	            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 String command;
                 command = in.readLine();
+				if (command.equals("cliente-proprio"))
+				{
+					clientProprio = client;
+				}
                 logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
 				messages.putAMessage(command);
 
@@ -152,6 +119,7 @@ class ServerPeer implements Runnable {
 	}
     }
 }
+
 
 
 
@@ -184,7 +152,7 @@ class Client implements Runnable
     }
 
     @Override
-    public synchronized void run()
+    public void run()
 	{
 	try
 	{
