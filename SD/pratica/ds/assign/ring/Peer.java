@@ -1,4 +1,4 @@
-package ds.assing.ring;
+package ds.assign.ring;
 
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -9,17 +9,27 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
+import java.util.ArrayList;
 import java.util.Random;
 
 import ds.assign.poisson.PoissonProcess;
 
+public class messager
+{
+	ArrayList <String> messages = new ArrayList<String>();
+	
+}
 
 public class Peer {
     String host;
     Logger logger;
+	ArrayList <String> messages = new ArrayList<String>();
 
     public Peer(String hostname) {
 	host   = hostname;
@@ -27,26 +37,28 @@ public class Peer {
 	try {
 	    FileHandler handler = new FileHandler("./" + hostname + "_peer.log", true);
 	    logger.addHandler(handler);
-	    SimpleFormatter formatter = new SimpleFormatter();	
-	    handler.setFormatter(formatter);	
+	    SimpleFormatter formatter = new SimpleFormatter();
+	    handler.setFormatter(formatter);
 	} catch ( Exception e ) {
 	     e.printStackTrace();
 	}
     }
-    
-    public static void main(String[] args) throws Exception {
+
+    public static void main(String[] args) throws Exception
+	{
+		System.out.println(args	);
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
         Lock lock = new ReentrantLock();
         Condition tenhoToken = lock.newCondition();
-        String[] m = args[1].split(' ');
-        String[] m6 = args[2].split(' ');
-		new Thread(new Server("localhost", Integer.parseInt(args[1]),tenhoToken)).start();
-        new Thread(new Client("localhost",  m[0],Integer.parseInt(m[1]),m6[0],Integer.parseInt(m6[1]),tenhoToken,peer.logger)).start();
+		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,messages)).start();
+		System.out.println(args[1] + args);
+        new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),messages,peer.logger)).start();
 		if (args.length == 4)
 		{
 			if (args[3].equals("first"))
 			{
+				Thread.sleep(600 * 1000);
 				tenhoToken.notify();
 			}
 		}
@@ -56,26 +68,26 @@ public class Peer {
 
 
 
-class Server implements Runnable {
+class ServerPeer implements Runnable {
     String       host;
     int          port;
     ServerSocket server;
     Logger       logger;
-    Condition tenhoToken;
+	ArrayList <String> messages;
 	int flag;
-    
-    public Server(String host, int port, Logger logger, Condition  tenhoToken) throws Exception {
+
+    public ServerPeer(String host, int port, Logger logger, ArrayList<String> messages) throws Exception {
 	this.host   = host;
 	this.port   = port;
 	this.logger = logger;
-    this.tenhoToken = tenhoToken;
+    this.messages = messages ;
     server = new ServerSocket(port, 1, InetAddress.getByName(host));
     }
 
     @Override
-    public void run() 
+    public synchronized void run()
     {
-	try 
+	try
     {
 	    logger.info("server: endpoint running at port " + port + " ...");
 	    while(true) {
@@ -85,7 +97,7 @@ class Server implements Runnable {
 		    logger.info("server: new connection from " + clientAddress);
             try
             {
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));    
+                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 	            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 String command;
                 command = in.readLine();
@@ -97,13 +109,13 @@ class Server implements Runnable {
 
 
             }
-            catch(Exception e) 
+            catch(Exception e)
             {
 	            e.printStackTrace();
 	        }
 		}catch(Exception e) {
 		    e.printStackTrace();
-		}    
+		}
 	    }
 	} catch (Exception e) {
 	     e.printStackTrace();
@@ -113,41 +125,40 @@ class Server implements Runnable {
 
 
 
-class Client implements Runnable 
+class Client implements Runnable
 {
     String  host;
 	String Mip;
 	String M6ip;
-	Int Mport;
-	Int M6port;
-	Condition tenhoToken;
+	int Mport;
+	int M6port;
+	ArrayList <String> messages;
     Logger  logger;
     Scanner scanner;
 	PoissonProcess pp;
-    
 
-	//	new Thread(new Client("localhost",  m[0],Integer.parseInt(m[1]),m6[0],Integer.parseInt(m6[1]),tenhoToken,peer.logger)).start();
 
-    public Client(String host, String Mip , Int Mport , String M6ip , Int M6porto,Condition tenhoToken, Logger logger) throws Exception 
+
+    public Client(String host, String Mip , int Mport , String M6ip , int M6porto,ArrayList<String> messages, Logger logger) throws Exception
 	{
 		this.host    = host;
-		this.logger  = logger; 
+		this.logger  = logger;
 		this.Mip = Mip ;
 		this.Mport = Mport;
 		this.M6ip = M6ip;
 		this.M6ip = M6ip;
-		this.tenhoToken= tenhoToken;
+		this.messages= messages;
 		this.logger = logger;
 		this.pp = new PoissonProcess(4, new Random(0));
 
     }
 
-    @Override 
-    public void run() 
+    @Override
+    public synchronized void run()
 	{
-	try 
+	try
 	{
-	    logger.info("client: endpoint running ...\n");	
+	    logger.info("client: endpoint running ...\n");
 
 		int t;
 		Random rand = new Random();
@@ -155,11 +166,11 @@ class Client implements Runnable
 		int x;
 		int y;
 		String[]operations = {"add","sub","mul","div"};
-	    while (true) 
+	    while (true)
 		{
-		try 
+		try
 		{
-			
+
 
 			try
 			{
@@ -174,7 +185,7 @@ class Client implements Runnable
 				op = rand.nextInt(4);
 				x= rand.nextInt();
 				y = rand.nextInt();
-				out.println(operations[op]+' '+x+' '+y+'\n');
+				out.println(operations[op]+" "+x+" "+y+'\n');
 				out.flush();	    
 
 				String result = in.readLine();
@@ -189,7 +200,7 @@ class Client implements Runnable
 			}
 			catch(Exception e) {
 		    e.printStackTrace();
-			}   lose();
+			}
 
 		} catch(Exception e) {
 		    e.printStackTrace();

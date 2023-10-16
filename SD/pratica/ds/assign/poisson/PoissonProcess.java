@@ -1,4 +1,4 @@
-package ds.assing.poisson;
+package ds.assign .poisson;
 
 import java.util.Random;
 

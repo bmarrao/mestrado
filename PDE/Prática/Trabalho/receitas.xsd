@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xs:targetNamespace="receitas.xsd"
-        xs:attributFormDefault="qualified"
-        xs:elementFormDefault="qualified">
+        elementFormDefault="qualified"
+        targetNamespace="exemploXSD.xml">
 
     <xs:element name="categoria">
         <xs:simpleType>
@@ -40,17 +39,21 @@
 
     <xs:element name="data-publicacao" type="xs:date"/>
     <xs:element name="ilustração" type="xs:anyURI"/>
-    <xs:element name="resumo" type="xs:string"/>
-    <xs:element name="titulo" type="xs:string"/>
-    <xs:element name="texto-introdutorio" type="xs:string"/>
-    <xs:element name="autor" type="xs:string"/>
-    <xs:element name="nome" type="xs:string"/>
-    <xs:element name="unidade-medida" type="xs:string"/>
-    <xs:element name="passo" type="xs:string"/>
+    <xs:element name="resumo" type="xs:simpleType"/>
+    <xs:element name="titulo" type="xs:simpleType"/>
+    <xs:element name="texto-introdutorio" type="xs:simpleType"/>
+    <xs:element name="autor" type="xs:simpleType"/>
+    <xs:element name="nome" type="xs:simpleType"/>
+    <xs:element name="unidade-medida" type="xs:simpleType"/>
     <xs:element name="calorias" type="xs:int"/>
     <xs:element name="quantidade" type="xs:int"/>
+    <xs:element name="texto" type="xs:simpleType"/>
 
-
+    <xs:element name="passo" >
+        <xs:complexType>
+            <xs:attribute name="ilustracao" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
 
     <xs:element name="cabecalho">
         <xs:complexType>
@@ -63,15 +66,62 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="ingrediente">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="nome"/>
+                <xs:element ref="quantidade" minOccurs="0"/>
+                <xs:element ref="unidade-medida" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID"/>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="receita">
-        
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="nome"/>
+                <xs:element ref="calorias"  minOccurs="0"/>
+                <xs:element ref="ingrediente" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element ref="ilustração"/>
+                <xs:choice>
+                    <xs:element ref="passo" maxOccurs="unbounded"  />
+                    <xs:element ref="texto"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- COLOCAR ALGUM TIPO DE IDREF PARA IDENTIFICAR IGREDIENTES ?-->
+    <xs:element name="sub-seção">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="titulo"/>
+                <xs:element ref="texto-introdutorio" maxOccurs="1" minOccurs="0"/>
+                <xs:element ref="ilustração"/>
+                <xs:element ref="receita" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="seção">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="titulo"/>
+                <xs:element ref="texto-introdutorio" maxOccurs="1" minOccurs="0"/>
+                <xs:element ref="ilustração"/>
+                <xs:choice maxOccurs="unbounded" minOccurs="0">
+                    <xs:element ref="receita"/>
+                    <xs:element ref="sub-seção"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
     </xs:element>
     <xs:element name="parte">
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="titulo"/>
                 <xs:element ref="texto-introdutorio" maxOccurs="1" minOccurs="0"/>
-
+                <xs:element ref="ilustração"/>
                 <xs:choice maxOccurs="unbounded" minOccurs="0">
                     <xs:element ref="receita"/>
                     <xs:element ref="seção"/>
