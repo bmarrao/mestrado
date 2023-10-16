@@ -25,9 +25,10 @@
         tempo           (rápido | médio | lento) #IMPLIED
         custo           (barato | médio | caro) #IMPLIED
         image        CDATA #IMPLIED>
-<!ELEMENT ingrediente (nome, quantidade, unidade-medida) >
+<!ELEMENT ingrediente ((nome, quantidade, unidade-medida) | #PCDATA)>
 <!ATTLIST ingediente
-        id     ID       #IMPLIED>
+        id     IDREF       #IMPLIED>
+INGREDIENTE REFERIDO ?????????
 <!ELEMENT quantidade (#PCDATA) >
 <!ELEMENT nome (#PCDATA)>
 <!ELEMENT calorias (#PCDATA)>
