@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE receitas SYSTEM "receitasAtrib.dtd">
+<!DOCTYPE receitas SYSTEM "receitas.dtd">
 <receitas>
     <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
