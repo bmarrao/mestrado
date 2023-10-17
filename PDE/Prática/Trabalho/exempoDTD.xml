@@ -44,7 +44,7 @@
                     <unidade-medida>ml</unidade-medida>
                 </ingrediente>
             </ingredientes>
-            <instruções>
+            <instruções id="molho-massa">
                 Para fazer o molho
                 <passo>
                     Fazer molho
@@ -66,16 +66,14 @@
             </titulo>
             <receita>
                 <nome>Spaghetti Alfredo</nome>
-                <ingredientesRef ref="2"/>
+                <ingredientes id="spaghetti Alfredo">
+                    <ingredientesRef ref="2"/>
+                    <ingredienteRef ref="leite"/>
+                </ingredientes>
                 <instruções>
+                    <instruçõesRef ref="molho-massa"/>
                     <passo>
-                        Fazer molho
-                    </passo>
-                    <passo>
-                        Fazer massa
-                    </passo>
-                    <passo>
-                        Juntar a massa e o molho
+                        Adicionar leite
                     </passo>
                 </instruções>
             </receita>
