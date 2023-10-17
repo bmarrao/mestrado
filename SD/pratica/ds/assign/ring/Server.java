@@ -11,8 +11,8 @@ import java.util.Scanner;
 public class Server {
     private ServerSocket server;
 
-    public Server(String ipAddress) throws Exception {
-        this.server = new ServerSocket(0, 1, InetAddress.getByName(ipAddress));
+    public Server(String ipAddress, int port) throws Exception {
+        this.server = new ServerSocket(port, 1, InetAddress.getByName(ipAddress));
     }
 
     private void listen() throws Exception {
@@ -33,7 +33,7 @@ public class Server {
     }
     
     public static void main(String[] args) throws Exception {
-	Server app = new Server(args[0]);
+	Server app = new Server(args[0],Integer.parseInt(args[1]));
 	System.out.printf("\r\nrunning server: host=%s @ port=%d\n",
 	    app.getSocketAddress().getHostAddress(), app.getPort());
 	app.listen();
@@ -73,73 +73,19 @@ class ConnectionHandler implements Runnable {
 																     */
 		Scanner sc = new Scanner(command).useDelimiter(":");
 		String  op = sc.next();
+		double  x  = Double.parseDouble(sc.next());
+		double  y  = Double.parseDouble(sc.next());
+		double  result = 0.0; 
 		switch(op) {
-		case "add":
-			double  x  = Double.parseDouble(sc.next());
-			double  y  = Double.parseDouble(sc.next());
-			double result ;
-			result = x + y; 
-			out.println(String.valueOf(result));
-			break;
-		case "sub": 
-			double  x1  = Double.parseDouble(sc.next());
-			double  y1  = Double.parseDouble(sc.next());
-			double result1 ;
-			result1 = x1 - y1; 
-			out.println(String.valueOf(result1));
-			break;
-		case "mul": 
-			double  x2  = Double.parseDouble(sc.next());
-			double  y2  = Double.parseDouble(sc.next());
-			double result2 ;
-			result2 = x2 * y2; 
-			out.println(String.valueOf(result2));
-			break;
-		case "div": 
-			double  x3  = Double.parseDouble(sc.next());
-			double  y3  = Double.parseDouble(sc.next());
-			double result3 ;
-			result3 = x3 / y3; 
-			out.println(String.valueOf(result3));
-			break;
-		case "len":
-			String x4 = sc.next();
-			int result4 = x4.length() ;
-			out.println(String.valueOf(result4));
-			break;
-		case "comp":
-			String x5 = sc.next();
-			String y5 = sc.next();
-			if(x5.equals(y5)){
-				out.println("true");
-			}
-			else
-			{
-				out.println("false");
-			}
-			break;
-		case "cat":
-			String x6 = sc.next();
-			String y6 = sc.next();
-			String result6 = x6 + y6;
-			out.println(result6);
-			break;
-		case "break":
-			String x7 = sc.next();
-			String y7 = sc.next();
-			String[] arr = x7.split(y7);
-			String result7 ="";
-			for (int i = 0; i <arr.length; i++)
-			{
-				System.out.printf(arr[i] + "\n");
-				result7 = result7 + arr[i] + " ";
-
-			}
-			System.out.printf(result7);
-			out.println(result7);
-
-			break;
-		}
+		case "add": result = x + y; break;
+		case "sub": result = x - y; break;
+		case "mul": result = x * y; break;
+		case "div": result = x / y; break;
+		}  
+		/*
+		 * send result
+		 */
+		out.println(String.valueOf(result));
 		out.flush();
 	    }
 	}catch(Exception e) {

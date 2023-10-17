@@ -1,140 +1,83 @@
-out 16, 2023 8:11:04 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 16, 2023 8:11:04 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 9:25:29 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 9:25:29 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 16, 2023 8:30:39 DA TARDE ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 16, 2023 8:30:40 DA TARDE ds.assign.ring.Client run
+out 17, 2023 9:57:28 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 16, 2023 8:42:50 DA TARDE ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 16, 2023 8:42:50 DA TARDE ds.assign.ring.Client run
+out 17, 2023 9:57:28 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:02:59 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 9:24:33 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 9:24:33 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:02:59 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:04:57 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 9:57:17 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:04:57 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:06:07 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 9:57:17 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:02:54 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:06:07 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:09:37 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 10:02:54 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:04:53 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:09:37 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:10:36 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 10:04:53 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:06:00 DA MANHÃ ds.assign.ring.Client run
-INFO: client: endpoint running ...
-
-out 17, 2023 10:06:00 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:08:53 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:08:54 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:09:31 DA MANHÃ ds.assign.ring.Client run
-INFO: client: endpoint running ...
-
-out 17, 2023 10:09:31 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:09:50 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:09:50 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:10:30 DA MANHÃ ds.assign.ring.Client run
-INFO: client: endpoint running ...
-
-out 17, 2023 10:10:30 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
+out 17, 2023 10:10:36 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
 out 17, 2023 10:11:07 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:11:07 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:11:07 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:14:21 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:19:44 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 10:14:21 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:14:46 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3000]
-out 17, 2023 10:14:46 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:14:46 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:18:05 DA MANHÃ ds.assign.ring.Client run
-INFO: client: endpoint running ...
-
-out 17, 2023 10:18:05 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:18:30 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3000]
-out 17, 2023 10:18:30 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:18:30 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:18:34 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3000]
-out 17, 2023 10:18:34 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:18:34 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:18:49 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3000]
-out 17, 2023 10:18:49 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:18:49 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:19:18 DA MANHÃ ds.assign.ring.Client run
-INFO: client: endpoint running ...
-
-out 17, 2023 10:19:18 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:20:30 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:19:44 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:20:31 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:20:31 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:20:31 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:20:35 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:20:35 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:20:35 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:20:50 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:20:50 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:20:50 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:21:02 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:21:02 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:21:02 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:23:19 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:23:23 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 10:23:19 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
-out 17, 2023 10:33:46 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:23:23 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
+out 17, 2023 10:34:14 DA MANHÃ ds.assign.ring.Client run
 INFO: client: endpoint running ...
 
-out 17, 2023 10:33:46 DA MANHÃ ds.assign.ring.ServerPeer run
-INFO: server: endpoint running at port 3001 ...
+out 17, 2023 10:34:14 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: server: endpoint running at port 3003 ...
 out 17, 2023 10:36:01 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:36:01 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -142,31 +85,31 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:36:01 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:36:01 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:36:05 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:36:05 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:36:05 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:36:06 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:36:05 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:36:20 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:36:06 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:36:21 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:36:20 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:36:21 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:36:20 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:36:21 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:36:20 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:36:32 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:36:21 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:36:33 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:36:32 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:36:33 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:36:32 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:36:33 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:36:32 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:36:33 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:36:46 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:36:46 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -174,31 +117,31 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:36:46 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:36:46 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:36:52 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:36:52 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:36:52 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:36:53 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:36:52 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:36:59 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:36:53 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:37:00 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:36:59 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:37:00 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:36:59 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:37:00 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:36:59 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:38:02 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:37:00 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:38:03 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:38:02 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:38:03 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:38:02 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:38:03 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:38:02 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:38:03 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:38:34 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:38:34 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -206,31 +149,31 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:38:34 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:38:34 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:39:16 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:39:17 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:39:16 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:39:17 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:39:17 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:39:17 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:39:21 DA MANHÃ ds.assign.ring.ServerPeer run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:39:22 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:39:21 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:39:22 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:39:21 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:39:22 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:39:21 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
-out 17, 2023 10:39:23 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:39:22 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
+out 17, 2023 10:39:24 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
-out 17, 2023 10:39:23 DA MANHÃ ds.assign.ring.ServerPeer run
+out 17, 2023 10:39:24 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:39:23 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:39:24 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:39:23 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:39:24 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -238,15 +181,15 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:39:27 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:39:26 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:39:27 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:39:38 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:39:38 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -254,15 +197,15 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:39:38 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:39:38 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:40:28 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:40:28 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:40:28 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:40:29 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:40:28 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:40:29 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:40:30 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:40:30 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -270,7 +213,7 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:40:30 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:40:30 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:40:45 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:40:45 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -278,7 +221,7 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:40:45 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:40:45 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:40:53 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:40:53 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -286,7 +229,7 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:40:53 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:40:53 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:41:15 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:41:15 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -294,23 +237,23 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:41:15 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:41:15 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:42:25 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:42:25 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:42:25 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:42:26 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:42:25 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:42:26 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:42:35 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:42:35 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: message from host 127.0.0.1[command = token]
-out 17, 2023 10:42:35 DA MANHÃ ds.assign.ring.Client run
+out 17, 2023 10:42:36 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
-out 17, 2023 10:42:35 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+out 17, 2023 10:42:36 DA MANHÃ ds.assign.ring.Client run
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:42:56 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:42:56 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -318,7 +261,7 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:42:56 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:42:56 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:43:16 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:43:16 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -326,7 +269,7 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:43:16 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:43:16 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
 out 17, 2023 10:43:41 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: new connection from 127.0.0.1
 out 17, 2023 10:43:41 DA MANHÃ ds.assign.ring.ServerPeer run
@@ -334,4 +277,4 @@ INFO: server: message from host 127.0.0.1[command = token]
 out 17, 2023 10:43:41 DA MANHÃ ds.assign.ring.Client run
 INFO: client: connected to server localhost/127.0.0.1[port = 3006]
 out 17, 2023 10:43:41 DA MANHÃ ds.assign.ring.Client run
-INFO: client: connected to server localhost/127.0.0.1[port = 3002]
+INFO: client: connected to server localhost/127.0.0.1[port = 3004]
