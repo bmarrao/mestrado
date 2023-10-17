@@ -23,37 +23,122 @@
                 Spaghetti Bolonhesa
             </nome>
             <!-- aqui irei adicionar uma receita como exemplo -->
-            <ingrediente>
-                <nome>
-                    spaghetti
-                </nome>
-                <!-- Opcional -->
+            <ingredientes id="2">
+                <ingrediente id="3">
+                    <nome>
+                        spaghetti
+                    </nome>
+                    <!-- Opcional -->
 
-                <quantidade>
-                    100
-                </quantidade>
-                <!-- Opcional -->
-
-                <unidade-medida>
-                    gramas
-                </unidade-medida>
-
-            </ingrediente>
-            Posso também escrever algo ou antes de um ingrediente para fornecer um pouco de contexto
-            <ingrediente   >
-                <nome>Molho </nome>
-                <quantidade>100</quantidade>
-                <unidade-medida>ml</unidade-medida>
-            </ingrediente>
-            Antes e depois dos passos também
-            <passo>
-                Colocar agua na panela
-            </passo>
-            Posso fazer entre passos também
-            <passo>
-                Colocar macarrão na agua fervendo
-            </passo>
+                    <quantidade>
+                        100
+                    </quantidade>
+                    <!-- Opcional -->
+                    <unidade-medida>
+                        gramas
+                    </unidade-medida>
+                </ingrediente>
+                <ingrediente  id ="4">
+                    <nome>Molho </nome>
+                    <quantidade>100</quantidade>
+                    <unidade-medida>ml</unidade-medida>
+                </ingrediente>
+            </ingredientes>
+            <instruções>
+                Para fazer o molho
+                <passo>
+                    Fazer molho
+                </passo>
+                Para fazer a massa
+                <passo>
+                    Fazer massa
+                </passo>
+                Para fazer o molho
+                <passo>
+                    Juntar a massa e o molho
+                </passo>
+            </instruções>
         </receita>
+        <seção>
+            <!-- ainda posso opcionalmente adicionar uma seção -->
+            <titulo>
+                Comida de Roma
+            </titulo>
+            <receita>
+                <nome>Spaghetti Alfredo</nome>
+                <ingredientesRef ref="2"/>
+                <instruções>
+                    <passo>
+                        Fazer molho
+                    </passo>
+                    <passo>
+                        Fazer massa
+                    </passo>
+                    <passo>
+                        Juntar a massa e o molho
+                    </passo>
+                </instruções>
+            </receita>
+            
+            <sub-seção>
+                <titulo>Sobremesas</titulo>
+                <receita id="tiramisu" tempo="lento" custo="barato" categoria="sobremesa" dificuldade="díficil" image="./images/tiramisu">
+                    <nome>
+                        tiramisu
+                    </nome>
+                    <ingredientes id="cafe-biscoito-mascarpone">
+                        <ingrediente id="cafe">
+                            <nome>cafe</nome>
+                            <quantidade>100</quantidade>
+                            <unidade-medida>ml</unidade-medida>
+                        </ingrediente>
+                        <ingrediente id="biscoito">
+                            <nome>biscoito champangne</nome>
+                            <quantidade>1</quantidade>
+                            <unidade-medida>pacotes</unidade-medida>
+                        </ingrediente>
+                        <ingrediente id="açucar"/>
+                        <ingrediente id="leite"/>
+                        <ingrediente id="gemas">
+                            <nome>gemas</nome>
+                            <quantidade>
+                                3
+                            </quantidade>
+                        </ingrediente>
+                        <ingrediente id="chocolate em po"/>
+                        <ingrediente id="mascarpone">
+                            <nome>mascarpone</nome>
+                            <quantidade>500</quantidade>
+                            <unidade-medida>gramas</unidade-medida>
+                        </ingrediente>
+                    </ingredientes>
+                    <instruções>
+                        <passo>
+                            Bata o <ingredienteRef ref="leite"/> na batedeira até obter um chantilly firme.
+                        </passo>
+                        <passo>
+                            Reserve
+                        </passo>
+                        <passo>
+                            Bata o <ingredienteRef ref="açucar"/> com as <ingredienteRef ref="gemas"/> e o conhaque por 3 minutos.
+                        </passo>
+                        <passo>
+                            Acrescente o chantilly, o mascarpone e misture bem.
+                        </passo>
+                        <passo>
+                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratário formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de biscoitos molhados no café e por último mais uma camada de creme.
+                        </passo>
+                        <passo>
+                            Para finalizar polvilhe <ingredienteRef ref="chocolate em po">chocolate</ingredienteRef> em pó amargo.
+                        </passo>
+                        <passo>
+                            Leve à geladeira por no mínimo 3 horas e sirva.
+                        </passo>
+
+                    </instruções>
+                </receita>
+            </sub-seção>
+        </seção>
     </parte>
 
 </receitas>
