@@ -41,7 +41,7 @@
 <!ELEMENT ingrediente (nome, quantidade?, unidade-medida?)>
 <!ATTLIST ingrediente
         id     ID       #REQUIRED>
-<!ELEMENT ingredienteRef (#PCDATA)>
+<!ELEMENT ingredienteRef EMPTY>
 <!ATTLIST ingredienteRef
         ref IDREF #REQUIRED>
 <!ELEMENT quantidade (#PCDATA) >
@@ -50,8 +50,8 @@
 <!ELEMENT unidade-medida (#PCDATA)>
 <!ELEMENT passo (#PCDATA | ingredienteRef)* >
 <!ATTLIST passo
-        ID ID #Implied
-        ilustracao CDATA       #IMPLIED>
+        id ID #IMPLIED
+        ilustracao CDATA   #IMPLIED>
 
 <!ELEMENT passoRef (#PCDATA | ingredienteRef)* >
 <!ATTLIST passoRef

@@ -47,15 +47,15 @@
             <instruções id="molho-massa">
                 Para fazer o molho
                 <passo id="fazer-molho">
-                    Fazer molho
+                    Aquecer o <ingredienteRef ref="4"/>
                 </passo>
                 Para fazer a massa
                 <passo id="fazer-massa">
-                    Fazer massa
+                    Cozinhar o <ingredienteRef ref="3"/>
                 </passo>
                 Para fazer o molho
                 <passo id="juntar-massa-molho">
-                    Juntar a massa e o molho
+                    Juntar <ingredienteRef ref="3"/> e <ingredienteRef ref="4"/>
                 </passo>
             </instruções>
         </receita>
@@ -88,9 +88,8 @@
                     </ingrediente>
                 </ingredientes>
                 <instruções>
-                    <passoRef ref="">
-
-                    </passoRef>
+                    <passoRef ref="fazer-molho"/>
+                    <passoRef ref="fazer-massa"/>
                 </instruções>
             </receita>
             
@@ -137,13 +136,13 @@
                             Bata o <ingredienteRef ref="açucar"/> com as <ingredienteRef ref="gemas"/> e o conhaque por 3 minutos.
                         </passo>
                         <passo>
-                            Acrescente o chantilly, o mascarpone e misture bem.
+                            Acrescente o chantilly, o <ingredienteRef ref="mascarpone"/> e misture bem.
                         </passo>
                         <passo>
-                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratário formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de biscoitos molhados no café e por último mais uma camada de creme.
+                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratário formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de <ingredienteRef ref="biscoito"/> molhados no <ingredienteRef ref="cafe"/> e por último mais uma camada de creme.
                         </passo>
                         <passo>
-                            Para finalizar polvilhe <ingredienteRef ref="chocolate em po">chocolate</ingredienteRef> em pó amargo.
+                            Para finalizar polvilhe <ingredienteRef ref="chocolate em po"/> em pó amargo.
                         </passo>
                         <passo>
                             Leve à geladeira por no mínimo 3 horas e sirva.

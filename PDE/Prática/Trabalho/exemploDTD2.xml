@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE receitas SYSTEM "receitas.dtd">
+<receitas>
+    <cabecalho>
+        <titulo>Sobremesas Italianas</titulo>
+        <autor>Breno Fernando Guerra Marrão</autor>
+        <data-publicacao>
+            <ano>2023</ano>
+            <mes>Outubro</mes>
+            <dia>18</dia>
+        </data-publicacao>
+    </cabecalho>
+    <seção>
+        <titulo>Sobremesas do sul italiano</titulo>
+        <texto-introdutorio>Nesta parte iremos abordar sobremesas que pertencem ao sul italiano</texto-introdutorio>
+        <receita>
+            <nome>Canoli</nome>
+            <ingredientes>
+                <ingrediente id="pistachio">
+                    <nome>pistachio</nome>
+                    <quantidade>1</quantidade>
+                    <unidade-medida>chavena</unidade-medida>
+                </ingrediente>
+                <ingrediente id="sal">
+                    <nome>sal</nome>
+                </ingrediente>
+                <ingrediente id="açucar">
+                    <nome>açucar</nome>
+                    <quantidade>4</quantidade>
+                    <unidade-medida>colher</unidade-medida>
+                </ingrediente>
+                <ingrediente id="ovos">
+                    <nome>ovos</nome>
+                    <quantidade>2</quantidade>
+                </ingrediente>
+                <ingrediente id="oleo-vegetal">
+                    <nome>Óleo vegetal</nome>
+                </ingrediente>
+                <ingrediente id="canela">
+                    <nome>canela</nome>
+                    <quantidade>1</quantidade>
+                    <unidade-medida>colher</unidade-medida>
+                </ingrediente>
+                <ingrediente id="vinho marsala">
+                    <nome>canela</nome>
+                    <quantidade>3</quantidade>
+                    <unidade-medida>colher</unidade-medida>
+                </ingrediente>
+                <ingrediente id="farinha-trigo-sem-fermento">
+                    <nome>farinha de trigo sem fermento</nome>
+                    <quantidade>2</quantidade>
+                    <unidade-medida>chávenas</unidade-medida>
+                </ingrediente>
+                <ingrediente id="queijo-creme">
+                    <nome>queijo creme</nome>
+                    <quantidade>250</quantidade>
+                    <unidade-medida>gramas</unidade-medida>
+                </ingrediente>
+                <ingrediente id="ricotta">
+                    <nome>ricotta</nome>
+                    <quantidade>500</quantidade>
+                    <unidade-medida>gramas</unidade-medida>
+                </ingrediente>
+            </ingredientes>
+            <instruções>
+                <texto-instrução>
+                    1. Para fazer a massa numa batedeira misture 2 chávenas e meia de <ingredienteRef
+                        ref="farinha-trigo-sem-fermento"/> com <ingredienteRef ref="açucar"/>. Adicione 1 <ingredienteRef
+                        ref="ovos"/> e 3 c. de <ingredienteRef ref="oleo-vegetal"/>.
+                    2. Utilize o acessório de massa para bater e, de seguida, adicione 1 c. de <ingredienteRef ref="canela"/> e 3 c. de sopa de <ingredienteRef
+                        ref="vinho marsala"/>. Bata novamente.
+                    3. Coloque a massa numa superfície coberta com <ingredienteRef ref="farinha-trigo-sem-fermento"/> e trabalhe-a até ficar com uma espessura de cerca de 0,5cm. Corte-a em discos de 10 a 15 cm de diâmetro.
+                    4. Com a ajuda de um cilindro de cannoli, enrole a massa à sua volta e com 1 clara de <ingredienteRef
+                        ref="ovos"/> cole a ponta. Aqueça óleo numa frigideira e coloque os cannolis para fritar. Retire e coloque num prato com papel absorvente.
+                    5. Recheio: Enquanto arrefecem, numa taça coloque 500g de ricotta, 250g de queijo creme e 4 c. de sopa de açúcar em pó. Misture tudo.
+                    6. Dentro de um prato coloque <ingredienteRef ref="pistachio"/> grosseiramente picados com uma pitada de <ingredienteRef
+                        ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
+                    7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
+                </texto-instrução>
+            </instruções>
+        </receita>
+
+    </seção>
+</receitas>
