@@ -3,7 +3,7 @@
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         elementFormDefault="qualified"
         targetNamespace="receitas"
-        xmlns:receitas="receitas">
+        xlmns="receitas">
 
     <xs:element name="categoria">
         <xs:simpleType>

@@ -46,15 +46,15 @@
             </ingredientes>
             <instruções id="molho-massa">
                 Para fazer o molho
-                <passo>
+                <passo id="fazer-molho">
                     Fazer molho
                 </passo>
                 Para fazer a massa
-                <passo>
+                <passo id="fazer-massa">
                     Fazer massa
                 </passo>
                 Para fazer o molho
-                <passo>
+                <passo id="juntar-massa-molho">
                     Juntar a massa e o molho
                 </passo>
             </instruções>
@@ -67,14 +67,30 @@
             <receita>
                 <nome>Spaghetti Alfredo</nome>
                 <ingredientes id="spaghetti Alfredo">
-                    <ingredientesRef ref="2"/>
-                    <ingredienteRef ref="leite"/>
+                    <ingrediente id="5">
+                        <nome>
+                            spaghetti
+                        </nome>
+                        <!-- Opcional -->
+
+                        <quantidade>
+                            100
+                        </quantidade>
+                        <!-- Opcional -->
+                        <unidade-medida>
+                            gramas
+                        </unidade-medida>
+                    </ingrediente>
+                    <ingrediente  id ="6">
+                        <nome>Molho </nome>
+                        <quantidade>100</quantidade>
+                        <unidade-medida>ml</unidade-medida>
+                    </ingrediente>
                 </ingredientes>
                 <instruções>
-                    <instruçõesRef ref="molho-massa"/>
-                    <passo>
-                        Adicionar leite
-                    </passo>
+                    <passoRef ref="">
+
+                    </passoRef>
                 </instruções>
             </receita>
             
