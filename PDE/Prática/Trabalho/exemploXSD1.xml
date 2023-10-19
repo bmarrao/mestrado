@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE receitas SYSTEM "receitas.dtd">
-<receitas>
-    <cabecalho> 
+<receitas
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="receitas.xsd">
+    <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
+        <titulo>Validação?</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
+        <autor>Se quiser posso adicionar outros autores</autor>
         <data-publicacao>
-            <ano>2023</ano>
-            <mes>10</mes>
-            <dia>8</dia>
+            2023-10-18
         </data-publicacao>
         <resumo>
             Esse é o resumo opcional
         </resumo>
     </cabecalho>
 
-    <parte image="uri">
+    <parte >
         <titulo>Comida italiana</titulo>
         <texto-introdutorio>Esse é o texto-introdutorio opcional</texto-introdutorio>
-        <receita id ="spaghetti" image="./images/spaghetti" dificuldade="simples" categoria="prato-principal" custo="barato" tempo="médio">
+        <ilustração>uri</ilustração>
+        <receita id ="1">
             <nome>
                 Spaghetti Bolonhesa
             </nome>
+            <ilustração>"./images/spaghetti"</ilustração>
+            <dificuldade>simples</dificuldade>
+            <categoria>prato-principal</categoria>
+            <custo>barato</custo>
+            <tempo>medip</tempo>
+
             <!-- aqui irei adicionar uma receita como exemplo -->
-            <ingredientes id="ingredientes-spaggheti">
-                <ingrediente id="spaghetti-ingrediente">
+            <ingredientes>
+                <ingrediente id="3">
                     <nome>
                         spaghetti
                     </nome>
@@ -37,21 +45,24 @@
                         gramas
                     </unidade-medida>
                 </ingrediente>
-                <ingrediente  id ="molho">
+                <ingrediente  id ="4">
                     <nome>Molho </nome>
                     <quantidade>100</quantidade>
                     <unidade-medida>ml</unidade-medida>
                 </ingrediente>
             </ingredientes>
-            <instruções id="molho-massa">
+            <instruções >
+                Para fazer o molho
                 <passo id="fazer-molho">
-                    Aquecer o <ingredienteRef ref="molho"/>
+                    Aquecer o <ingredienteRef ref="4"/>
                 </passo>
+                Para fazer a massa
                 <passo id="fazer-massa">
-                    Cozinhar o <ingredienteRef ref="spaghetti-ingrediente"/>
+                    Cozinhar o <ingredienteRef ref="3"/>
                 </passo>
+                Para fazer o molho
                 <passo id="juntar-massa-molho">
-                    Juntar <ingredienteRef ref="spaghetti-ingrediente"/> e <ingredienteRef ref="molho"/>
+                    Juntar <ingredienteRef ref="3"/> e <ingredienteRef ref="4"/>
                 </passo>
             </instruções>
         </receita>
@@ -63,7 +74,7 @@
             <receita>
                 <nome>Spaghetti Alfredo</nome>
                 <ingredientes >
-                    <ingrediente id="spaghetti-ingrediente2">
+                    <ingrediente id="5">
                         <nome>
                             spaghetti
                         </nome>
@@ -77,7 +88,7 @@
                             gramas
                         </unidade-medida>
                     </ingrediente>
-                    <ingrediente  id ="molho2">
+                    <ingrediente  id ="6">
                         <nome>Molho </nome>
                         <quantidade>100</quantidade>
                         <unidade-medida>ml</unidade-medida>
@@ -88,14 +99,19 @@
                     <passoRef ref="fazer-massa"/>
                 </instruções>
             </receita>
-            
+
             <sub-seção>
                 <titulo>Sobremesas</titulo>
-                <receita id="tiramisu" tempo="lento" custo="barato" categoria="sobremesa" dificuldade="díficil" image="./images/tiramisu">
+                <receita id="tiramisu"   >
                     <nome>
                         tiramisu
                     </nome>
-                    <ingredientes id="cafe-biscoito-mascarpone">
+                    <tempo>lento</tempo>
+                    <custo>barato</custo>
+                    <categoria>sobremesa</categoria>
+                    <dificuldade>dificil</dificuldade>
+                    <ilustração>./images/tiramisu</ilustração>
+                    <ingredientes >
                         <ingrediente id="cafe">
                             <nome>cafe</nome>
                             <quantidade>100</quantidade>
@@ -106,28 +122,15 @@
                             <quantidade>1</quantidade>
                             <unidade-medida>pacotes</unidade-medida>
                         </ingrediente>
-                        <ingrediente id="açucar">
-                                <nome>
-                                    açucar
-                                </nome>
-                        </ingrediente >
-
-                        <ingrediente id="leite">
-                            <nome>
-                                ingrediente
-                            </nome>
-                        </ingrediente>
+                        <ingrediente id="açucar"/>
+                        <ingrediente id="leite"/>
                         <ingrediente id="gemas">
                             <nome>gemas</nome>
                             <quantidade>
                                 3
                             </quantidade>
                         </ingrediente>
-                        <ingrediente id="chocolate-em-po">
-                                <nome>
-                                    chocolate em po
-                                </nome>
-                        </ingrediente>
+                        <ingrediente id="chocolate em po"/>
                         <ingrediente id="mascarpone">
                             <nome>mascarpone</nome>
                             <quantidade>500</quantidade>
@@ -148,13 +151,13 @@
                             Acrescente o chantilly, o <ingredienteRef ref="mascarpone"/> e misture bem.
                         </passo>
                         <passo>
-                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratorio formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de <ingredienteRef ref="biscoito"/> molhados no <ingredienteRef ref="cafe"/> e por último mais uma camada de creme.
+                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratário formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de <ingredienteRef ref="biscoito"/> molhados no <ingredienteRef ref="cafe"/> e por último mais uma camada de creme.
                         </passo>
                         <passo>
-                            Para finalizar polvilhe <ingredienteRef ref="chocolate-em-po"/> em po amargo.
+                            Para finalizar polvilhe <ingredienteRef ref="chocolate em po"/> em pó amargo.
                         </passo>
                         <passo>
-                            Leve a geladeira por no mínimo 3 horas e sirva.
+                            Leve à geladeira por no mínimo 3 horas e sirva.
                         </passo>
 
                     </instruções>
