@@ -168,7 +168,7 @@
                 <xs:element ref="trabalhoPDE:titulo"/>
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
-                <xs:choice maxOccurs="unbounded" minOccurs="1">
+                <xs:choice maxOccurs="unbounded" >
                     <xs:element ref="trabalhoPDE:receita"/>
                     <xs:element ref="trabalhoPDE:sub-seção"/>
                 </xs:choice>

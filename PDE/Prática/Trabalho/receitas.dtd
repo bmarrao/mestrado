@@ -27,7 +27,7 @@
         image        CDATA #IMPLIED>
 <!ELEMENT receitaRef (#PCDATA) >
 <!ATTLIST receitaRef
-        ref  IDREF     #IMPLIED>
+        ref  IDREF     #REQUIRED>
 
 <!ELEMENT ingredientes (ingrediente+)>
 <!ATTLIST ingredientes
@@ -43,7 +43,7 @@
 <!ELEMENT nome (#PCDATA)>
 <!ELEMENT calorias (#PCDATA)>
 <!ELEMENT unidade-medida (#PCDATA)>
-<!ELEMENT passo (#PCDATA | ingredienteRef)* >
+<!ELEMENT passo (#PCDATA | ingredienteRef )* >
 <!ATTLIST passo
         id ID #IMPLIED
         ilustracao CDATA   #IMPLIED>
@@ -54,7 +54,7 @@
 
 
 <!-- ((passo| passoRef | #PCDATA | receitaRef)+| ( receitaRef|texto-instrução)+) -->
-<!ELEMENT instruções ( (receitaRef | texto-instrução)| (passo | passoRef |receitaRef )+)>
+<!ELEMENT instruções ( texto-instrução| (passo | passoRef |receitaRef )+)>
 <!ATTLIST instruções
                 id ID #IMPLIED>
 

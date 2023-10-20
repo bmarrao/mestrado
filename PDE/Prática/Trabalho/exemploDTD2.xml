@@ -76,11 +76,13 @@
                     6. Dentro de um prato coloque <ingredienteRef ref="pistachio"/> grosseiramente picados com uma pitada de <ingredienteRef
                         ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
                     7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
+                    Teste de <receitaRef ref="teste-receita"/>
                 </texto-instrução>
             </instruções>
         </receita>
-        <receita>
+        <receita id="teste-receita">
             <nome>receita-exemplo</nome>
+            <calorias>400</calorias>
             <ingredientes>
                 <ingrediente id="teste">
                     <nome>teste</nome>
