@@ -25,7 +25,7 @@
         tempo           (rápido | médio | lento) #IMPLIED
         custo           (barato | médio | caro) #IMPLIED
         image        CDATA #IMPLIED>
-<!ELEMENT receitaRef (EMPTY) >
+<!ELEMENT receitaRef (#PCDATA) >
 <!ATTLIST receitaRef
         ref  IDREF     #IMPLIED>
 

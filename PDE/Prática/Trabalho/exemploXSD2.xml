@@ -70,6 +70,7 @@
             </ingredientes>
             <instruções>
                 <texto-instrução>
+
                 1. Para fazer a massa numa batedeira misture 2 chávenas e meia de <ingredienteRef
                     ref="farinha-trigo-sem-fermento"/> com <ingredienteRef ref="açucar"/>. Adicione 1 <ingredienteRef
                     ref="ovos"/> e 3 c. de <ingredienteRef ref="oleo-vegetal"/>.
@@ -82,9 +83,40 @@
                 6. Dentro de um prato coloque <ingredienteRef ref="pistachio"/> grosseiramente picados com uma pitada de <ingredienteRef
                     ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
                 7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
+                    ------ Posso também referenciar outras receitas <receitaRef ref="receita-teste"/>
                 </texto-instrução>
             </instruções>
         </receita>
+        <receita id="receita-teste">
+            <nome>Nova receita de teste</nome>
+            <ingredientes>
+                <ingrediente id="teste">
+                    <nome>teste</nome>
+                </ingrediente>
+            </ingredientes>
+            <instruções>
+                <passo>
+                </passo>
+            </instruções>
+        </receita>
+        <sub-seção>
+            <titulo>Sub-seção</titulo>
+            <texto-introdutorio>Esta é uma sub-seção</texto-introdutorio>
+            <ilustração>UmaIlustração</ilustração>
+            <receita>
+                <nome>teste sub-seção</nome>
+                <ingredientes>
+                    <ingrediente id="sub">
+                        <nome>seção</nome>
+                    </ingrediente>
+                </ingredientes>
+                <instruções>
+                    <passo>sub-seção</passo>
+                    Aqui um exemplo de referenciar a receita
+                    <receitaRef ref="receita-teste"/>
+                </instruções>
+            </receita>
+        </sub-seção>
 
     </seção>
 </receitas>

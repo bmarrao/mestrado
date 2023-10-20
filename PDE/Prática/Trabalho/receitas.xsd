@@ -57,7 +57,6 @@
     <xs:element name="unidade-medida" type="xs:string"/>
     <xs:element name="calorias" type="xs:int"/>
     <xs:element name="quantidade" type="xs:int"/>
-    <xs:element name="texto" type="xs:string"/>
 
     <xs:element name="ingredienteRef" >
         <xs:complexType>
@@ -169,7 +168,7 @@
                 <xs:element ref="trabalhoPDE:titulo"/>
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
-                <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:choice maxOccurs="unbounded" minOccurs="1">
                     <xs:element ref="trabalhoPDE:receita"/>
                     <xs:element ref="trabalhoPDE:sub-seção"/>
                 </xs:choice>
@@ -190,6 +189,7 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
     <xs:element name="receitas">
         <xs:complexType>
             <xs:sequence>

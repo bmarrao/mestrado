@@ -13,7 +13,7 @@
     <seção>
         <titulo>Sobremesas do sul italiano</titulo>
         <texto-introdutorio>Nesta parte iremos abordar sobremesas que pertencem ao sul italiano</texto-introdutorio>
-        <receita>
+        <receita id="Canoli">
             <nome>Canoli</nome>
             <ingredientes>
                 <ingrediente id="pistachio">
@@ -77,6 +77,18 @@
                         ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
                     7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
                 </texto-instrução>
+            </instruções>
+        </receita>
+        <receita>
+            <nome>receita-exemplo</nome>
+            <ingredientes>
+                <ingrediente id="teste">
+                    <nome>teste</nome>
+                </ingrediente>
+            </ingredientes>
+            <instruções>
+                <passo ilustracao="teste"> teste de passo</passo>
+                <receitaRef ref="Canoli"/>
             </instruções>
         </receita>
 
