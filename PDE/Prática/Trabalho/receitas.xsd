@@ -2,8 +2,8 @@
 <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         elementFormDefault="qualified"
-        targetNamespace="receitas"
-        xmlns:receitas="receitas"
+        targetNamespace="trabalhoPDE"
+        xmlns:trabalhoPDE="trabalhoPDE"
         >
 
     <xs:element name="categoria">
@@ -19,7 +19,9 @@
     <xs:element name="dificuldade">
         <xs:simpleType>
             <xs:restriction base="xs:string">
-                <xs:pattern value="simples | médio | díficil"/>
+                <xs:enumeration value="simples"/>
+                <xs:enumeration value="médio"/>
+                <xs:enumeration value="díficil"/>
             </xs:restriction>
         </xs:simpleType>
     </xs:element>
@@ -27,7 +29,9 @@
     <xs:element name="tempo">
         <xs:simpleType>
             <xs:restriction base="xs:string">
-                <xs:pattern value="rápido | médio | lento"/>
+                <xs:enumeration value="rápido"/>
+                <xs:enumeration value="médio"/>
+                <xs:enumeration value="lento"/>
             </xs:restriction>
         </xs:simpleType>
     </xs:element>
@@ -35,14 +39,16 @@
     <xs:element name="custo">
         <xs:simpleType>
             <xs:restriction base="xs:string">
-                <xs:pattern value="barato | médio | caro"/>
+                <xs:enumeration value="barato"/>
+                <xs:enumeration value="médio"/>
+                <xs:enumeration value="caro"/>
             </xs:restriction>
         </xs:simpleType>
     </xs:element>
 
 
     <xs:element name="data-publicacao" type="xs:date"/>
-    <xs:element name="ilustração" type="xs:anyURI"/>
+    <xs:element name="ilustração" type="xs:string"/>
     <xs:element name="resumo" type="xs:string"/>
     <xs:element name="titulo" type="xs:string"/>
     <xs:element name="texto-introdutorio" type="xs:string"/>
@@ -53,7 +59,11 @@
     <xs:element name="quantidade" type="xs:int"/>
     <xs:element name="texto" type="xs:string"/>
 
-    <xs:element name="ingredienteRef" type="xs:string"/>
+    <xs:element name="ingredienteRef" >
+        <xs:complexType>
+            <xs:attribute name="ref" type="xs:IDREF"/>
+        </xs:complexType>
+    </xs:element>
 
 
 
@@ -66,10 +76,10 @@
     <xs:element name="cabecalho">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:titulo"/>
-                <xs:element ref="receitas:autor" maxOccurs="unbounded" />
-                <xs:element ref="receitas:data-publicacao"/>
-                <xs:element ref="receitas:resumo"  minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:titulo"/>
+                <xs:element ref="trabalhoPDE:autor" maxOccurs="unbounded" />
+                <xs:element ref="trabalhoPDE:data-publicacao"/>
+                <xs:element ref="trabalhoPDE:resumo"  minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -77,9 +87,9 @@
     <xs:element name="ingrediente">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:nome"/>
-                <xs:element ref="receitas:quantidade" minOccurs="0"/>
-                <xs:element ref="receitas:unidade-medida" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:nome"/>
+                <xs:element ref="trabalhoPDE:quantidade" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:unidade-medida" minOccurs="0"/>
             </xs:sequence>
             <xs:attribute name="id" type="xs:ID" use="required"/>
         </xs:complexType>
@@ -88,7 +98,7 @@
     <xs:element name="ingredientes">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:ingrediente" maxOccurs="unbounded"/>
+                <xs:element ref="trabalhoPDE:ingrediente" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -98,30 +108,38 @@
             <xs:choice>
                 <!-- talvez de erro mixed="true" -->
                 <xs:choice maxOccurs="unbounded" >
-                    <xs:element ref="receitas:passo"/>
-                    <xs:element ref="receitas:passoRef"/>
-                    <xs:element ref="receitas:receitaRef"/>
+                    <xs:element ref="trabalhoPDE:passo"/>
+                    <xs:element ref="trabalhoPDE:passoRef"/>
+                    <xs:element ref="trabalhoPDE:receitaRef"/>
                 </xs:choice>
-                <xs:choice maxOccurs="unbounded" >
-                    <xs:element ref="receitas:receitaRef"/>
-                    <xs:element ref="receitas:ingredienteRef"/>
-                </xs:choice>
+                <xs:sequence maxOccurs="unbounded" >
+                    <xs:element ref="trabalhoPDE:texto-instrução"/>
+                </xs:sequence>
             </xs:choice>
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="texto-instrução">
+        <xs:complexType mixed="true">
+            <xs:choice maxOccurs="unbounded" >
+                <xs:element ref="trabalhoPDE:receitaRef"/>
+                <xs:element ref="trabalhoPDE:ingredienteRef"/>
+            </xs:choice>
+
+        </xs:complexType>
+    </xs:element>
     <xs:element name="receita">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:nome"/>
-                <xs:element ref="receitas:calorias"  minOccurs="0"/>
-                <xs:element ref="receitas:categoria" minOccurs="0"/>
-                <xs:element ref="receitas:dificuldade" minOccurs="0"/>
-                <xs:element ref="receitas:tempo" minOccurs="0"/>
-                <xs:element ref="receitas:custo" minOccurs="0"/>
-                <xs:element ref="receitas:ilustração" minOccurs="0"/>
-                <xs:element ref="receitas:ingredientes" maxOccurs="1" />
-                <xs:element ref="receitas:instruções" maxOccurs="1"/>
+                <xs:element ref="trabalhoPDE:nome"/>
+                <xs:element ref="trabalhoPDE:calorias"  minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:categoria" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:dificuldade" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:tempo" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:custo" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:ingredientes" />
+                <xs:element ref="trabalhoPDE:instruções" />
             </xs:sequence>
             <xs:attribute name="id" type="xs:ID" />
 
@@ -137,10 +155,10 @@
     <xs:element name="sub-seção">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:titulo"/>
-                <xs:element ref="receitas:texto-introdutorio"  minOccurs="0"/>
-                <xs:element ref="receitas:ilustração" minOccurs="0"/>
-                <xs:element ref="receitas:receita"  maxOccurs="unbounded"/>
+                <xs:element ref="trabalhoPDE:titulo"/>
+                <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:receita"  maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -148,12 +166,12 @@
     <xs:element name="seção">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:titulo"/>
-                <xs:element ref="receitas:texto-introdutorio"  minOccurs="0"/>
-                <xs:element ref="receitas:ilustração" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:titulo"/>
+                <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
                 <xs:choice maxOccurs="unbounded" minOccurs="0">
-                    <xs:element ref="receitas:receita"/>
-                    <xs:element ref="receitas:sub-seção"/>
+                    <xs:element ref="trabalhoPDE:receita"/>
+                    <xs:element ref="trabalhoPDE:sub-seção"/>
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
@@ -162,12 +180,12 @@
     <xs:element name="parte">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:titulo"/>
-                <xs:element ref="receitas:texto-introdutorio"  minOccurs="0"/>
-                <xs:element ref="receitas:ilustração" minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:titulo"/>
+                <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
+                <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
                 <xs:choice maxOccurs="unbounded" minOccurs="0">
-                    <xs:element ref="receitas:receita"/>
-                    <xs:element ref="receitas:seção"/>
+                    <xs:element ref="trabalhoPDE:receita"/>
+                    <xs:element ref="trabalhoPDE:seção"/>
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
@@ -175,19 +193,19 @@
     <xs:element name="receitas">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="receitas:cabecalho"/>
+                <xs:element ref="trabalhoPDE:cabecalho"/>
                 <xs:choice>
-                    <xs:element ref="receitas:parte" maxOccurs="unbounded" />
-                    <xs:element ref="receitas:seção" maxOccurs="unbounded" />
+                    <xs:element ref="trabalhoPDE:parte" maxOccurs="unbounded" />
+                    <xs:element ref="trabalhoPDE:seção" maxOccurs="unbounded" />
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="passo">
-        <xs:complexType>
+        <xs:complexType mixed="true">
             <xs:sequence>
-                <xs:element ref="receitas:ingredienteRef"/>
+                <xs:element ref="trabalhoPDE:ingredienteRef" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="ilustração" type="xs:anyURI"/>

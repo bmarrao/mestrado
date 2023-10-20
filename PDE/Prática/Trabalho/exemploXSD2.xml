@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <receitas
+        xmlns="trabalhoPDE"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="receitas.xsd">
+        xsi:schemaLocation="trabalhoPDE receitas.xsd">
     <cabecalho>
         <titulo>Sobremesas Italianas</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
@@ -15,10 +16,10 @@
         <receita>
             <nome>Canoli</nome>
             <calorias>100</calorias>
-            <dificuldade>simples</dificuldade>
             <categoria>sobremesa</categoria>
-            <custo>barato</custo>
+            <dificuldade>simples</dificuldade>
             <tempo>lento</tempo>
+            <custo>barato</custo>
             <ilustração>./images/canoli</ilustração>
             <ingredientes>
                 <ingrediente id="pistachio">
@@ -46,7 +47,7 @@
                     <quantidade>1</quantidade>
                     <unidade-medida>colher</unidade-medida>
                 </ingrediente>
-                <ingrediente id="vinho marsala">
+                <ingrediente id="vinho-marsala">
                     <nome>canela</nome>
                     <quantidade>3</quantidade>
                     <unidade-medida>colher</unidade-medida>
@@ -68,11 +69,12 @@
                 </ingrediente>
             </ingredientes>
             <instruções>
+                <texto-instrução>
                 1. Para fazer a massa numa batedeira misture 2 chávenas e meia de <ingredienteRef
                     ref="farinha-trigo-sem-fermento"/> com <ingredienteRef ref="açucar"/>. Adicione 1 <ingredienteRef
                     ref="ovos"/> e 3 c. de <ingredienteRef ref="oleo-vegetal"/>.
                 2. Utilize o acessório de massa para bater e, de seguida, adicione 1 c. de <ingredienteRef ref="canela"/> e 3 c. de sopa de <ingredienteRef
-                    ref="vinho marsala"/>. Bata novamente.
+                    ref="vinho-marsala"/>. Bata novamente.
                 3. Coloque a massa numa superfície coberta com <ingredienteRef ref="farinha-trigo-sem-fermento"/> e trabalhe-a até ficar com uma espessura de cerca de 0,5cm. Corte-a em discos de 10 a 15 cm de diâmetro.
                 4. Com a ajuda de um cilindro de cannoli, enrole a massa à sua volta e com 1 clara de <ingredienteRef
                     ref="ovos"/> cole a ponta. Aqueça óleo numa frigideira e coloque os cannolis para fritar. Retire e coloque num prato com papel absorvente.
@@ -80,6 +82,7 @@
                 6. Dentro de um prato coloque <ingredienteRef ref="pistachio"/> grosseiramente picados com uma pitada de <ingredienteRef
                     ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
                 7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
+                </texto-instrução>
             </instruções>
         </receita>
 

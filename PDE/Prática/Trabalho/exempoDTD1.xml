@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE receitas SYSTEM "receitas.dtd">
 <receitas>
-    <cabecalho> 
+    <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
         <data-publicacao>
