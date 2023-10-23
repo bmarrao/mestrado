@@ -208,7 +208,7 @@
                 <xs:element ref="trabalhoPDE:ingredienteRef" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute name="id" type="xs:ID"/>
-            <xs:attribute name="ilustração" type="xs:anyURI"/>
+            <xs:attribute name="ilustração-atrib" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
