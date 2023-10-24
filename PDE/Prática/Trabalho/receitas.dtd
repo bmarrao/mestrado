@@ -37,7 +37,7 @@
 <!ATTLIST ingrediente
         id     ID       #REQUIRED
         quantidade CDATA #IMPLIED
-        unidade-medida   #IMPLIED>
+        unidade-medida CDATA #IMPLIED>
 <!ELEMENT ingredienteRef EMPTY>
 <!ATTLIST ingredienteRef
         ref IDREF #REQUIRED>

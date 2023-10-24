@@ -85,7 +85,7 @@
 
     <!-- testar nova definicao ingrediente"-->
     <xs:element name="ingrediente">
-        <xs:complexType>
+        <xs:complexType >
             <xs:attribute name="id" type="xs:ID" use="required"/>
             <xs:attribute name="quantidade" type="xs:int"/>
             <xs:attribute name="unidade-medida" type="xs:string"/>

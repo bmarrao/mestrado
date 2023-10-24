@@ -16,50 +16,35 @@
         <receita id="Canoli">
             <nome>Canoli</nome>
             <ingredientes>
-                <ingrediente id="pistachio">
-                    <nome>pistachio</nome>
-                    <quantidade>1</quantidade>
-                    <unidade-medida>chavena</unidade-medida>
+                <ingrediente id="pistachio" quantidade="1" unidade-medida="chavena">
+                    pistachio
                 </ingrediente>
                 <ingrediente id="sal">
-                    <nome>sal</nome>
+                    sal
                 </ingrediente>
-                <ingrediente id="açucar">
-                    <nome>açucar</nome>
-                    <quantidade>4</quantidade>
-                    <unidade-medida>colher</unidade-medida>
+                <ingrediente id="açucar" quantidade="4" unidade-medida="colher">
+                    açucar
                 </ingrediente>
-                <ingrediente id="ovos">
-                    <nome>ovos</nome>
-                    <quantidade>2</quantidade>
+                <ingrediente id="ovos" quantidade="2">
+                    ovos
                 </ingrediente>
                 <ingrediente id="oleo-vegetal">
-                    <nome>Óleo vegetal</nome>
+                    Óleo vegetal
                 </ingrediente>
-                <ingrediente id="canela">
-                    <nome>canela</nome>
-                    <quantidade>1</quantidade>
-                    <unidade-medida>colher</unidade-medida>
+                <ingrediente id="canela" quantidade="1" unidade-medida="colher">
+                    canela
                 </ingrediente>
-                <ingrediente id="vinho-marsala">
-                    <nome>vinho marsala</nome>
-                    <quantidade>3</quantidade>
-                    <unidade-medida>colher</unidade-medida>
+                <ingrediente id="vinho-marsala" quantidade="3" unidade-medida="colher">
+                    vinho-marsala
                 </ingrediente>
-                <ingrediente id="farinha-trigo-sem-fermento">
-                    <nome>farinha de trigo sem fermento</nome>
-                    <quantidade>2</quantidade>
-                    <unidade-medida>chávenas</unidade-medida>
+                <ingrediente id="farinha-trigo-sem-fermento" quantidade="2" unidade-medida="chavenas">
+                    farinha de trigo sem fermento
                 </ingrediente>
-                <ingrediente id="queijo-creme">
-                    <nome>queijo creme</nome>
-                    <quantidade>250</quantidade>
-                    <unidade-medida>gramas</unidade-medida>
+                <ingrediente id="queijo-creme" quantidade="250" unidade-medida="gramas">
+                    quejo creme
                 </ingrediente>
-                <ingrediente id="ricotta">
-                    <nome>ricotta</nome>
-                    <quantidade>500</quantidade>
-                    <unidade-medida>gramas</unidade-medida>
+                <ingrediente id="ricotta" quantidade="500" unidade-medida="gramas">
+                    ricotta
                 </ingrediente>
             </ingredientes>
             <instruções>
@@ -85,7 +70,7 @@
             <calorias>400</calorias>
             <ingredientes>
                 <ingrediente id="teste">
-                    <nome>teste</nome>
+                    teste
                 </ingrediente>
             </ingredientes>
             <instruções>
@@ -93,6 +78,5 @@
                 <receitaRef ref="Canoli"/>
             </instruções>
         </receita>
-
     </seção>
 </receitas>
