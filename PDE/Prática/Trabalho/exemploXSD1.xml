@@ -34,10 +34,8 @@
                 <ingrediente id="spaghetti-ingrediente" quantidade="100" unidade-medida="gramas">
                     spaghetti
                 </ingrediente>
-                <ingrediente  id ="molho">
-                    <nome>Molho </nome>
-                    <quantidade>100</quantidade>
-                    <unidade-medida>ml</unidade-medida>
+                <ingrediente  id ="molho" quantidade="ml" unidade-medida="100">
+                    Molho
                 </ingrediente>
             </ingredientes>
             <instruções >
@@ -56,31 +54,17 @@
             </instruções>
         </receita>
         <seção>
-            <!-- ainda posso opcionalmente adicionar uma seção -->
             <titulo>
                 Comida de Roma
             </titulo>
             <receita>
                 <nome>Spaghetti Alfredo</nome>
-                <ingredientes >
-                    <ingrediente id="spaghetti-ingrediente-2">
-                        <nome>
-                            spaghetti
-                        </nome>
-                        <!-- Opcional -->
-
-                        <quantidade>
-                            100
-                        </quantidade>
-                        <!-- Opcional -->
-                        <unidade-medida>
-                            gramas
-                        </unidade-medida>
+                <ingredientes>
+                    <ingrediente id="spaghetti-ingrediente2" quantidade="100" unidade-medida="gramas">
+                        spaghetti
                     </ingrediente>
-                    <ingrediente  id ="molho-2">
-                        <nome>Molho </nome>
-                        <quantidade>100</quantidade>
-                        <unidade-medida>ml</unidade-medida>
+                    <ingrediente  id ="molho2" quantidade="ml" unidade-medida="100">
+                        Molho
                     </ingrediente>
                 </ingredientes>
                 <instruções>

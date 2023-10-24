@@ -84,24 +84,6 @@
                 </passo>
             </instruções>
         </receita>
-        <sub-seção>
-            <titulo>Sub-seção</titulo>
-            <texto-introdutorio>Esta é uma sub-seção</texto-introdutorio>
-            <ilustração>UmaIlustração</ilustração>
-            <receita>
-                <nome>teste sub-seção</nome>
-                <ingredientes>
-                    <ingrediente id="sub">
-                       seção
-                    </ingrediente>
-                </ingredientes>
-                <instruções>
-                    <passo>sub-seção</passo>
-                    Aqui um exemplo de referenciar a receita
-                    <receitaRef ref="receita-teste"/>
-                </instruções>
-            </receita>
-        </sub-seção>
 
     </seção>
 </receitas>
