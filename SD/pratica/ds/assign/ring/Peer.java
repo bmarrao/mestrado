@@ -63,19 +63,19 @@ public class Peer
 		Data dataOperations = new Data();
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
-		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,data)).start();
+		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,dataServer)).start();
         new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),dataServer,dataOperations,peer.logger)).start();
-		new Thread(new createOperations(4,dataOperations)).start();
+		new Thread(new CreateOperations(4,dataOperations)).start();
 
 		if (args.length == 6)
 		{
 			if (args[5].equals("first"))
 			{
 				Thread.sleep(25 * 1000);
-				synchronized (data) 
+				synchronized (dataServer) 
 				{
-					data.send("token");
-					data.notifyAll();
+					dataServer.send("token");
+					dataServer.notifyAll();
 				}
 			}
 		}
@@ -108,19 +108,17 @@ class CreateOperations implements Runnable {
 			while(true)
 			{
 				try {
-					System.out.println("Irei esperar thread enquanto dorme");
 					t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
+					System.out.println("Irei esperar " + t/1000 + "segundos a thread enquanto dorme");
 					Thread.sleep(t);
 					System.out.println("Terminou de dormir");
 					op = rand.nextInt(4);
 					x = rand.nextInt();
 					y = rand.nextInt();
-					System.out.println("ENtrando synchronized createOperation");
 					synchronized (data) {
 						data.send(operations[op] + ":" + x + ":" + y);
-						System.out.println("Esperando o notify createOperation");
+						System.out.println("Coloquei operação");
 						data.wait();
-						System.out.println("Já não estou mais esperando createOperation");
 
 					}
 				}
@@ -133,6 +131,11 @@ class CreateOperations implements Runnable {
 			}
 
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 }
@@ -163,19 +166,18 @@ class ServerPeer implements Runnable {
 		try {
 
 		    Socket client = server.accept();
-			System.out.println("New Connection");
 		    String clientAddress = client.getInetAddress().getHostAddress();
-		    logger.info("server: new connection from " + clientAddress);
+		    //logger.info("server: new connection from " + clientAddress);
             try
             {
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 	            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 String command;
 				command = in.readLine();
-                logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
+                //logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
 				if(command.equals("token"))
 				{
-					System.out.println("recebi token");
+					//System.out.println("recebi token");
 					synchronized (data) {
 						data.send("token");
 			
@@ -239,91 +241,92 @@ class Client implements Runnable
 		PrintWriter   out;
 		BufferedReader in;
 		String result;
-		String operation;
 		boolean flag;
+		String message ="";
+		String operation="";
 
 	    while (true)
 		{
-		try
-		{
-				synchronized (dataServer)
-				{
-					if( !(dataServer.flag))
+			try
+			{
+					synchronized (dataServer)
 					{
-						try
+						if( !(dataServer.flag))
 						{
-							System.out.println("Esperando wait");
-							dataServer.wait();
-							System.out.println("Sai do wait");
-							message = dataServer.receive();
-						}
-						catch(Exception e)
-						{
-							e.printStackTrace();
-						}
-					}
-					else
-					{
-						message = dataServer.receive();
-					}
-				}
-				if(message.equals("token"))
-				{
-					System.out.println("Antes do synchronized dataOperations");
-					synchronized (dataOperations)
-					{
-						System.out.println("Teste flag dataOperations");
-						if(dataOperations.flag)
-						{
-							System.out.println("Flag verdade dataOperations");
-							operation = dataOperations.receive();
-							dataOperations.notifyAll();
-							flag = true;
+							try
+							{
+								//System.out.println("Esperando wait");
+								dataServer.wait();
+								//System.out.println("Sai do wait");
+								message = dataServer.receive();
+							}
+							catch(Exception e)
+							{
+								e.printStackTrace();
+							}
 						}
 						else
 						{
-							System.out.println("Flag falsa");
-							flag = false;
+							message = dataServer.receive();
 						}
 					}
-					if (flag)
+					if(message.equals("token"))
 					{
-						System.out.println("Mandar operação");
-						socket  = new Socket(InetAddress.getByName(M6ip), M6port);
-						logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+						//System.out.println("Antes do synchronized dataOperations");
+						synchronized (dataOperations)
+						{
+							//System.out.println("Teste flag dataOperations");
+							if(dataOperations.flag)
+							{
+								operation = dataOperations.receive();
+								dataOperations.notifyAll();
+								flag = true;
+							}
+							else
+							{
+								//System.out.println("Flag falsa");
+								flag = false;
+							}
+							//System.out.println("Não tenho resultado");
+						}
+						if (flag)
+						{
+							//System.out.println("Mandar operação");
+							socket  = new Socket(InetAddress.getByName(M6ip), M6port);
+							//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 
+							out = new PrintWriter(socket.getOutputStream(), true);
+							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+							out.println(operation);
+							out.flush();
+							result = in.readLine();
+
+							System.out.printf("result is: %f\n", Double.parseDouble(result));
+							socket.close();
+
+
+						}
+						socket  = new Socket(InetAddress.getByName(Mip), Mport);
+						//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 						out = new PrintWriter(socket.getOutputStream(), true);
 						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-						out.println(operation);
+						out.println("token");
 						out.flush();
-						System.out.println("PReso aqui ?");
-						result = in.readLine();
-						System.out.println("Não");
+						}
 
-						System.out.printf("result is: %f\n", Double.parseDouble(result));
-						socket.close();
-
-
-					}
-					System.out.println("Passar token pra frente");
-					socket  = new Socket(InetAddress.getByName(Mip), Mport);
-					logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
-					out = new PrintWriter(socket.getOutputStream(), true);
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					out.println("token");
-					out.flush();
-					}
-
-				
+					
+				}
+				catch(Exception e) 
+				{
+					e.printStackTrace();
+				}
 			}
-			catch(Exception e) {
-		    e.printStackTrace();
-			}
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
 
-		} catch(Exception e) {
-		    e.printStackTrace();
-		}   
-	    }
-    }
+	}	
 }
