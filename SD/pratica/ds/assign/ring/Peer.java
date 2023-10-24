@@ -166,12 +166,10 @@ class ServerPeer implements Runnable {
 		try {
 
 		    Socket client = server.accept();
-		    String clientAddress = client.getInetAddress().getHostAddress();
 		    //logger.info("server: new connection from " + clientAddress);
             try
             {
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-	            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 String command;
 				command = in.readLine();
                 //logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
