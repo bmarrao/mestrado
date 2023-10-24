@@ -8,10 +8,10 @@
 <!ELEMENT dia  (#PCDATA)>
 <!ELEMENT titulo  (#PCDATA)>
 <!ELEMENT texto-introdutorio  (#PCDATA)>
-<!ELEMENT parte (titulo,texto-introdutorio?,(receita | seção)*)>
+<!ELEMENT parte (titulo,texto-introdutorio?,(receita+ | seção+))>
 <!ATTLIST parte
         image           CDATA #IMPLIED>
-<!ELEMENT seção (titulo,texto-introdutorio?,(receita | sub-seção)*) >
+<!ELEMENT seção (titulo,texto-introdutorio?,(receita+ | sub-seção+)) >
 <!ATTLIST seção
         image           CDATA #IMPLIED>
 <!ELEMENT sub-seção (titulo,texto-introdutorio?,receita+) >
@@ -33,9 +33,11 @@
 <!ATTLIST ingredientes
         id   ID   #IMPLIED>
 
-<!ELEMENT ingrediente (nome, quantidade?, unidade-medida?)>
+<!ELEMENT ingrediente (#PCDATA)>
 <!ATTLIST ingrediente
-        id     ID       #REQUIRED>
+        id     ID       #REQUIRED
+        quantidade CDATA #IMPLIED
+        unidade-medida   #IMPLIED>
 <!ELEMENT ingredienteRef EMPTY>
 <!ATTLIST ingredienteRef
         ref IDREF #REQUIRED>

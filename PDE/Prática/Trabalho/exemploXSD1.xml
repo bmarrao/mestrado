@@ -31,19 +31,8 @@
 
             <!-- aqui irei adicionar uma receita como exemplo -->
             <ingredientes>
-                <ingrediente id="spaghetti-ingrediente">
-                    <nome>
-                        spaghetti
-                    </nome>
-                    <!-- Opcional -->
-
-                    <quantidade>
-                        100
-                    </quantidade>
-                    <!-- Opcional -->
-                    <unidade-medida>
-                        gramas
-                    </unidade-medida>
+                <ingrediente id="spaghetti-ingrediente" quantidade="100" unidade-medida="gramas">
+                    spaghetti
                 </ingrediente>
                 <ingrediente  id ="molho">
                     <nome>Molho </nome>

@@ -83,14 +83,12 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- testar nova definicao ingrediente"-->
     <xs:element name="ingrediente">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="trabalhoPDE:nome"/>
-                <xs:element ref="trabalhoPDE:quantidade" minOccurs="0"/>
-                <xs:element ref="trabalhoPDE:unidade-medida" minOccurs="0"/>
-            </xs:sequence>
             <xs:attribute name="id" type="xs:ID" use="required"/>
+            <xs:attribute name="quantidade" type="xs:int"/>
+            <xs:attribute name="unidade-medida" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 
@@ -168,9 +166,11 @@
                 <xs:element ref="trabalhoPDE:titulo"/>
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
-                <xs:choice maxOccurs="unbounded" >
-                    <xs:element ref="trabalhoPDE:receita"/>
-                    <xs:element ref="trabalhoPDE:sub-seção"/>
+                <xs:choice >
+                    <xs:choice >
+                        <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded"/>
+                        <xs:element ref="trabalhoPDE:sub-seção" maxOccurs="unbounded" />
+                    </xs:choice>
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
@@ -182,9 +182,9 @@
                 <xs:element ref="trabalhoPDE:titulo"/>
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
-                <xs:choice maxOccurs="unbounded" minOccurs="0">
-                    <xs:element ref="trabalhoPDE:receita"/>
-                    <xs:element ref="trabalhoPDE:seção"/>
+                <xs:choice >
+                    <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded"/>
+                    <xs:element ref="trabalhoPDE:seção" maxOccurs="unbounded" />
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
