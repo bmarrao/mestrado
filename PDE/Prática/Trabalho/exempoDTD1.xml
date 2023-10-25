@@ -47,65 +47,49 @@
             <titulo>
                 Comida de Roma
             </titulo>
-            <receita>
-                <nome>Spaghetti Alfredo</nome>
-                <ingredientes>
-                    <ingrediente id="spaghetti-ingrediente2" quantidade="100" unidade-medida="gramas">
-                        spaghetti
-                    </ingrediente>
-                    <ingrediente  id ="molho2" quantidade="ml" unidade-medida="100">
-                        Molho
-                    </ingrediente>
-                </ingredientes>
-                <instruções>
-                    <passoRef ref="fazer-molho"/>
-                    <passoRef ref="fazer-massa"/>
-                </instruções>
-            </receita>
             
             <sub-seção>
                 <titulo>Sobremesas</titulo>
+                <receita>
+                    <nome>Spaghetti Alfredo</nome>
+                    <ingredientes>
+                        <ingrediente id="spaghetti-ingrediente2" quantidade="100" unidade-medida="gramas">
+                            spaghetti
+                        </ingrediente>
+                        <ingrediente  id ="molho2" quantidade="ml" unidade-medida="100">
+                            Molho
+                        </ingrediente>
+                    </ingredientes>
+                    <instruções>
+                        <passoRef ref="fazer-molho"/>
+                        <passoRef ref="fazer-massa"/>
+                    </instruções>
+                </receita>
                 <receita id="tiramisu" tempo="lento" custo="barato" categoria="sobremesa" dificuldade="díficil" image="./images/tiramisu">
                     <nome>
                         tiramisu
                     </nome>
-                    <ingredientes id="cafe-biscoito-mascarpone">
-                        <ingrediente id="cafe">
-                            <nome>cafe</nome>
-                            <quantidade>100</quantidade>
-                            <unidade-medida>ml</unidade-medida>
+                    <ingredientes >
+                        <ingrediente id="cafe" quantidade="100" unidade-medida="ml">
+                            cafe
                         </ingrediente>
-                        <ingrediente id="biscoito">
-                            <nome>biscoito champangne</nome>
-                            <quantidade>1</quantidade>
-                            <unidade-medida>pacotes</unidade-medida>
+                        <ingrediente id="biscoito" quantidade="1" unidade-medida="pacotes">
+                            biscoito champagne
                         </ingrediente>
                         <ingrediente id="açucar">
-                                <nome>
-                                    açucar
-                                </nome>
-                        </ingrediente >
-
-                        <ingrediente id="leite">
-                            <nome>
-                                ingrediente
-                            </nome>
+                            açucar
                         </ingrediente>
-                        <ingrediente id="gemas">
-                            <nome>gemas</nome>
-                            <quantidade>
-                                3
-                            </quantidade>
+                        <ingrediente id="leite">
+                            leite
+                        </ingrediente>
+                        <ingrediente id="gemas" quantidade="3">
+                            gemas
                         </ingrediente>
                         <ingrediente id="chocolate-em-po">
-                                <nome>
-                                    chocolate em po
-                                </nome>
+                            chocolate em po
                         </ingrediente>
-                        <ingrediente id="mascarpone">
-                            <nome>mascarpone</nome>
-                            <quantidade>500</quantidade>
-                            <unidade-medida>gramas</unidade-medida>
+                        <ingrediente id="mascarpone" quantidade="500" unidade-medida="gramas">
+                            mascarpone
                         </ingrediente>
                     </ingredientes>
                     <instruções>

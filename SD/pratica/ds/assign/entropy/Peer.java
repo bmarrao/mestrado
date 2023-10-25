@@ -43,7 +43,12 @@ class Data
 
     }
 
-    public String pushPull(String arrayPush)
+    public String getStringArr()
+    {
+        return this.arr.toString();
+    }
+
+    public String give(String arrayPush)
     {
 
         ArrayList<Double> newArray = new ArrayList<Double>() ;
@@ -81,6 +86,11 @@ class Data
         
     }
 
+    public void receive(String newArr)
+    {
+        this.arr = newArr;
+    }
+
 }
 public class Peer {
     String host;
@@ -113,40 +123,126 @@ public class Peer {
         {
             peers.append(Tuple(args[i],args[i+1]));
         }
-        new Server(new PushPull(args[0], Integer.parseInt(args[1]), peer.logger)).start();
+        //Array peers for when there is more than one connection
+        new Thread (new Server(args[0], Integer.parseInt(args[1]),data, peer.logger)).start();
         //CLient para pedir pros outros push and pull
-        new PutInArray(new Client(4,data)).start();
+        new Thread (new Client(args[2],Integer.parseInt(args[3],1),data,peer.logger)).start();
+        new Thread (new PutInArray(4,data)).start();
     }
 }
 
-class Server implements Runnable {
+class Client implements Runnable 
+{
+    String       host;
+    int          port;
+    Logger       logger;
+    Data data;
+    PoissonProcess pp;
+
+    public Client(String host, int port, Data data,Logger logger, int frequency)
+    {
+        this.host   = host;
+        this.port   = port;
+        this.logger = logger;
+        this.data =data;
+        this.ṕp = PoissonProcess(frequency, new Random(0));
+
+    }
+
+    public void run()
+    {
+        try
+        {
+            String arr ="";
+            Socket socket ;
+            PrintWriter   out;
+            BufferedReader in;
+            while(true)
+            {
+                try 
+                {
+                    t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
+                    Thread.sleep(t);
+                    
+                    synchronized(data)
+                    {
+                        arr = data.getStringArr();
+                        socket  = new Socket(InetAddress.getByName(host), port);
+						out = new PrintWriter(socket.getOutputStream(), true);
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        out.println(arr);
+                        out.flush();
+                        arr = in.readLine();
+                        data.receive(arr);
+                    }
+                }
+                catch (Exception e) 
+                {
+                    e.printStackTrace();
+                }
+                
+            }
+
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+}
+class Server implements Runnable 
+{
     String       host;
     int          port;
     ServerSocket server;
     Logger       logger;
+    Data data;
+    
 
-    public Server(String host, int port, Logger logger) throws Exception {
+    public Server(String host, int port, Data data,Logger logger) throws Exception 
+    {
         this.host   = host;
         this.port   = port;
         this.logger = logger;
+        this.data =data;
         server = new ServerSocket(port, 1, InetAddress.getByName(host));
     }
 
     @Override
-    public void run() {
-        try {
+    public void run() 
+    {
+        try 
+        {
+            Socket client ;
+            String clientAdress ="";
+            String arr ="";
+            String result ="";
+            PrintWriter   out;
+            BufferedReader in ;
             logger.info("server: endpoint running at port " + port + " ...");
             while(true) {
                 try {
-                    Socket client = server.accept();
-                    String clientAddress = client.getInetAddress().getHostAddress();
+                    client = server.accept();
+                    clientAddress = client.getInetAddress().getHostAddress();
                     logger.info("server: new connection from " + clientAddress);
-                    new Thread(new Connection(clientAddress, client, logger)).start();
-                }catch(Exception e) {
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    arr = in.readLine();
+                    synchronized(data)
+                    {
+                        result = data.give(arr);
+                    }
+                    out.println(result);
+                    out.flush();
+                }
+                catch(Exception e) 
+                {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }
