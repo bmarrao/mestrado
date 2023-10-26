@@ -1,4 +1,4 @@
-package ds.examples.sockets.peer;
+package ds.assign.entropy;
 
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -12,10 +12,12 @@ import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.locks.*;
 
-import ds.examples.sockets.poisson.PoissonProcess;
+import ds.assign.poisson.PoissonProcess;
+
 class Tuple
 {
     public String ip ;
@@ -33,62 +35,103 @@ class Tuple
 class Data
 {
     private ArrayList<Double> arr = new ArrayList<Double>() ;
-    Lock l = new ReentrantLock();
 
+
+    public String turnToString(ArrayList<Double> xArr)
+    {
+        String str = "";
+        int tamanho = xArr.size();
+        for (int i  = 0; i < tamanho-1; i++)
+        {
+            str+= xArr.get(i) +"," ;
+        }
+        str+= xArr.get(tamanho-1);
+        return str;
+
+    }
+
+    public ArrayList<Double> turnFromString(String xArr)
+    {
+        ArrayList<Double> newArr = new ArrayList<Double>() ;
+
+        String[] numbers = xArr.split(",");
+        for (String x : numbers)
+        {
+            newArr.add(Double.parseDouble(x));
+        }
+        return newArr;
+    }
 
     public void append(double x)
     {
-
-        this.arr.append(x);
-
+        this.arr.add(x);
     }
 
     public String getStringArr()
     {
-        return this.arr.toString();
+        return this.turnToString(arr);
     }
 
+    
     public String give(String arrayPush)
     {
 
         ArrayList<Double> newArray = new ArrayList<Double>() ;
         ArrayList<Double> received = new ArrayList<Double>() ;
-        //Transform arrayPush in received
+        received = this.turnFromString(arrayPush);
+        int menor ;
         int maior ;
+        boolean flag ;
         double novo ;
         double recebido;
-        if (received.length > this.arr.length)
+        if (received.size() < this.arr.size())
         {
-            maior = received.length;
+            flag = true;
+            menor = received.size();
         }
         else
         {
-            maior = this.arr.length;
+            flag = false;
+            menor = this.arr.size();
         }
-        for (int i = 0; i< maior ; i++)
+        for (int i = 0; i< menor ; i++)
         {
-            novo = this.arr[i];
-            recebido = received[i];
-            if (novo && recebido)
+            novo = this.arr.get(i);
+            recebido = received.get(i);
+            if (novo == recebido)
             {
-
-                newArray.append(newArray[i])
+                newArray.add(novo);
             }
-            else if ()
+            else
             {
-                append(i);
+                newArray.add(novo);
+                newArray.add(recebido);
             }
         }
-
+        if (flag)
+        {
+            for (int j = menor ; j < this.arr.size()  ; j++)
+            {
+                newArray.add(this.arr.get(j));
+            }
+        }
+        else
+        {
+            for (int j = menor ; j < received.size()  ; j++)
+            {
+                newArray.add(received.get(j));
+            }
+        }
+    
         this.arr = newArray;
-        return newArray.toString();
+        return this.turnToString(this.arr);
 
         
     }
 
     public void receive(String newArr)
     {
-        this.arr = newArr;
+        this.arr = this.turnFromString(newArr);
     }
 
 }
@@ -121,12 +164,11 @@ public class Peer {
         Data data = new Data();
         for (int i = 2 ; i < args.length ; i+= 2)
         {
-            peers.append(Tuple(args[i],args[i+1]));
+            peers.add(new Tuple(args[i],Integer.parseInt(args[i+1])));
         }
         //Array peers for when there is more than one connection
         new Thread (new Server(args[0], Integer.parseInt(args[1]),data, peer.logger)).start();
-        //CLient para pedir pros outros push and pull
-        new Thread (new Client(args[2],Integer.parseInt(args[3],1),data,peer.logger)).start();
+        new Thread (new Client(args[2],Integer.parseInt(args[3]),data,peer.logger,2)).start();
         new Thread (new PutInArray(4,data)).start();
     }
 }
@@ -145,7 +187,8 @@ class Client implements Runnable
         this.port   = port;
         this.logger = logger;
         this.data =data;
-        this.ṕp = PoissonProcess(frequency, new Random(0));
+        this.pp = new PoissonProcess(frequency, new Random(0));
+
 
     }
 
@@ -157,24 +200,28 @@ class Client implements Runnable
             Socket socket ;
             PrintWriter   out;
             BufferedReader in;
+            int t;
             while(true)
             {
                 try 
                 {
                     t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                     Thread.sleep(t);
-                    
                     synchronized(data)
                     {
                         arr = data.getStringArr();
                         socket  = new Socket(InetAddress.getByName(host), port);
 						out = new PrintWriter(socket.getOutputStream(), true);
 						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        System.out.println("Array que to mandando " + arr);
                         out.println(arr);
                         out.flush();
                         arr = in.readLine();
                         data.receive(arr);
+
+                        System.out.println("array depois "+ data.getStringArr());
                     }
+
                 }
                 catch (Exception e) 
                 {
@@ -214,7 +261,6 @@ class Server implements Runnable
         try 
         {
             Socket client ;
-            String clientAdress ="";
             String arr ="";
             String result ="";
             PrintWriter   out;
@@ -223,15 +269,16 @@ class Server implements Runnable
             while(true) {
                 try {
                     client = server.accept();
-                    clientAddress = client.getInetAddress().getHostAddress();
-                    logger.info("server: new connection from " + clientAddress);
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
+                    out = new PrintWriter(client.getOutputStream(), true);
+                    in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     arr = in.readLine();
+
                     synchronized(data)
                     {
                         result = data.give(arr);
                     }
+                    System.out.println("saiu do synchronized");
                     out.println(result);
                     out.flush();
                 }
@@ -266,7 +313,7 @@ class PutInArray implements Runnable
     public void run() {
         int t ;
         Random rand =new Random();
-        int x ;
+        double x ;
         while(true)
         {
             try
@@ -275,8 +322,11 @@ class PutInArray implements Runnable
                 Thread.sleep(t);
                 synchronized (data) 
                 {
-                    data.append(rand.nextDouble());
+                    x = rand.nextDouble();
+
+                    data.append(x);
                 }
+            
             }
             catch(Exception e)
             {

@@ -112,3 +112,81 @@ out 03, 2023 10:43:34 DA MANHÃ ds.examples.sockets.peer.Server run
 INFO: server: new connection from 127.0.0.1
 out 03, 2023 10:43:34 DA MANHÃ ds.examples.sockets.peer.Connection run
 INFO: server: message from host 127.0.0.1[command = add -879599397 505830279]
+out 26, 2023 5:47:41 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 5:52:56 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 5:54:05 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3001 ...
+out 26, 2023 5:55:26 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 5:58:07 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 5:59:29 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:01:51 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:03:15 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:03:31 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:04:32 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:05:20 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:06:43 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3001 ...
+out 26, 2023 9:06:52 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:08:14 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:09:01 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:09:24 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:09:52 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:09:58 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:11:11 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:11:48 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:11:53 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:12:44 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:13:11 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:13:17 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:14:57 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:15:38 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:15:46 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:16:06 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:16:47 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:16:55 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:17:20 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:18:02 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:18:10 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:18:41 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:19:01 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:19:06 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3000 ...
+out 26, 2023 9:19:48 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:19:56 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+out 26, 2023 9:20:26 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
