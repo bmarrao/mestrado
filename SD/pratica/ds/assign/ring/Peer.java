@@ -22,19 +22,19 @@ import ds.assign.poisson.PoissonProcess;
 
 class Data 
 {
-    private String message;
+    private ArrayList<String> arr = new ArrayList<String>() ;
 	public boolean flag;
 
     public void send(String message)
 	{
-		this.flag= true;
-        this.message = message;
+		arr.add(message);
+		this.flag = true;
     }
 
-    public String receive() 
+    public ArrayList<String> receive() 
 	{
 		this.flag =false;
-        return message;
+        return this.arr;
     }
 }
 
@@ -73,7 +73,7 @@ public class Peer
 				BufferedReader in;
 				Socket client ;
 				Socket socket;
-				socket  = new Socket(InetAddress.getByName(args[3]),Integer.parseInt(args[4]));
+				socket  = new Socket(InetAddress.getByName("localhost"),Integer.parseInt(args[0]));
 				peer.logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 
 				out = new PrintWriter(socket.getOutputStream(), true);
@@ -126,8 +126,6 @@ class CreateOperations implements Runnable {
 					synchronized (data) {
 						data.send(operations[op] + ":" + x + ":" + y);
 						System.out.println("Coloquei operação");
-						data.wait();
-
 					}
 				}
 				catch(Exception e)
@@ -178,14 +176,13 @@ class ServerPeer implements Runnable {
     {
 		try
 		{
-			logger.info("server: endpoint running at port " + port + " ...");
-			boolean flag;
+			//logger.info("server: endpoint running at port " + port + " ...");
 			PrintWriter   out;
 			BufferedReader in;
 			Socket client ;
 			Socket socket;
 			String command;
-			String operation ="";
+			ArrayList<String> operations;
 			String result ="";
 			while(true) 
 			{
@@ -205,32 +202,26 @@ class ServerPeer implements Runnable {
 								{
 									if(dataOperations.flag)
 									{
-										operation = dataOperations.receive();
-										dataOperations.notifyAll();
-										flag = true;
-									}
-									else
-									{
-										flag = false;
-									}
-									if (flag)
-									{
+										operations = dataOperations.receive();
 										socket  = new Socket(InetAddress.getByName(M6ip), M6port);
-										logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+										//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 
 										out = new PrintWriter(socket.getOutputStream(), true);
 										in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-										out.println(operation);
-										out.flush();
-										result = in.readLine();
-
-										System.out.printf("result is: %f\n", Double.parseDouble(result));
+										for(String s : operations)
+										{
+											out.println(s);
+											out.flush();
+											result = in.readLine();
+	
+											System.out.printf("result is: %f\n", Double.parseDouble(result));
+										}
+										operations.clear();
 										socket.close();
-
 									}
 									socket  = new Socket(InetAddress.getByName(Mip), Mport);
-									logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+									//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 									out = new PrintWriter(socket.getOutputStream(), true);
 									in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 									out.println("token");
@@ -261,60 +252,3 @@ class ServerPeer implements Runnable {
 		}
     }
 }
-
-class Connection implements Runnable {
-    String clientAddress;
-    Socket clientSocket;
-    Logger logger;
-
-    public Connection(String clientAddress, Socket clientSocket, Logger logger) {
-	this.clientAddress = clientAddress;
-	this.clientSocket  = clientSocket;
-	this.logger        = logger;
-    }
-
-    @Override
-    public void run() {
-	/*
-	 * prepare socket I/O channels
-	 */
-	try {
-	    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));    
-	    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-	
-	    String command;
-	    command = in.readLine();
-	    logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
-	    /*
-	     * parse command
-	     */
-	    Scanner sc = new Scanner(command);
-	    String  op = sc.next();	    
-	    double  x  = Double.parseDouble(sc.next());
-	    double  y  = Double.parseDouble(sc.next());
-	    double  result = 0.0; 
-	    /*
-	     * execute op
-	     */
-	    switch(op) {
-	    case "add": result = x + y; break;
-	    case "sub": result = x - y; break;
-	    case "mul": result = x * y; break;
-	    case "div": result = x / y; break;
-	    }  
-	    /*
-	     * send result
-	     */
-	    out.println(String.valueOf(result));
-	    out.flush();
-	    /*
-	     * close connection
-	     */
-	    clientSocket.close();
-	} catch(Exception e) {
-	    e.printStackTrace();
-	}
-    }
-}
-
-
