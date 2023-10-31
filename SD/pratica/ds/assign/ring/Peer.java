@@ -59,12 +59,10 @@ public class Peer
 
     public static void main(String[] args) throws Exception
 	{
-		Data dataServer = new Data();
 		Data dataOperations = new Data();
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
-		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,dataServer)).start();
-        new Thread(new Client("localhost", args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]),dataServer,dataOperations,peer.logger)).start();
+		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,dataOperations,args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]))).start();
 		new Thread(new CreateOperations(4,dataOperations)).start();
 
 		if (args.length == 6)
@@ -145,15 +143,24 @@ class ServerPeer implements Runnable {
     int          port;
     ServerSocket server;
     Logger       logger;
-    private final Data data;
 	int flag;
+	Data dataOperations;
+	String Mip;
+	String M6ip;
+	int Mport;
+	int M6port;
 
-    public ServerPeer(String host, int port, Logger logger, Data data) throws Exception {
-	this.host   = host;
-	this.port   = port;
-	this.logger = logger;
-    this.data= data;
-    server = new ServerSocket(port, 1, InetAddress.getByName(host));
+    public ServerPeer(String host, int port, Logger logger,Data dataOperations,String Mip , int Mport , String M6ip , int M6port) throws Exception 
+	{
+		this.host   = host;
+		this.port   = port;
+		this.logger = logger;
+		this.dataOperations= dataOPerations;
+		this.Mip = Mip ;
+		this.Mport = Mport;
+		this.M6ip = M6ip;
+		this.M6port = M6port;
+    	server = new ServerSocket(port, 1, InetAddress.getByName(host));
     }
 
     @Override
@@ -162,6 +169,7 @@ class ServerPeer implements Runnable {
 	try
     {
 	    logger.info("server: endpoint running at port " + port + " ...");
+		boolean flag;
 	    while(true) {
 		try {
 
@@ -173,14 +181,50 @@ class ServerPeer implements Runnable {
                 String command;
 				command = in.readLine();
                 //logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
-				if(command.equals("token"))
+				try
 				{
-					//System.out.println("recebi token");
-					synchronized (data) {
-						data.send("token");
-			
-						data.notifyAll();
+					synchronized (dataOperations)
+					{
+						if(dataOperations.flag)
+						{
+							operation = dataOperations.receive();
+							dataOperations.notifyAll();
+							flag = true;
+						}
+						else
+						{
+							flag = false;
+						}
+						if (flag)
+						{
+							socket  = new Socket(InetAddress.getByName(M6ip), M6port);
+							logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+
+							out = new PrintWriter(socket.getOutputStream(), true);
+							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+							out.println(operation);
+							out.flush();
+							result = in.readLine();
+
+							System.out.printf("result is: %f\n", Double.parseDouble(result));
+							socket.close();
+
+
+						}
+						socket  = new Socket(InetAddress.getByName(Mip), Mport);
+						logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
+						out = new PrintWriter(socket.getOutputStream(), true);
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						out.println("token");
+						out.flush();
 					}
+
+					
+				}
+				catch(Exception e) 
+				{
+					e.printStackTrace();
 				}
 
             }
@@ -199,132 +243,3 @@ class ServerPeer implements Runnable {
 }
 
 
-
-class Client implements Runnable
-{
-    String  host;
-	String Mip;
-	String M6ip;
-	int Mport;
-	int M6port;
-	private final Data dataServer;
-	private final Data dataOperations;
-
-	Logger  logger;
-    Scanner scanner;
-
-
-
-    public Client(String host, String Mip , int Mport , String M6ip , int M6port,Data dataServer,Data dataOperations, Logger logger) throws Exception
-	{
-		this.host    = host;
-		this.logger  = logger;
-		this.Mip = Mip ;
-		this.Mport = Mport;
-		this.M6ip = M6ip;
-		this.M6port = M6port;
-		this.dataServer= dataServer;
-		this.dataOperations = dataOperations;
-		this.logger = logger;
-    }
-
-    @Override
-    public  void run()
-	{
-	try
-	{
-	    logger.info("client: endpoint running ...\n");
-
-		Socket socket ;
-		PrintWriter   out;
-		BufferedReader in;
-		String result;
-		boolean flag;
-		String message ="";
-		String operation="";
-
-	    while (true)
-		{
-			try
-			{
-					synchronized (dataServer)
-					{
-						if( !(dataServer.flag))
-						{
-							try
-							{
-								//System.out.println("Esperando wait");
-								dataServer.wait();
-								//System.out.println("Sai do wait");
-								message = dataServer.receive();
-							}
-							catch(Exception e)
-							{
-								e.printStackTrace();
-							}
-						}
-						else
-						{
-							message = dataServer.receive();
-						}
-					}
-					if(message.equals("token"))
-					{
-						//System.out.println("Antes do synchronized dataOperations");
-						synchronized (dataOperations)
-						{
-							//System.out.println("Teste flag dataOperations");
-							if(dataOperations.flag)
-							{
-								operation = dataOperations.receive();
-								dataOperations.notifyAll();
-								flag = true;
-							}
-							else
-							{
-								//System.out.println("Flag falsa");
-								flag = false;
-							}
-							//System.out.println("Não tenho resultado");
-						}
-						if (flag)
-						{
-							//System.out.println("Mandar operação");
-							socket  = new Socket(InetAddress.getByName(M6ip), M6port);
-							//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
-
-							out = new PrintWriter(socket.getOutputStream(), true);
-							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-							out.println(operation);
-							out.flush();
-							result = in.readLine();
-
-							System.out.printf("result is: %f\n", Double.parseDouble(result));
-							socket.close();
-
-
-						}
-						socket  = new Socket(InetAddress.getByName(Mip), Mport);
-						//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
-						out = new PrintWriter(socket.getOutputStream(), true);
-						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-						out.println("token");
-						out.flush();
-						}
-
-					
-				}
-				catch(Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
-
-	}	
-}

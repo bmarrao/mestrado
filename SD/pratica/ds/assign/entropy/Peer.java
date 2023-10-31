@@ -162,14 +162,12 @@ public class Peer {
         System.out.printf("new peer @ host=%s\n", args[0]);
         ArrayList<Tuple> peers = new ArrayList<Tuple>();
         Data data = new Data();
-        for (int i = 2 ; i < args.length ; i+= 2)
-        {
-            peers.add(new Tuple(args[i],Integer.parseInt(args[i+1])));
-        }
+        
+        
         //Array peers for when there is more than one connection
         new Thread (new Server(args[0], Integer.parseInt(args[1]),data, peer.logger)).start();
-        new Thread (new Client(args[2],Integer.parseInt(args[3]),data,peer.logger,2)).start();
         new Thread (new PutInArray(4,data)).start();
+        new Thread (new Client(peers,data,peer.logger,2)).start();
     }
 }
 
@@ -180,11 +178,11 @@ class Client implements Runnable
     Logger       logger;
     Data data;
     PoissonProcess pp;
+    ArrayList<Tuple> peers;
 
-    public Client(String host, int port, Data data,Logger logger, int frequency)
+    public Client(ArrayList<Tuple> peers,Data data,Logger logger, int frequency)
     {
-        this.host   = host;
-        this.port   = port;
+        this.peers = peers;
         this.logger = logger;
         this.data =data;
         this.pp = new PoissonProcess(frequency, new Random(0));
@@ -201,16 +199,22 @@ class Client implements Runnable
             PrintWriter   out;
             BufferedReader in;
             int t;
+            int tamanho = peers.size();
+            Random rand =new Random();
+            int peer ;
+            Tuple tuple;
             while(true)
             {
                 try 
                 {
                     t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                     Thread.sleep(t);
+                    peer = rand.nextInt(tamanho);
+                    tuple = this.peers.get(peer);
                     synchronized(data)
                     {
                         arr = data.getStringArr();
-                        socket  = new Socket(InetAddress.getByName(host), port);
+                        socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
 						out = new PrintWriter(socket.getOutputStream(), true);
 						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         System.out.println("Array que to mandando " + arr);
@@ -261,26 +265,15 @@ class Server implements Runnable
         try 
         {
             Socket client ;
-            String arr ="";
-            String result ="";
-            PrintWriter   out;
-            BufferedReader in ;
             logger.info("server: endpoint running at port " + port + " ...");
-            while(true) {
-                try {
+            while(true) 
+            {
+                try 
+                {
                     client = server.accept();
                     logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
-                    out = new PrintWriter(client.getOutputStream(), true);
-                    in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    arr = in.readLine();
+                    new Thread(new Connection(client, data)).start();
 
-                    synchronized(data)
-                    {
-                        result = data.give(arr);
-                    }
-                    System.out.println("saiu do synchronized");
-                    out.println(result);
-                    out.flush();
                 }
                 catch(Exception e) 
                 {
@@ -336,4 +329,40 @@ class PutInArray implements Runnable
            
     }
     
+}
+
+class Connection implements Runnable {
+    Socket clientSocket;
+    private final Data data;
+
+    public Connection(Socket clientSocket,Data data) 
+    {
+        this.clientSocket  = clientSocket;
+        this.data = data;
+    }
+
+    @Override
+    public void run() 
+    {
+        try 
+        {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));    
+	        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String arr = in.readLine();
+
+            synchronized(data)
+            {
+                String result = data.give(arr);
+            }
+            System.out.println("saiu do synchronized");
+            out.println(result);
+            out.flush();
+            clientSocket.close();
+
+        } 
+        catch(Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
 }
