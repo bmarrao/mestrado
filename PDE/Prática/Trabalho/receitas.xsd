@@ -6,6 +6,25 @@
         xmlns:trabalhoPDE="trabalhoPDE"
         >
 
+    <xs:element name ="receitas" type="trabalhoPDE:Receitas"></xs:element>
+    <xs:complexType name="Receitas">
+        <xs:sequence>
+            <xs:element name="cabecalho" type="trabalhoPDE:Cabecalho"/>
+            <xs:choice>
+                <xs:element name="parte" type="trabalhoPDE:Parte" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="seção" type="trabalhoPDE:Seção" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Cabecalho">
+        <xs:sequence>
+            <xs:element name="titulo" type="xs:string"/>
+            <xs:element name="autor" type="xs:string" maxOccurs="unbounded" />
+            <xs:element name="data-publicacao" type="xs:date"/>
+            <xs:element name="resumo" type="xs:string"  minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
     <xs:element name="categoria">
         <xs:simpleType>
             <xs:restriction base="xs:string">
@@ -47,12 +66,8 @@
     </xs:element>
 
 
-    <xs:element name="data-publicacao" type="xs:date"/>
     <xs:element name="ilustração" type="xs:string"/>
-    <xs:element name="resumo" type="xs:string"/>
-    <xs:element name="titulo" type="xs:string"/>
     <xs:element name="texto-introdutorio" type="xs:string"/>
-    <xs:element name="autor" type="xs:string"/>
     <xs:element name="nome" type="xs:string"/>
     <xs:element name="unidade-medida" type="xs:string"/>
     <xs:element name="calorias" type="xs:int"/>
@@ -69,17 +84,6 @@
     <xs:element name="passoRef">
         <xs:complexType>
             <xs:attribute name="ref" type="xs:IDREF"/>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="cabecalho">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="trabalhoPDE:titulo"/>
-                <xs:element ref="trabalhoPDE:autor" maxOccurs="unbounded" />
-                <xs:element ref="trabalhoPDE:data-publicacao"/>
-                <xs:element ref="trabalhoPDE:resumo"  minOccurs="0"/>
-            </xs:sequence>
         </xs:complexType>
     </xs:element>
 
@@ -155,7 +159,7 @@
                 <xs:element ref="trabalhoPDE:titulo"/>
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
-                <xs:element ref="trabalhoPDE:receita"  maxOccurs="unbounded"/>
+                <xs:element ref="trabalhoPDE:receita"  maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -168,8 +172,8 @@
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
                 <xs:choice >
                     <xs:choice >
-                        <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded"/>
-                        <xs:element ref="trabalhoPDE:sub-seção" maxOccurs="unbounded" />
+                        <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded" minOccurs="0"/>
+                        <xs:element ref="trabalhoPDE:sub-seção" maxOccurs="unbounded"  minOccurs="0"/>
                     </xs:choice>
                 </xs:choice>
             </xs:sequence>
@@ -183,20 +187,8 @@
                 <xs:element ref="trabalhoPDE:texto-introdutorio"  minOccurs="0"/>
                 <xs:element ref="trabalhoPDE:ilustração" minOccurs="0"/>
                 <xs:choice >
-                    <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded"/>
-                    <xs:element ref="trabalhoPDE:seção" maxOccurs="unbounded" />
-                </xs:choice>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="receitas">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="trabalhoPDE:cabecalho"/>
-                <xs:choice>
-                    <xs:element ref="trabalhoPDE:parte" maxOccurs="unbounded" />
-                    <xs:element ref="trabalhoPDE:seção" maxOccurs="unbounded" />
+                    <xs:element ref="trabalhoPDE:receita" maxOccurs="unbounded" minOccurs="0"/>
+                    <xs:element ref="trabalhoPDE:seção" maxOccurs="unbounded"  minOccurs="0"/>
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
