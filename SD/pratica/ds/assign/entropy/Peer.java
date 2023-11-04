@@ -29,15 +29,14 @@ class Tuple
         this.port = port;
     }
 
-
 }
 
 class Data
 {
-    private ArrayList<Double> arr = new ArrayList<Double>() ;
+    private ArrayList<String> arr = new ArrayList<String>() ;
 
 
-    public String turnToString(ArrayList<Double> xArr)
+    public String turnToString(ArrayList<Stringe> xArr)
     {
         String str = "";
         int tamanho = xArr.size();
@@ -50,19 +49,19 @@ class Data
 
     }
 
-    public ArrayList<Double> turnFromString(String xArr)
+    public ArrayList<String> turnFromString(String xArr)
     {
-        ArrayList<Double> newArr = new ArrayList<Double>() ;
+        ArrayList<String> newArr = new ArrayList<String>() ;
 
-        String[] numbers = xArr.split(",");
-        for (String x : numbers)
+        String[] palavras = xArr.split(",");
+        for (String x : palavras)
         {
-            newArr.add(Double.parseDouble(x));
+            newArr.add(x);
         }
         return newArr;
     }
 
-    public void append(double x)
+    public void append(String x)
     {
         this.arr.add(x);
     }
@@ -76,14 +75,14 @@ class Data
     public String give(String arrayPush)
     {
 
-        ArrayList<Double> newArray = new ArrayList<Double>() ;
-        ArrayList<Double> received = new ArrayList<Double>() ;
+        ArrayList<Stringe> newArray = new ArrayList<String>() ;
+        ArrayList<String> received = new ArrayList<String>() ;
         received = this.turnFromString(arrayPush);
         int menor ;
         int maior ;
         boolean flag ;
-        double novo ;
-        double recebido;
+        String novo ;
+        String recebido;
         if (received.size() < this.arr.size())
         {
             flag = true;
@@ -98,7 +97,7 @@ class Data
         {
             novo = this.arr.get(i);
             recebido = received.get(i);
-            if (novo == recebido)
+            if (novo.equals(recebido))
             {
                 newArray.add(novo);
             }
@@ -135,7 +134,8 @@ class Data
     }
 
 }
-public class Peer {
+public class Peer 
+{
     String host;
     Logger logger;
 
@@ -163,11 +163,14 @@ public class Peer {
         ArrayList<Tuple> peers = new ArrayList<Tuple>();
         Data data = new Data();
         
+        for (int i = 1; i < args.length; i+=2)
+        {
+            peers.add(new Tuple(args[i],Integer.parseInt(args[i+1])));
+        }
         
-        //Array peers for when there is more than one connection
-        new Thread (new Server(args[0], Integer.parseInt(args[1]),data, peer.logger)).start();
-        new Thread (new PutInArray(4,data)).start();
-        new Thread (new Client(peers,data,peer.logger,2)).start();
+        new Thread (new Server(Integer.parseInt(args[0]),data, peer.logger)).start();
+        new Thread (new PutInArray(6,data)).start();
+        new Thread (new Client(peers,data,peer.logger,1)).start();
     }
 }
 
@@ -179,6 +182,7 @@ class Client implements Runnable
     Data data;
     PoissonProcess pp;
     ArrayList<Tuple> peers;
+    int tamanho;
 
     public Client(ArrayList<Tuple> peers,Data data,Logger logger, int frequency)
     {
@@ -186,7 +190,7 @@ class Client implements Runnable
         this.logger = logger;
         this.data =data;
         this.pp = new PoissonProcess(frequency, new Random(0));
-
+        this.tamanho = peers.size();
 
     }
 
@@ -199,7 +203,6 @@ class Client implements Runnable
             PrintWriter   out;
             BufferedReader in;
             int t;
-            int tamanho = peers.size();
             Random rand =new Random();
             int peer ;
             Tuple tuple;
@@ -209,7 +212,7 @@ class Client implements Runnable
                 {
                     t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                     Thread.sleep(t);
-                    peer = rand.nextInt(tamanho);
+                    peer = rand.nextInt(this.tamanho);
                     tuple = this.peers.get(peer);
                     synchronized(data)
                     {
@@ -243,20 +246,18 @@ class Client implements Runnable
 }
 class Server implements Runnable 
 {
-    String       host;
     int          port;
     ServerSocket server;
     Logger       logger;
     Data data;
     
 
-    public Server(String host, int port, Data data,Logger logger) throws Exception 
+    public Server(int port, Data data,Logger logger) throws Exception 
     {
-        this.host   = host;
         this.port   = port;
         this.logger = logger;
         this.data =data;
-        server = new ServerSocket(port, 1, InetAddress.getByName(host));
+        this.server = new ServerSocket(port, 1, InetAddress.getByName("localhost"));
     }
 
     @Override
@@ -291,8 +292,6 @@ class Server implements Runnable
 
 class PutInArray implements Runnable 
 {
-    String  host;
-    Logger  logger;
     Scanner scanner;
     PoissonProcess pp;
     private final Data data;
@@ -349,12 +348,12 @@ class Connection implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));    
 	        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             String arr = in.readLine();
-
+            String result ;
             synchronized(data)
             {
-                String result = data.give(arr);
+                result = data.give(arr);
             }
-            System.out.println("saiu do synchronized");
+            System.out.println("O resultado é  \n" + result);
             out.println(result);
             out.flush();
             clientSocket.close();
