@@ -42,6 +42,16 @@
                 </passo>
             </instruções>
         </receita>
+
+        <receita>
+            <nome>djaskbdaks</nome>
+            <ingredientes>
+                <ingrediente id="dasdasdasd">sdaasds</ingrediente>
+            </ingredientes>
+            <instruções>
+                <passo>dslkadbjksa</passo>
+            </instruções>
+        </receita>
         <seção>
             <!-- ainda posso opcionalmente adicionar uma seção -->
             <titulo>
@@ -119,15 +129,7 @@
                 </receita>
             </sub-seção>
         </seção>
-        <receita>
-            <nome>djaskbdaks</nome>
-            <ingredientes>
-                <ingrediente id="dasdasdasd">sdaasds</ingrediente>
-            </ingredientes>
-            <instruções>
-                <passo>dslkadbjksa</passo>
-            </instruções>
-        </receita>
+
     </parte>
 
 </receitas>
