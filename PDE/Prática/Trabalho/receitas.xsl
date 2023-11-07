@@ -8,9 +8,15 @@
             <HEAD>
                 <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
                 <TITLE>  <xsl:value-of select="cabecalho/titulo"/></TITLE>
+                <style>
+                    .center
+                    {
+                        text-align: center;
+                    }
+                </style>
             </HEAD>
             <BODY BGCOLOR="{$cor-base}">
-                <div text-align="center">
+                <div class="center">
                     <h1><center><xsl:value-of select="cabecalho/titulo"/></center></h1>
                     <h3><center></center></h3>
                     <h3><center><xsl:value-of select="cabecalho/data-publicacao"/></center></h3>
