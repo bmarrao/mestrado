@@ -50018,3 +50018,21 @@ INFO: client: endpoint running ...
 
 out 24, 2023 8:20:28 DA MANHÃ ds.assign.ring.ServerPeer run
 INFO: server: endpoint running at port 3003 ...
+nov 07, 2023 10:20:34 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3003 ...
+nov 07, 2023 10:21:23 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3003 ...
+nov 07, 2023 10:22:44 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:22:46 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:22:55 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:23:01 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:23:02 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:24:01 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:24:03 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1

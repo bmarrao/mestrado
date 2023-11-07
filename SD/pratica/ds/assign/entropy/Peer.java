@@ -1,5 +1,7 @@
 package ds.assign.entropy;
 
+import java.io.*;  
+import java.util.Scanner;  
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,7 +38,7 @@ class Data
     private ArrayList<String> arr = new ArrayList<String>() ;
 
 
-    public String turnToString(ArrayList<Stringe> xArr)
+    public String turnToString(ArrayList<String> xArr)
     {
         String str = "";
         int tamanho = xArr.size();
@@ -63,6 +65,7 @@ class Data
 
     public void append(String x)
     {
+        
         this.arr.add(x);
     }
 
@@ -75,11 +78,10 @@ class Data
     public String give(String arrayPush)
     {
 
-        ArrayList<Stringe> newArray = new ArrayList<String>() ;
+        ArrayList<String> newArray = new ArrayList<String>() ;
         ArrayList<String> received = new ArrayList<String>() ;
         received = this.turnFromString(arrayPush);
         int menor ;
-        int maior ;
         boolean flag ;
         String novo ;
         String recebido;
@@ -169,7 +171,7 @@ public class Peer
         }
         
         new Thread (new Server(Integer.parseInt(args[0]),data, peer.logger)).start();
-        new Thread (new PutInArray(6,data)).start();
+        new Thread (new PutInArray(2,data)).start();
         new Thread (new Client(peers,data,peer.logger,1)).start();
     }
 }
@@ -295,28 +297,46 @@ class PutInArray implements Runnable
     Scanner scanner;
     PoissonProcess pp;
     private final Data data;
-    public PutInArray(int frequency, Data data) throws Exception {
+    public PutInArray(int frequency, Data data) throws Exception 
+    {
         this.data = data;
         this.pp = new PoissonProcess(frequency, new Random(0));
 
+
     }
+
 
     @Override
     public void run() {
         int t ;
         Random rand =new Random();
-        double x ;
+        int x ;
+        String r ;
+        ArrayList<String> dic = new ArrayList<String>() ;
+
+        try (FileInputStream fis = new FileInputStream("./ds/assign/entropy/words.txt");
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr))
+        {
+            while((r=br.readLine())!= null)
+            {
+                dic.add(r);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         while(true)
         {
             try
             {
                 t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                 Thread.sleep(t);
+                x = rand.nextInt(466549);
                 synchronized (data) 
                 {
-                    x = rand.nextDouble();
-
-                    data.append(x);
+                    data.append(dic.get(x));
                 }
             
             }
@@ -351,9 +371,12 @@ class Connection implements Runnable {
             String result ;
             synchronized(data)
             {
+                String antes = data.getStringArr();
+                System.out.println("Antes ::::  \n" + antes);
+                System.out.println("Array que recebi ::: \n "+ arr );
                 result = data.give(arr);
             }
-            System.out.println("O resultado é  \n" + result);
+            System.out.println("Depois :::: \n" + result);
             out.println(result);
             out.flush();
             clientSocket.close();

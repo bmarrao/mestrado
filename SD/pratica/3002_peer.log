@@ -50029,3 +50029,17 @@ nov 04, 2023 8:11:06 DA MANHÃ ds.assign.entropy.Server run
 INFO: server: new connection from 127.0.0.1
 nov 04, 2023 8:11:14 DA MANHÃ ds.assign.entropy.Server run
 INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:02:21 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3002 ...
+nov 07, 2023 10:03:52 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:07:29 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:20:35 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3002 ...
+nov 07, 2023 10:21:22 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3002 ...
+nov 07, 2023 10:22:38 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
+nov 07, 2023 10:23:56 DA MANHÃ ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
