@@ -22,16 +22,20 @@
                     <h3><center><xsl:value-of select="cabecalho/data-publicacao"/></center></h3>
                     <p><xsl:value-of select="cabecalho/resumo"/></p>
                 </div>
-                <hr></hr>
-                <TABLE BORDER="1" CELLPADDING="10" WIDTH="100%" BGCOLOR="{$cor-fundo}">
-                    <TR><TD> <xsl:apply-templates select="cabecalho"/> </TD></TR>
-                    <TR><TD><TABLE BORDER="1" WIDTH="100%">
-                        <TR><TH>Quant.</TH><TH>Descrição</TH><TH>Preço</TH><TH>IVA</TH><TH>Total</TH></TR>
-                        <xsl:apply-templates select="corpo"/>
-                        <xsl:call-template name="rodape"/>
-                    </TABLE></TD></TR>
-                </TABLE>
+                <hr/>
+                <ol type="1">
+                    <xsl:apply-templates select="parte"/>
+                    <xsl:apply-templates select="seção"/>
+                </ol>
             </BODY>
         </HTML>
     </xsl:template>
+    <xsl:template match="parte">
+        <li>
+            <a href=""><xsl:value-of select="titulo"/></a>
+            <xsl:apply-templates select="receita"/>
+            <xsl:apply-templates select="seção"/>
+        </li>
+    </xsl:template >
+
 </xsl:stylesheet>
