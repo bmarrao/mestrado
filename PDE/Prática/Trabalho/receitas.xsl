@@ -7,6 +7,7 @@
         <HTML>
             <HEAD>
                 <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                <META http-equiv="Expires" content="0"/>
                 <TITLE>  <xsl:value-of select="cabecalho/titulo"/></TITLE>
                 <style>
                     .center
@@ -24,18 +25,57 @@
                 </div>
                 <hr/>
                 <ol type="1">
-                    <xsl:apply-templates select="parte"/>
-                    <xsl:apply-templates select="seção"/>
+                    <xsl:apply-templates select="parte">
+                        <xsl:with-param name="teste" select="tabela-conteudo"/>
+                    </xsl:apply-templates>
+                    <xsl:apply-templates select="seção">
+                        <xsl:with-param name="teste" select="tabela-conteudo"/>
+                    </xsl:apply-templates>
                 </ol>
             </BODY>
         </HTML>
     </xsl:template>
+
     <xsl:template match="parte">
-        <li>
-            <a href=""><xsl:value-of select="titulo"/></a>
-            <xsl:apply-templates select="receita"/>
-            <xsl:apply-templates select="seção"/>
-        </li>
+        <xsl:param name="teste"/>
+        <xsl:choose>
+            <xsl:when test="teste = tabela-conteudo">
+                <li>
+                    <!-- FALTA O HREF -->
+                    <a href=""><xsl:value-of select="titulo"/></a>
+                    <ol type="1">
+                        <xsl:apply-templates select="receita"/>
+                        <xsl:apply-templates select="seção"/>
+                    </ol>
+                </li>
+            </xsl:when>
+            <xsl:otherwise>
+
+            </xsl:otherwise>
+        </xsl:choose>
+
     </xsl:template >
+
+    <xsl:template match="seção">
+        <li>
+            <!-- FALTA O HREF -->
+            <a href=""><xsl:value-of select="titulo"/></a>
+            <ol type="1">
+                <xsl:apply-templates select="receita"/>
+                <xsl:apply-templates select="sub-seção"/>
+            </ol>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="receita">
+        <li>
+            <!-- FALTA O HREF -->
+            <a href=""><xsl:value-of select="nome"/></a>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="receita">
+        <h3></h3>
+    </xsl:template>
 
 </xsl:stylesheet>
