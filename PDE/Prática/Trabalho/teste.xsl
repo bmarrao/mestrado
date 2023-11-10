@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:r="trabalhoPDE">
     <xsl:output method="html" version="4.01" encoding="UTF-8"/>
     <xsl:variable name="cor-base">white</xsl:variable>
     <xsl:variable name="cor-fundo">lightGrey</xsl:variable>
-    <xsl:template match="receitas">
+    <xsl:template match="r:receitas">
         <HTML>
             <HEAD>
                 <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
                 <META http-equiv="Expires" content="0"/>
-                <TITLE>  <xsl:value-of select="cabecalho/titulo"/></TITLE>
+                <TITLE>  <xsl:value-of select="r:cabecalho/titulo"/></TITLE>
                 <style>
                     .center
                     {
@@ -17,121 +17,131 @@
                 </style>
             </HEAD>
             <BODY BGCOLOR="{$cor-base}">
-                <xsl:apply-templates select="cabecalho"/>
+                <xsl:apply-templates select="r:cabecalho"/>
                 <hr/>
                 <xsl:call-template name="tabela-conteudo"/>
                 <hr/>
-                <xsl:apply-templates select="parte" mode="normal"/>
-                <xsl:apply-templates select="seção" mode="normal"/>
+                <xsl:apply-templates select="r:parte" mode="normal"/>
+                <xsl:apply-templates select="r:seção" mode="normal"/>
             </BODY>
         </HTML>
     </xsl:template>
     <xsl:template name="tabela-conteudo">
         <ol type="1">
-            <xsl:apply-templates select="parte"  mode="tabela-conteudo"/>
-            <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
+            <xsl:apply-templates select="r:parte"  mode="tabela-conteudo"/>
+            <xsl:apply-templates select="r:seção" mode="tabela-conteudo"/>
         </ol>
     </xsl:template>
     
-    <xsl:template match="cabecalho">
+    <xsl:template match="r:cabecalho">
         <div class="center">
-            <h1> <xsl:value-of select="titulo"/></h1>
-            <h3> <xsl:value-of select="autor"/></h3>
-            <h3> <xsl:value-of select="data-publicacao"/></h3>
-            <p><xsl:value-of select="resumo"/></p>
+            <h1> <xsl:value-of select="r:titulo"/></h1>
+            <h3> <xsl:value-of select="r:autor"/></h3>
+            <h3> <xsl:value-of select="r:data-publicacao"/></h3>
+            <p><xsl:value-of select="r:resumo"/></p>
         </div>
     </xsl:template>
 
-    <xsl:template match="parte" mode="tabela-conteudo">
+    <xsl:template match="r:parte" mode="tabela-conteudo">
         <li>
             <!-- FALTA O HREF -->
-            <a href="#"><xsl:value-of select="titulo"/></a>
+            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
             <ol type="1">
-                <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
-                <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="r:seção" mode="tabela-conteudo"/>
             </ol>
         </li>
     </xsl:template >
 
-    <xsl:template match="parte" mode="normal">
-        <xsl:variable name="id" select="normalize-space(@id)"/>
+    <xsl:template match="r:parte" mode="normal">
         <hr/>
-        <h2 id="#{$id}"><xsl:value-of select="titulo"/></h2>
-        <h3><xsl:value-of select="texto-introdutorio"/></h3>
+        <h2 id="#{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
+        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
         <hr/>
-        <xsl:apply-templates select="receita" mode="normal"/>
-        <xsl:apply-templates select="seção" mode="normal"/>
+        <xsl:apply-templates select="r:receita" mode="normal"/>
+        <xsl:apply-templates select="r:seção" mode="normal"/>
     </xsl:template >
 
-    <xsl:template match="seção" mode="tabela-conteudo">
-        <xsl:variable name="id" select="normalize-space(titulo)"/>
+    <xsl:template match="r:seção" mode="tabela-conteudo">
+        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <li>
-            <a href="#{$id}"><xsl:value-of select="titulo"/></a>
+            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
             <ol type="1">
-                <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
-                <xsl:apply-templates select="sub-seção" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="r:sub-seção" mode="tabela-conteudo"/>
             </ol>
         </li>
     </xsl:template>
 
-    <xsl:template match="seção" mode="normal">
-        <xsl:variable name="id" select="normalize-space(titulo)"/>
+    <xsl:template match="r:seção" mode="normal">
+        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
-        <h2 id="{$id}"><xsl:value-of select="titulo"/></h2>
-        <h3><xsl:value-of select="texto-introdutorio"/></h3>
+        <h2 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
+        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
         <hr/>
-        <xsl:apply-templates select="receita" mode="normal"/>
-        <xsl:apply-templates select="sub-seção" mode="normal"/>
+        <xsl:apply-templates select="r:receita" mode="normal"/>
+        <xsl:apply-templates select="r:sub-seção" mode="normal"/>
     </xsl:template>
 
 
-    <xsl:template match="sub-seção" mode="tabela-conteudo">
-        <xsl:variable name="id" select="normalize-space(titulo)"/>
+    <xsl:template match="r:sub-seção" mode="tabela-conteudo">
+        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <li>
-            <a href="#{$id}"><xsl:value-of select="titulo"/></a>
+            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
             <ol type="1">
-                <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
             </ol>
         </li>
     </xsl:template>
     <xsl:template name="sub-seção" mode="normal">
-        <xsl:variable name="id" select="normalize-space(titulo)"/>
+        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
-        <h2 id="{$id}"><xsl:value-of select="titulo"/></h2>
-        <h3><xsl:value-of select="texto-introdutorio"/></h3>
+        <h2 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
+        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
         <hr/>
-        <xsl:apply-templates select="receita" mode="normal"/>
+        <xsl:apply-templates select="r:receita" mode="normal"/>
     </xsl:template>
 
-    <xsl:template match="receita" mode="tabela-conteudo">
+    <xsl:template match="r:receita" mode="tabela-conteudo">
         <xsl:variable name="id" select="normalize-space(@id)"/>
 
         <li>
-            <a href="#{$id}"><xsl:value-of select="nome"/></a>
+            <a href="#{generate-id()}"><xsl:value-of select="r:nome"/></a>
         </li>
     </xsl:template>
 
-    <xsl:template match="receita" mode="normal">
-        <xsl:variable name="id" select="normalize-space(nome)"/>
+    <xsl:template match="r:receita" mode="normal">
         <hr/>
-        <div class="center">
-            <h2 id="{$id}"><xsl:value-of select="nome"/></h2>
-            <xsl:apply-templates select="ingredientes"/>
-            <xsl:apply-templates select="instruções"/>
-        </div>
-        <hr/>
-        <xsl:apply-templates select="receita" mode="normal"/>
-    </xsl:template>
-
-    <xsl:template match="ingredientes">
         <ol>
-            <xsl:apply-templates select="ingrediente"/>
+            <xsl:choose>
+                <xsl:when test="@id"><h2 class="center" id="{@id}"><xsl:value-of select="r:nome"/></h2></xsl:when>
+                <xsl:otherwise><h2 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></xsl:otherwise>
+            </xsl:choose>
+
+            <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
+            <xsl:if test="@categoria"><p>Categoria :<xsl:value-of select="@categoria"/></p></xsl:if>
+            <xsl:if test="@tempo"><p>Tempo :<xsl:value-of select="@tempo"/></p></xsl:if>
+            <xsl:if test="@custo"><p>Custo :<xsl:value-of select="@custo"/></p></xsl:if>
+        </ol>
+
+        <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem"/></xsl:if>
+
+
+        <xsl:apply-templates select="r:ingredientes"/>
+            <xsl:apply-templates select="r:instruções"/>
+        <hr/>
+        <xsl:apply-templates select="r:receita" mode="normal"/>
+    </xsl:template>
+    <xsl:template match="r:ingredientes">
+        <h4>Ingredientes</h4>
+        <ol>
+            <xsl:apply-templates select="r:ingrediente"/>
         </ol>
     </xsl:template>
 
-    <xsl:template match="ingrediente">
+    <xsl:template match="r:ingrediente">
         <xsl:variable name="id" select="@id"/>
         <li id="{$id}">
             <xsl:value-of select="." />
@@ -140,12 +150,29 @@
 
 
 
-    <xsl:template match="instruções">
-
+    <xsl:template match="r:instruções">
+        <xsl:choose>
+            <xsl:when test="r:texto-instrução"> <xsl:apply-templates select="r:texto-instrução"/></xsl:when>
+            <xsl:otherwise>
+                <ol type="1">
+                    <xsl:apply-templates/>
+                </ol>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="r:texto-instrução">
+            <xsl:apply-templates select="r:texto-instrução"></xsl:apply-templates>
+        </xsl:if>
     </xsl:template>
 
-    <xsl:template match="passoRef">
+    <xsl:template match="r:texto-instrução">
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="r:passoRef">
         <xsl:variable name="ref" select="@ref"/>
+    </xsl:template>
+
+    <xsl:template match="r:receitaRef">
+        <a href="#{@ref}"></a>
     </xsl:template>
 
 

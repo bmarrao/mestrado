@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <receitas
+        xmlns="trabalhoPDE"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="trabalhoPDE receitas.xsd"
         >
@@ -17,16 +18,13 @@
 
     <parte >
         <titulo>Comida italiana</titulo>
+
         <texto-introdutorio>Esse é o texto-introdutorio opcional</texto-introdutorio>
-        <receita id ="spaghetti">
+        <receita id ="spaghetti" categoria="prato-principal" dificuldade="simples" tempo="médio" custo="barato">
             <nome>
                 Spaghetti Bolonhesa
             </nome>
             <calorias>500</calorias>
-            <categoria>prato-principal</categoria>
-            <dificuldade>simples</dificuldade>
-            <tempo>médio</tempo>
-            <custo>barato</custo>
 
             <!-- aqui irei adicionar uma receita como exemplo -->
             <ingredientes>
@@ -74,15 +72,10 @@
 
             <sub-seção>
                 <titulo>Sobremesas</titulo>
-                <receita id="tiramisu"   >
+                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="./images/tiramisu" >
                     <nome>
                         tiramisu
                     </nome>
-                    <categoria>sobremesa</categoria>
-                    <dificuldade>díficil</dificuldade>
-                    <tempo>lento</tempo>
-                    <custo>barato</custo>
-                    <ilustração>./images/tiramisu</ilustração>
 
                     <ingredientes >
                         <ingrediente id="cafe" quantidade="100" unidade-medida="ml">

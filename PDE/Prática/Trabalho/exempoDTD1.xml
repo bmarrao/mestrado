@@ -4,11 +4,7 @@
     <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
-        <data-publicacao>
-            <ano>2023</ano>
-            <mes>10</mes>
-            <dia>8</dia>
-        </data-publicacao>
+        <data-publicacao>2023-10-08</data-publicacao>
         <resumo>
             Esse é o resumo opcional
         </resumo>

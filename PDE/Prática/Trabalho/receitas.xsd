@@ -31,44 +31,45 @@
         <xs:sequence>
             <xs:element name="titulo" type="xs:string"/>
             <xs:element name="texto-introdutorio"  type ="xs:string" minOccurs="0"/>
-            <xs:element name="ilustração" type="xs:string" minOccurs="0"/>
             <xs:element name="receita" type="trabalhoPDE:Receita" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element name="seção" type="trabalhoPDE:Seção" maxOccurs="unbounded"  minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute name="ilustração" type="xs:string" />
+
     </xs:complexType>
 
     <xs:complexType name="Seção">
         <xs:sequence>
             <xs:element name="titulo" type="xs:string"/>
             <xs:element name="texto-introdutorio"  type ="xs:string" minOccurs="0"/>
-            <xs:element name="ilustração" type="xs:string" minOccurs="0"/>
             <xs:element name="receita" type="trabalhoPDE:Receita" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element name="sub-seção" type="trabalhoPDE:Sub-seção" maxOccurs="unbounded"  minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute name="ilustração" type="xs:string" />
+
     </xs:complexType>
 
     <xs:complexType name="Sub-seção">
         <xs:sequence>
             <xs:element name="titulo" type="xs:string"/>
             <xs:element name="texto-introdutorio"  type ="xs:string" minOccurs="0"/>
-            <xs:element name="ilustração" type="xs:string" minOccurs="0"/>
             <xs:element name="receita" type="trabalhoPDE:Receita" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute name="ilustração" type="xs:string" />
+
     </xs:complexType>
 
     <xs:complexType name="Receita">
         <xs:sequence>
             <xs:element name="nome" type="xs:string" />
             <xs:element name="calorias" type="xs:int"  minOccurs="0"/>
-            <xs:element name="categoria" type="trabalhoPDE:Categoria" minOccurs="0"/>
-            <xs:element name="dificuldade" type="trabalhoPDE:Dificuldade" minOccurs="0"/>
-            <xs:element name="tempo" type="trabalhoPDE:Tempo" minOccurs="0"/>
-            <xs:element name="custo" type="trabalhoPDE:Custo" minOccurs="0"/>
-            <xs:element name="ilustração" type="xs:string" minOccurs="0"/>
             <xs:element name="ingredientes" type="trabalhoPDE:Ingredientes"/>
             <xs:element name="instruções" type="trabalhoPDE:Instruções"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" />
+
+
+
     </xs:complexType>
 
     <xs:simpleType name="Categoria">
@@ -134,7 +135,7 @@
                 <xs:element name="passoRef" type="trabalhoPDE:PassoRef"/>
                 <xs:element name="receitaRef" type="trabalhoPDE:ReceitaRef"/>
             </xs:choice>
-            <xs:sequence maxOccurs="unbounded" >
+            <xs:sequence  >
                 <xs:element name="texto-instrução" type="trabalhoPDE:Texto-instrução"/>
             </xs:sequence>
         </xs:choice>
