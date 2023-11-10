@@ -21,15 +21,15 @@
                 <hr/>
                 <xsl:call-template name="tabela-conteudo"/>
                 <hr/>
-                <xsl:apply-templates select="Parte" mode="normal"/>
-                <xsl:apply-templates select="Seção" mode="normal"/>
+                <xsl:apply-templates select="parte" mode="normal"/>
+                <xsl:apply-templates select="seção" mode="normal"/>
             </BODY>
         </HTML>
     </xsl:template>
     <xsl:template name="tabela-conteudo">
         <ol type="1">
-            <xsl:apply-templates select="Parte"  mode="tabela-conteudo"/>
-            <xsl:apply-templates select="Seção" mode="tabela-conteudo"/>
+            <xsl:apply-templates select="parte"  mode="tabela-conteudo"/>
+            <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
         </ol>
     </xsl:template>
 
@@ -42,47 +42,57 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="Parte" mode="tabela-conteudo">
+    <xsl:template match="parte" mode="tabela-conteudo">
         <li>
             <!-- FALTA O HREF -->
             <a href=""><xsl:value-of select="titulo"/></a>
             <ol type="1">
                 <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
-                <xsl:apply-templates select="Seção" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
             </ol>
         </li>
     </xsl:template >
 
-    <xsl:template match="Parte" mode="normal">
+    <xsl:template match="parte" mode="normal">
         <hr/>
         <h2 id=""><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
         <hr/>
         <xsl:apply-templates select="receita" mode="normal"/>
-        <xsl:apply-templates select="Seção" mode="normal"/>
+        <xsl:apply-templates select="seção" mode="normal"/>
     </xsl:template >
 
-    <xsl:template match="Seção" mode="tabela-conteudo">
+    <xsl:template match="seção" mode="tabela-conteudo">
         <li>
             <a href=""><xsl:value-of select="titulo"/></a>
             <!-- FALTA O HREF -->
             <ol type="1">
                 <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
-                <xsl:apply-templates select="sub-Seção" mode="tabela-conteudo"/>
+                <xsl:apply-templates select="sub-seção" mode="tabela-conteudo"/>
             </ol>
         </li>
     </xsl:template>
 
-    <xsl:template match="Seção" mode="normal">
+    <xsl:template match="seção" mode="normal">
         <hr/>
         <h2 id=""><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
         <hr/>
         <xsl:apply-templates select="receita" mode="normal"/>
-        <xsl:apply-templates select="sub-Seção" mode="normal"/>
+        <xsl:apply-templates select="sub-seção" mode="normal"/>
     </xsl:template>
 
-    <xsl:template name="sub-Seção">
+
+    <xsl:template match="sub-seção" mode="tabela-conteudo">
+        <li>
+            <a href=""><xsl:value-of select="titulo"/></a>
+            <!-- FALTA O HREF -->
+            <ol type="1">
+                <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
+            </ol>
+        </li>
+    </xsl:template>
+    <xsl:template name="sub-seção" mode="normal">
         <hr/>
         <h2 id=""><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
