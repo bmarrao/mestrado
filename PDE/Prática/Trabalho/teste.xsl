@@ -32,7 +32,7 @@
             <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
         </ol>
     </xsl:template>
-
+    
     <xsl:template match="cabecalho">
         <div class="center">
             <h1> <xsl:value-of select="titulo"/></h1>
@@ -45,7 +45,7 @@
     <xsl:template match="parte" mode="tabela-conteudo">
         <li>
             <!-- FALTA O HREF -->
-            <a href=""><xsl:value-of select="titulo"/></a>
+            <a href="#"><xsl:value-of select="titulo"/></a>
             <ol type="1">
                 <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
                 <xsl:apply-templates select="seção" mode="tabela-conteudo"/>
@@ -54,8 +54,9 @@
     </xsl:template >
 
     <xsl:template match="parte" mode="normal">
+        <xsl:variable name="id" select="normalize-space(@id)"/>
         <hr/>
-        <h2 id=""><xsl:value-of select="titulo"/></h2>
+        <h2 id="#{$id}"><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
         <hr/>
         <xsl:apply-templates select="receita" mode="normal"/>
@@ -63,8 +64,9 @@
     </xsl:template >
 
     <xsl:template match="seção" mode="tabela-conteudo">
+        <xsl:variable name="id" select="normalize-space(titulo)"/>
         <li>
-            <a href=""><xsl:value-of select="titulo"/></a>
+            <a href="#{$id}"><xsl:value-of select="titulo"/></a>
             <!-- FALTA O HREF -->
             <ol type="1">
                 <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
@@ -74,8 +76,9 @@
     </xsl:template>
 
     <xsl:template match="seção" mode="normal">
+        <xsl:variable name="id" select="normalize-space(titulo)"/>
         <hr/>
-        <h2 id=""><xsl:value-of select="titulo"/></h2>
+        <h2 id="{$id}"><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
         <hr/>
         <xsl:apply-templates select="receita" mode="normal"/>
@@ -84,8 +87,9 @@
 
 
     <xsl:template match="sub-seção" mode="tabela-conteudo">
+        <xsl:variable name="id" select="normalize-space(titulo)"/>
         <li>
-            <a href=""><xsl:value-of select="titulo"/></a>
+            <a href="#{$id}"><xsl:value-of select="titulo"/></a>
             <!-- FALTA O HREF -->
             <ol type="1">
                 <xsl:apply-templates select="receita" mode="tabela-conteudo"/>
@@ -93,23 +97,27 @@
         </li>
     </xsl:template>
     <xsl:template name="sub-seção" mode="normal">
+        <xsl:variable name="id" select="normalize-space(titulo)"/>
         <hr/>
-        <h2 id=""><xsl:value-of select="titulo"/></h2>
+        <h2 id="{$id}"><xsl:value-of select="titulo"/></h2>
         <h3><xsl:value-of select="texto-introdutorio"/></h3>
         <hr/>
         <xsl:apply-templates select="receita" mode="normal"/>
     </xsl:template>
 
     <xsl:template match="receita" mode="tabela-conteudo">
-       <li>
-            <a href=""><xsl:value-of select="nome"/></a>
+        <xsl:variable name="id" select="normalize-space(@id)"/>
+
+        <li>
+            <a href="#{$id}"><xsl:value-of select="nome"/></a>
         </li>
     </xsl:template>
 
     <xsl:template match="receita" mode="normal">
+        <xsl:variable name="id" select="normalize-space(nome)"/>
         <hr/>
         <div class="center">
-            <h2 id=""><xsl:value-of select="nome"/></h2>
+            <h2 id="{$id}"><xsl:value-of select="nome"/></h2>
             <xsl:apply-templates select="ingredientes"/>
             <xsl:apply-templates select="instruções"/>
         </div>
@@ -126,10 +134,19 @@
     <xsl:template match="ingrediente">
         <xsl:variable name="id" select="@id"/>
         <li id="{$id}">
-            <xsl:value-of select="/"/>
+            <xsl:value-of select="." />
         </li>
     </xsl:template>
 
+
+
+    <xsl:template match="instruções">
+
+    </xsl:template>
+
+    <xsl:template match="passoRef">
+        <xsl:variable name="ref" select="@ref"/>
+    </xsl:template>
 
 
 </xsl:stylesheet>
