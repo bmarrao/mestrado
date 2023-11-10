@@ -2,10 +2,7 @@
 <!ELEMENT cabecalho  (titulo, autor+, data-publicacao,  resumo?)>
 <!ELEMENT resumo  (#PCDATA)>
 <!ELEMENT autor  (#PCDATA)>
-<!ELEMENT data-publicacao  (ano, mes, dia)>
-<!ELEMENT ano  (#PCDATA)>
-<!ELEMENT mes  (#PCDATA)>
-<!ELEMENT dia  (#PCDATA)>
+<!ELEMENT data-publicacao  (#PCDATA)>
 <!ELEMENT titulo  (#PCDATA)>
 <!ELEMENT texto-introdutorio  (#PCDATA)>
 <!ELEMENT parte (titulo,texto-introdutorio?,receita*, seção*)>
