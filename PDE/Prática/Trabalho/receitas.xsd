@@ -67,8 +67,11 @@
             <xs:element name="instruções" type="trabalhoPDE:Instruções"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" />
-
-
+        <xs:attribute name="categoria" type="trabalhoPDE:Categoria"/>
+        <xs:attribute name="dificuldade" type="trabalhoPDE:Dificuldade"/>
+        <xs:attribute name="tempo" type="trabalhoPDE:Tempo"/>
+        <xs:attribute name="custo" type="trabalhoPDE:Custo"/>
+        <xs:attribute name="ilustração" type="xs:string"/>
 
     </xs:complexType>
 
@@ -158,6 +161,6 @@
             <xs:element name="ingredienteRef" type="trabalhoPDE:IngredienteRef"  minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID"/>
-        <xs:attribute name="ilustração-atrib" type="xs:string"/>
+        <xs:attribute name="ilustração" type="xs:string"/>
     </xs:complexType>
 </xs:schema>

@@ -7,13 +7,13 @@
 <!ELEMENT texto-introdutorio  (#PCDATA)>
 <!ELEMENT parte (titulo,texto-introdutorio?,receita*, seção*)>
 <!ATTLIST parte
-        image           CDATA #IMPLIED>
+        ilustração           CDATA #IMPLIED>
 <!ELEMENT seção (titulo,texto-introdutorio?,receita* , sub-seção*) >
 <!ATTLIST seção
-        image           CDATA #IMPLIED>
+        ilustração           CDATA #IMPLIED>
 <!ELEMENT sub-seção (titulo,texto-introdutorio?,receita*) >
 <!ATTLIST sub-seção
-        image           CDATA #IMPLIED>
+        ilustração           CDATA #IMPLIED>
 <!ELEMENT receita (nome, calorias?, ingredientes , instruções) >
 <!ATTLIST receita
         id              ID    #IMPLIED
@@ -21,7 +21,7 @@
         dificuldade     (simples | médio | díficil) #IMPLIED
         tempo           (rápido | médio | lento) #IMPLIED
         custo           (barato | médio | caro) #IMPLIED
-        image        CDATA #IMPLIED>
+        ilustração        CDATA #IMPLIED>
 <!ELEMENT receitaRef (#PCDATA) >
 <!ATTLIST receitaRef
         ref  IDREF     #REQUIRED>
@@ -45,7 +45,7 @@
 <!ELEMENT passo (#PCDATA | ingredienteRef )* >
 <!ATTLIST passo
         id ID #IMPLIED
-        ilustracao CDATA   #IMPLIED>
+        ilustração CDATA   #IMPLIED>
 
 <!ELEMENT passoRef (#PCDATA | ingredienteRef)* >
 <!ATTLIST passoRef

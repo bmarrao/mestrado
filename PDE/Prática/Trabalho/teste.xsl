@@ -117,7 +117,7 @@
         <ol>
             <xsl:choose>
                 <xsl:when test="@id"><h2 class="center" id="{@id}"><xsl:value-of select="r:nome"/></h2></xsl:when>
-                <xsl:otherwise><h2 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></xsl:otherwise>
+                <xsl:otherwise><h2 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></h2></xsl:otherwise>
             </xsl:choose>
 
             <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
@@ -151,6 +151,7 @@
 
 
     <xsl:template match="r:instruções">
+        <h4>Instruções</h4>
         <xsl:choose>
             <xsl:when test="r:texto-instrução"> <xsl:apply-templates select="r:texto-instrução"/></xsl:when>
             <xsl:otherwise>
@@ -160,19 +161,43 @@
             </xsl:otherwise>
         </xsl:choose>
         <xsl:if test="r:texto-instrução">
-            <xsl:apply-templates select="r:texto-instrução"></xsl:apply-templates>
+            <xsl:apply-templates/>
         </xsl:if>
     </xsl:template>
 
     <xsl:template match="r:texto-instrução">
         <xsl:apply-templates/>
     </xsl:template>
-    <xsl:template match="r:passoRef">
-        <xsl:variable name="ref" select="@ref"/>
+
+    <xsl:template match="r:passo">
+        <xsl:choose>
+            <xsl:when test="@id">
+                <xsl:variable name="id" select="@id"/>
+                    <li id="{$id}">
+                        <xsl:apply-templates/>
+                    </li>
+            </xsl:when>
+            <xsl:otherwise>
+                <li>
+                    <xsl:apply-templates/>
+                </li>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="r:passoRef">
+        <xsl:variable name="ref" select="@ref"/>
+        <a href="#{@ref}"><xsl:apply-templates select="//r:passo[@id = $ref]"/></a>
+    </xsl:template>
+
+    <xsl:template match="r:ingredienteRef">
+        <xsl:variable name="ref" select="@ref"/>
+
+        <a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a>
+    </xsl:template>
     <xsl:template match="r:receitaRef">
-        <a href="#{@ref}"></a>
+        <xsl:variable name="ref" select="@ref"/>
+        <a href="#{@ref}"><xsl:value-of select="//r:receita[@id = $ref]"/></a>
     </xsl:template>
 
 

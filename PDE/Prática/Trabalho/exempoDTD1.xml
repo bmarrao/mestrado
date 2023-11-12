@@ -1,80 +1,82 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE receitas SYSTEM "receitas.dtd">
-<receitas>
+<receitas
+        xmlns="trabalhoPDE"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="trabalhoPDE receitas.xsd"
+>
     <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
-        <data-publicacao>2023-10-08</data-publicacao>
+        <autor>Se quiser posso adicionar outros autores</autor>
+        <data-publicacao>
+            2023-10-19
+        </data-publicacao>
         <resumo>
             Esse é o resumo opcional
         </resumo>
     </cabecalho>
 
-    <parte image="uri">
+    <parte >
         <titulo>Comida italiana</titulo>
+
         <texto-introdutorio>Esse é o texto-introdutorio opcional</texto-introdutorio>
-        <receita id ="spaghetti" image="./images/spaghetti" dificuldade="simples" categoria="prato-principal" custo="barato" tempo="médio">
+        <receita id ="spaghetti" categoria="prato-principal" dificuldade="simples" tempo="médio" custo="barato">
             <nome>
                 Spaghetti Bolonhesa
             </nome>
+            <calorias>500</calorias>
+
             <!-- aqui irei adicionar uma receita como exemplo -->
             <ingredientes>
                 <ingrediente id="spaghetti-ingrediente" quantidade="100" unidade-medida="gramas">
                     spaghetti
                 </ingrediente>
-                <ingrediente  id ="molho" quantidade="ml" unidade-medida="100">
+                <ingrediente  id ="molho" quantidade="100" unidade-medida="ml">
                     Molho
                 </ingrediente>
             </ingredientes>
-            <instruções id="molho-massa">
+            <instruções >
+                Para fazer o molho
                 <passo id="fazer-molho">
                     Aquecer o <ingredienteRef ref="molho"/>
                 </passo>
+                Para fazer a massa
                 <passo id="fazer-massa">
                     Cozinhar o <ingredienteRef ref="spaghetti-ingrediente"/>
                 </passo>
+                Para fazer o molho
                 <passo id="juntar-massa-molho">
-                    Juntar <ingredienteRef ref="spaghetti-ingrediente"/> e <ingredienteRef ref="molho"/>
+                    Juntar <ingredienteRef ref="molho"/> e <ingredienteRef ref="spaghetti-ingrediente"/>
                 </passo>
             </instruções>
         </receita>
-
-        <receita>
-            <nome>djaskbdaks</nome>
-            <ingredientes>
-                <ingrediente id="dasdasdasd">sdaasds</ingrediente>
-            </ingredientes>
-            <instruções>
-                <passo>dslkadbjksa</passo>
-            </instruções>
-        </receita>
         <seção>
-            <!-- ainda posso opcionalmente adicionar uma seção -->
             <titulo>
                 Comida de Roma
             </titulo>
-            
+            <receita>
+                <nome>Spaghetti Alfredo</nome>
+                <ingredientes>
+                    <ingrediente id="spaghetti-ingrediente2" quantidade="100" unidade-medida="gramas">
+                        spaghetti
+                    </ingrediente>
+                    <ingrediente  id ="molho2" quantidade="100" unidade-medida="ml">
+                        Molho
+                    </ingrediente>
+                </ingredientes>
+                <instruções>
+                    <passoRef ref="fazer-molho"/>
+                    <passoRef ref="fazer-massa"/>
+                </instruções>
+            </receita>
+
             <sub-seção>
                 <titulo>Sobremesas</titulo>
-                <receita>
-                    <nome>Spaghetti Alfredo</nome>
-                    <ingredientes>
-                        <ingrediente id="spaghetti-ingrediente2" quantidade="100" unidade-medida="gramas">
-                            spaghetti
-                        </ingrediente>
-                        <ingrediente  id ="molho2" quantidade="ml" unidade-medida="100">
-                            Molho
-                        </ingrediente>
-                    </ingredientes>
-                    <instruções>
-                        <passoRef ref="fazer-molho"/>
-                        <passoRef ref="fazer-massa"/>
-                    </instruções>
-                </receita>
-                <receita id="tiramisu" tempo="lento" custo="barato" categoria="sobremesa" dificuldade="díficil" image="./images/tiramisu">
+                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="./images/tiramisu" >
                     <nome>
                         tiramisu
                     </nome>
+
                     <ingredientes >
                         <ingrediente id="cafe" quantidade="100" unidade-medida="ml">
                             cafe
@@ -99,7 +101,7 @@
                         </ingrediente>
                     </ingredientes>
                     <instruções>
-                        <passo>
+                        <passo ilustração="bater-leite">
                             Bata o <ingredienteRef ref="leite"/> na batedeira até obter um chantilly firme.
                         </passo>
                         <passo>
@@ -112,20 +114,19 @@
                             Acrescente o chantilly, o <ingredienteRef ref="mascarpone"/> e misture bem.
                         </passo>
                         <passo>
-                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratorio formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de <ingredienteRef ref="biscoito"/> molhados no <ingredienteRef ref="cafe"/> e por último mais uma camada de creme.
+                            Molhe rapidamente os <ingredienteRef ref="biscoito"/> no <ingredienteRef ref="cafe"/> (um a um) e coloque em um refratário formando uma camada, coloque por cima uma camada do creme, faça mais uma camada de <ingredienteRef ref="biscoito"/> molhados no <ingredienteRef ref="cafe"/> e por último mais uma camada de creme.
                         </passo>
                         <passo>
-                            Para finalizar polvilhe <ingredienteRef ref="chocolate-em-po"/> em po amargo.
+                            Para finalizar polvilhe <ingredienteRef ref="chocolate-em-po"/> em pó amargo.
                         </passo>
                         <passo>
-                            Leve a geladeira por no mínimo 3 horas e sirva.
+                            Leve à geladeira por no mínimo 3 horas e sirva.
                         </passo>
 
                     </instruções>
                 </receita>
             </sub-seção>
         </seção>
-
     </parte>
 
 </receitas>
