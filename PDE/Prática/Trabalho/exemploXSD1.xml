@@ -65,7 +65,7 @@
                     </ingrediente>
                 </ingredientes>
                 <instruções>
-                    <passoRef ref="fazer-molho"/>
+                    <passoRef ref="fazer-molho">Fazer o molho </passoRef>
                     <passoRef ref="fazer-massa"/>
                 </instruções>
             </receita>

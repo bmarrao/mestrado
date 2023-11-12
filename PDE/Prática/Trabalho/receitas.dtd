@@ -47,7 +47,7 @@
         id ID #IMPLIED
         ilustração CDATA   #IMPLIED>
 
-<!ELEMENT passoRef (#PCDATA | ingredienteRef)* >
+<!ELEMENT passoRef (#PCDATA)>
 <!ATTLIST passoRef
         ref  IDREF     #REQUIRED>
 

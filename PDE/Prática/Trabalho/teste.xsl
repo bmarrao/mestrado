@@ -56,7 +56,7 @@
     <xsl:template match="r:parte" mode="normal">
         <hr/>
         <h2 id="#{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
-        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
+        <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
         <xsl:apply-templates select="r:receita" mode="normal"/>
         <xsl:apply-templates select="r:seção" mode="normal"/>
@@ -78,7 +78,7 @@
         <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
         <h2 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
-        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
+        <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
         <xsl:apply-templates select="r:receita" mode="normal"/>
         <xsl:apply-templates select="r:sub-seção" mode="normal"/>
@@ -95,38 +95,42 @@
             </ol>
         </li>
     </xsl:template>
-    <xsl:template name="sub-seção" mode="normal">
+
+    <xsl:template match="r:sub-seção" mode="normal">
         <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
-        <h2 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
-        <h3><xsl:value-of select="r:texto-introdutorio"/></h3>
+        <h3 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h3>
+        <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
         <xsl:apply-templates select="r:receita" mode="normal"/>
     </xsl:template>
 
     <xsl:template match="r:receita" mode="tabela-conteudo">
-        <xsl:variable name="id" select="normalize-space(@id)"/>
 
         <li>
-            <a href="#{generate-id()}"><xsl:value-of select="r:nome"/></a>
+            <xsl:choose>
+                <xsl:when test="@id"><a href="#{@id}"><xsl:value-of select="r:nome"/></a></xsl:when>
+                <xsl:otherwise> <a href="#{generate-id()}"><xsl:value-of select="r:nome"/></a></xsl:otherwise>
+            </xsl:choose>
+
         </li>
     </xsl:template>
 
     <xsl:template match="r:receita" mode="normal">
         <hr/>
-        <ol>
-            <xsl:choose>
-                <xsl:when test="@id"><h2 class="center" id="{@id}"><xsl:value-of select="r:nome"/></h2></xsl:when>
-                <xsl:otherwise><h2 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></h2></xsl:otherwise>
-            </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="@id"><h4 class="center" id="{@id}"><xsl:value-of select="r:nome"/></h4></xsl:when>
+            <xsl:otherwise><h4 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></h4></xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
 
+        <ol>
             <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
             <xsl:if test="@categoria"><p>Categoria :<xsl:value-of select="@categoria"/></p></xsl:if>
             <xsl:if test="@tempo"><p>Tempo :<xsl:value-of select="@tempo"/></p></xsl:if>
             <xsl:if test="@custo"><p>Custo :<xsl:value-of select="@custo"/></p></xsl:if>
         </ol>
 
-        <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem"/></xsl:if>
 
 
         <xsl:apply-templates select="r:ingredientes"/>
@@ -135,7 +139,7 @@
         <xsl:apply-templates select="r:receita" mode="normal"/>
     </xsl:template>
     <xsl:template match="r:ingredientes">
-        <h4>Ingredientes</h4>
+        <p>Ingredientes</p>
         <ol>
             <xsl:apply-templates select="r:ingrediente"/>
         </ol>
@@ -151,7 +155,7 @@
 
 
     <xsl:template match="r:instruções">
-        <h4>Instruções</h4>
+        <p>Instruções</p>
         <xsl:choose>
             <xsl:when test="r:texto-instrução"> <xsl:apply-templates select="r:texto-instrução"/></xsl:when>
             <xsl:otherwise>
@@ -187,7 +191,12 @@
 
     <xsl:template match="r:passoRef">
         <xsl:variable name="ref" select="@ref"/>
-        <a href="#{@ref}"><xsl:apply-templates select="//r:passo[@id = $ref]"/></a>
+        <xsl:variable name="step" select="//r:passo[@id = $ref]"/>
+        <a href="#{@ref}">
+            <li>
+                <xsl:apply-templates select="$ref"/>
+            </li>
+        </a>
     </xsl:template>
 
     <xsl:template match="r:ingredienteRef">
