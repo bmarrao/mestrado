@@ -66,13 +66,13 @@
                 </ingredientes>
                 <instruções>
                     <passoRef ref="fazer-molho">Fazer o molho </passoRef>
-                    <passoRef ref="fazer-massa"/>
+                    <passoRef ref="fazer-massa">Fazer massa</passoRef>
                 </instruções>
             </receita>
 
             <sub-seção>
                 <titulo>Sobremesas</titulo>
-                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="./images/tiramisu" >
+                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="images/tiramisu.jpeg" >
                     <nome>
                         tiramisu
                     </nome>
@@ -101,7 +101,7 @@
                         </ingrediente>
                     </ingredientes>
                     <instruções>
-                        <passo ilustração="bater-leite">
+                        <passo ilustração="images/bater-leite">
                             Bata o <ingredienteRef ref="leite"/> na batedeira até obter um chantilly firme.
                         </passo>
                         <passo>
