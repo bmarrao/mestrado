@@ -41,6 +41,7 @@ A MyCarrier tem neste âmbito um contrato com a Toyota de 3 anos ;
 Investimento em drones : 
     Motivação : 
         Os UAVs (drones) começaram a desempenhar um papel central na inteligência da automação de operações de armazém - dada a sua capacidade de voar e pairar de forma autónoma, transportar cargas úteis, evitar obstáculos, navegar em espaços fechados e pousar com precisão, operar em frotas e ser usado remotamente.
+        
     
     Beneficios : 
         Os benefícios comerciais dos drones são significativos e imediatos devido ao baixo CapEx e investimentos em infraestrutura, acesso a hardware já comoditizado e soluções baseadas em SaaS para operações de armazém.A conectividade em nuvem de drones, combinado com integração baseada em APIs, torna mais fácil aos sistemas de gestão de armazém existentes integrar frotas de drones autónomos em fluxos de trabalho.
@@ -50,4 +51,11 @@ Investimento em drones :
         Drones pequenos e leves (com protetores de hélices) podem ser usadas na proximidade humana, podem ser programados com mecanimos de segurança;
     
     Dados : Os dados desempenham um papel central na transformação digital dos armazéns.
-        Passam a ser integrado 
+        Passam a ser integrado os dados proveniente dos drones nos sistemas de informação existentes e na gestão dos fluxos de trabalho.
+        Esses dados podem ser analisados usando IA para forneces novos insights para uma melhor tomada de decisão relacionada com gestão de inventários , capacaidade de respostas as necessidades da Supply chain , segurança e proteção (Beneficio ?)
+
+        É neste contexto que a MyCarrier decidiu incorporar no seu road map de I&D o desenvolvimento e endogeneização de novos conhecimentos que servirão de base à incorporação da tecnologia de utilização de drones na logística de armazenagem.
+
+    Objetivos :
+        Colocar a MyCarrier numa posição de liderança de mercado no desenvolvimento da tecnologia de automação de integridade indoor / inventário
+        Drone a desenvolver se diferencie através da sua capacidade de leitura de etiquetas de códigos de barra( tanto em altura como no chão )

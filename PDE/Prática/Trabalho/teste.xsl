@@ -212,7 +212,7 @@
         <xsl:variable name="ref" select="@ref"/>
 
         <xsl:choose>
-            <xsl:when test="select=//r:ingrediente[@id = $ref]"><b><a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a></b></xsl:when>
+            <xsl:when test="//r:ingrediente[@id = $ref]"><b><a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a></b></xsl:when>
             <xsl:otherwise><xsl:message >O ingrediente referenciado não existe</xsl:message></xsl:otherwise>
         </xsl:choose>
 
