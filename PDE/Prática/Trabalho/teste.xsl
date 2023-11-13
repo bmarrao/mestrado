@@ -58,7 +58,7 @@
 
     <xsl:template match="r:parte" mode="normal">
         <hr/>
-        <h2 id="#{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
+        <h2 id="#{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h2>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
@@ -67,7 +67,6 @@
     </xsl:template >
 
     <xsl:template match="r:seção" mode="tabela-conteudo">
-        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <li>
             <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
@@ -79,9 +78,8 @@
     </xsl:template>
 
     <xsl:template match="r:seção" mode="normal">
-        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
-        <h2 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h2>
+        <h2 id="{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h2>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
@@ -91,7 +89,6 @@
 
 
     <xsl:template match="r:sub-seção" mode="tabela-conteudo">
-        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <li>
             <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
@@ -102,9 +99,8 @@
     </xsl:template>
 
     <xsl:template match="r:sub-seção" mode="normal">
-        <xsl:variable name="id" select="normalize-space(r:titulo)"/>
         <hr/>
-        <h3 id="{generate-id()}"><xsl:value-of select="r:titulo"/></h3>
+        <h3 id="{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h3>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
@@ -125,10 +121,10 @@
     <xsl:template match="r:receita" mode="normal">
         <hr/>
         <xsl:choose>
-            <xsl:when test="@id"><h4 class="center" id="{@id}"><xsl:value-of select="r:nome"/></h4></xsl:when>
-            <xsl:otherwise><h4 class="center" id="{generate-id()}"><xsl:value-of select="r:nome"/></h4></xsl:otherwise>
+            <xsl:when test="@id"><h4  id="{@id}"><xsl:value-of select="r:nome"/></h4></xsl:when>
+            <xsl:otherwise><h4  id="{generate-id()}"><xsl:value-of select="r:nome"/></h4></xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
+        <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" /></xsl:if>
 
         <ol>
             <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
@@ -210,8 +206,10 @@
         <b><a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a></b>
     </xsl:template>
     <xsl:template match="r:receitaRef">
-        <xsl:variable name="ref" select="@ref"/>
-        <a href="#{@ref}"><xsl:value-of select="//r:receita[@id = $ref]"/></a>
+        <li>
+            <a href="#{@ref}"><xsl:value-of select="."/></a>
+        </li>
+
     </xsl:template>
 
 

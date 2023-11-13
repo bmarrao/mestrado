@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE receitas SYSTEM "receitas.dtd">
-<receitas>
+<receitas
+        xmlns="trabalhoPDE"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="trabalhoPDE receitas.xsd"
+>
     <cabecalho>
         <titulo>Sobremesas Italianas</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
         <data-publicacao>
-            2023/10/23
+            2023-10-23
         </data-publicacao>
     </cabecalho>
     <seção>
@@ -73,7 +76,7 @@
             </ingredientes>
             <instruções>
                 <passo ilustração="teste"> teste de passo</passo>
-                <receitaRef ref="Canoli"/>
+                <receitaRef ref="Canoli">Seguir a receita  de canoli</receitaRef>
             </instruções>
         </receita>
     </seção>

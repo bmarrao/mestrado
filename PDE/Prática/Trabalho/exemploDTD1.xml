@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE receitas SYSTEM "receitas.dtd">
+
 <receitas
-        xmlns="trabalhoPDE"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="trabalhoPDE receitas.xsd"
->
+        xmlns="trabalhoPDE">
     <cabecalho>
         <titulo>Livro de receitas do Breno</titulo>
         <autor>Breno Fernando Guerra Marrão</autor>
@@ -65,14 +64,14 @@
                     </ingrediente>
                 </ingredientes>
                 <instruções>
-                    <passoRef ref="fazer-molho"/>
-                    <passoRef ref="fazer-massa"/>
+                    <passoRef ref="fazer-molho"> fazer o molho </passoRef>
+                    <passoRef ref="fazer-massa"> fazer a massa </passoRef>
                 </instruções>
             </receita>
 
             <sub-seção>
                 <titulo>Sobremesas</titulo>
-                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="./images/tiramisu" >
+                <receita id="tiramisu" categoria="sobremesa" dificuldade="díficil" tempo="lento" custo="barato" ilustração="./images/tiramisu.jpeg" >
                     <nome>
                         tiramisu
                     </nome>

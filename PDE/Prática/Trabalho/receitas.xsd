@@ -152,7 +152,7 @@
 
     </xs:complexType>
 
-    <xs:complexType name="ReceitaRef">
+    <xs:complexType name="ReceitaRef" mixed="true">
         <xs:attribute name="ref" type="xs:IDREF"/>
     </xs:complexType>
 
