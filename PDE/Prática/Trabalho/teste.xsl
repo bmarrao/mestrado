@@ -203,7 +203,11 @@
     <xsl:template match="r:ingredienteRef">
         <xsl:variable name="ref" select="@ref"/>
 
+        <xsl:choose>
         <b><a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a></b>
+        <xsl:when test="select=//r:ingrediente[@id = $ref]"></xsl:when>
+    </xsl:choose>
+
     </xsl:template>
     <xsl:template match="r:receitaRef">
         <li>
