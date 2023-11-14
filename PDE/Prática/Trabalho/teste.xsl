@@ -151,7 +151,7 @@
         <li id="{$id}">
             <xsl:value-of select="." />
         </li>
-        <xsl:if test="//r:ingredienteRef[@ref = $id]"><xsl:message>Ingrediente criado que não é utilizado na receita</xsl:message></xsl:if>
+        <xsl:if test="not(//r:ingredienteRef[@ref = $id])"><xsl:message>Ingrediente criado que não é utilizado na receita</xsl:message></xsl:if>
     </xsl:template>
 
 
@@ -166,9 +166,6 @@
                 </ol>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="r:texto-instrução">
-            <xsl:apply-templates/>
-        </xsl:if>
     </xsl:template>
 
     <xsl:template match="r:texto-instrução">
@@ -193,45 +190,42 @@
         </xsl:choose>
     </xsl:template>
 
+
     <xsl:template match="r:passoRef">
-
-
         <xsl:variable name="ref" select="@ref"/>
-
-
         <xsl:choose>
-            <xsl:when test="select=//r:passo[@id = $ref]">
+            <xsl:when test="//r:passo[@id = $ref]">
                 <li>
-                    <a href="#{@ref}"><xsl:value-of select="."/></a>
+                    <a href="#{$ref}">
+                        <xsl:value-of select="."/>
+                    </a>
                 </li></xsl:when>
-            <xsl:otherwise><xsl:message >O passo referenciado não existe</xsl:message></xsl:otherwise>
+            <xsl:otherwise><xsl:message>O passo referenciado não existe</xsl:message></xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+
 
     <xsl:template match="r:ingredienteRef">
         <xsl:variable name="ref" select="@ref"/>
 
         <xsl:choose>
-            <xsl:when test="//r:ingrediente[@id = $ref]"><b><a href="#{@ref}"><xsl:value-of select="//r:ingrediente[@id = $ref]"/></a></b></xsl:when>
+            <xsl:when test="../../../r:ingredientes/r:ingrediente[@id = $ref]"><b><a href="#{@ref}"><xsl:value-of select="../../../r:ingredientes/r:ingrediente[@id = $ref]"/></a></b></xsl:when>
             <xsl:otherwise><xsl:message >O ingrediente referenciado não existe</xsl:message></xsl:otherwise>
         </xsl:choose>
 
     </xsl:template>
     <xsl:template match="r:receitaRef">
         <xsl:variable name="ref" select="@ref"/>
-
-
         <xsl:choose>
-            <xsl:when test="select=//r:receita[@id = $ref]">
-                <li>
+            <xsl:when test="//r:receita[@id = $ref]">
                     <a href="#{@ref}"><xsl:value-of select="."/></a>
-                </li></xsl:when>
+            </xsl:when>
             <xsl:otherwise><xsl:message >A receita referenciada não existe</xsl:message></xsl:otherwise>
         </xsl:choose>
 
 
     </xsl:template>
-
 
 </xsl:stylesheet>
 

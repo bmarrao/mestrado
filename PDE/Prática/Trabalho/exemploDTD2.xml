@@ -42,9 +42,6 @@
                 <ingrediente id="queijo-creme" quantidade="250" unidade-medida="gramas">
                     quejo creme
                 </ingrediente>
-                <ingrediente id="ricotta" quantidade="500" unidade-medida="gramas">
-                    ricotta
-                </ingrediente>
             </ingredientes>
             <instruções>
                 <texto-instrução>
@@ -60,7 +57,7 @@
                     6. Dentro de um prato coloque <ingredienteRef ref="pistachio"/> grosseiramente picados com uma pitada de <ingredienteRef
                         ref="sal"/>. Num saco de pasteleiro coloque a mistura de <ingredienteRef ref="queijo-creme"/> e recheie o interior dos cannolis. Passe as pontas pelo prato com os<ingredienteRef ref="pistachio"/>.
                     7. Polvilhe, no final, com <ingredienteRef ref="açucar"/> em pó.
-                    Teste de <receitaRef ref="teste-receita"/>
+                    Teste de <receitaRef ref="teste-receita">referencia de receita</receitaRef>
                 </texto-instrução>
             </instruções>
         </receita>
@@ -68,12 +65,11 @@
             <nome>receita-exemplo</nome>
             <calorias>400</calorias>
             <ingredientes>
-                <ingrediente id="teste">
-                    teste
-                </ingrediente>
+                <ingrediente id="ing-teste">ing-teste</ingrediente>
             </ingredientes>
             <instruções>
-                <passo ilustração="teste"> teste de passo</passo>
+
+                <passo ilustração="teste"> teste de passo <ingredienteRef ref="ing-teste"/> </passo>
                 <receitaRef ref="Canoli">Seguir a receita  de canoli</receitaRef>
             </instruções>
         </receita>

@@ -77,6 +77,9 @@
                     </nome>
 
                     <ingredientes >
+                        <ingrediente id="NãoExiste">
+                            Ingrediente que não existe
+                        </ingrediente>
                         <ingrediente id="cafe" quantidade="100" unidade-medida="ml">
                             cafe
                         </ingrediente>
