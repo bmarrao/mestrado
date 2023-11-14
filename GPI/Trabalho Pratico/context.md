@@ -74,9 +74,19 @@ Investimento em drones :
 
     Algumas desvantagens:
         Custo de implementação elevado
+    
+    Desvios :
+        dificuldades no que diz respeito a tempo de voo (autonomia) e velocidade de voo
+        A necessidade da presença de etiquetas com a identificação da posição em código de barras é limitadora na utilização do drone em realização de inventário em massa
+        Em voos realizados em zonas com caixas de pequenas dimensões não é possível distinguir as etiquetas,
+
+    Trabalhos futuros :
+        Desenvolvimento do prototipo 2, aumento da sua capacidade de leitura, otimização de velocidade de leitura de voo nos diferentes espaços do armazém, bem como a melhoria na aplicação de interpretação de códigos de barras
+        será ainda considerada a certificação CE do drone e desenvolvimentos intensivos nos sensores e medidas de segurança do drone.
 
     FIGURA 10 IMPORTANTE
 
-    Equipe de hardware e software , piloto profissional de drones, equipa em background que desenvolveu e construiu diversos drones , Toyota (diretor geral), 
+    Equipe de hardware e software , piloto profissional de drones, equipa em background que desenvolveu e construiu diversos drones , Toyota (diretor geral), Desde o início do projeto tem vindo a ser desenvolvido um trabalho conjunto da equipa de I&D da MDL (com a participação da Toyota como site de testes)
+    
 
 
