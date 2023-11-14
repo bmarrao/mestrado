@@ -41,7 +41,13 @@ A MyCarrier tem neste âmbito um contrato com a Toyota de 3 anos ;
 Investimento em drones : 
     Motivação : 
         Os UAVs (drones) começaram a desempenhar um papel central na inteligência da automação de operações de armazém - dada a sua capacidade de voar e pairar de forma autónoma, transportar cargas úteis, evitar obstáculos, navegar em espaços fechados e pousar com precisão, operar em frotas e ser usado remotamente.
-        
+        As soluções existentes na tecnologia disponível mostraram ser de implementação direta para operações com armazenamento simples e homogéneo, mas não para com características pouco homogéneas
+        a realização de inventário através de utilização de drones apesar de ser já realizada, tem várias condicionantes
+        Dificuldade em encontrar no mercado um equipamento com tecnologia ready made que satisfaz as necessidades(motivos no 1.2.3 Etapa 1)
+    
+    Pretendido :
+        o pretendido no presente projeto é a investigação e desenvolvimento de um drone que realize voo em modo automático e tenha capacidade de realizar leitura/inventário ao stock existente, dentro de um armazém onde não é possível geolocalização e evitar autilização de frequências em circuito aberto.
+        Novo drone que pode ser utilizado e adaptado tendo em conta as necessidades que podem existir em diferentes armazéns, com diferentes dimensões, embalagens e etiquetas.
     
     Beneficios : 
         Os benefícios comerciais dos drones são significativos e imediatos devido ao baixo CapEx e investimentos em infraestrutura, acesso a hardware já comoditizado e soluções baseadas em SaaS para operações de armazém.A conectividade em nuvem de drones, combinado com integração baseada em APIs, torna mais fácil aos sistemas de gestão de armazém existentes integrar frotas de drones autónomos em fluxos de trabalho.
@@ -56,6 +62,21 @@ Investimento em drones :
 
         É neste contexto que a MyCarrier decidiu incorporar no seu road map de I&D o desenvolvimento e endogeneização de novos conhecimentos que servirão de base à incorporação da tecnologia de utilização de drones na logística de armazenagem.
 
+
     Objetivos :
         Colocar a MyCarrier numa posição de liderança de mercado no desenvolvimento da tecnologia de automação de integridade indoor / inventário
         Drone a desenvolver se diferencie através da sua capacidade de leitura de etiquetas de códigos de barra( tanto em altura como no chão )
+        pretende-se estudar, especificar, desenvolver e testar um processo de leitura de etiquetas e verificação física das embalagens, na tentativa de eliminar a possibilidade de erro humano.
+
+    Mercado de drones atual constituído por pequenas empresas com drones civis por conta de restrições ao nivel regulatorio;
+
+    Grupo de cientistas do MIT desenvolveram tecnologia tal que os drones funcionam de forma autónoma , com capacidade de realizar o scan de códigos RFID a uma distância considerável. Os drones localizam o pedido graças ao sinal emitido pelo RFID, podendo além de localizar o pedido, transmitir as informações deste;
+
+    Algumas desvantagens:
+        Custo de implementação elevado
+
+    FIGURA 10 IMPORTANTE
+
+    Equipe de hardware e software , piloto profissional de drones, equipa em background que desenvolveu e construiu diversos drones , Toyota (diretor geral), 
+
+

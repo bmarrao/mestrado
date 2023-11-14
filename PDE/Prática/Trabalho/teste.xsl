@@ -126,12 +126,10 @@
         </xsl:choose>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" /></xsl:if>
 
-        <ol>
-            <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
-            <xsl:if test="@categoria"><p>Categoria :<xsl:value-of select="@categoria"/></p></xsl:if>
-            <xsl:if test="@tempo"><p>Tempo :<xsl:value-of select="@tempo"/></p></xsl:if>
-            <xsl:if test="@custo"><p>Custo :<xsl:value-of select="@custo"/></p></xsl:if>
-        </ol>
+        <xsl:if test="@dificuldade"><p>Dificuldade :<xsl:value-of select="@dificuldade"/></p></xsl:if>
+        <xsl:if test="@categoria"><p>Categoria :<xsl:value-of select="@categoria"/></p></xsl:if>
+        <xsl:if test="@tempo"><p>Tempo :<xsl:value-of select="@tempo"/></p></xsl:if>
+        <xsl:if test="@custo"><p>Custo :<xsl:value-of select="@custo"/></p></xsl:if>
 
 
 
@@ -150,6 +148,12 @@
         <xsl:variable name="id" select="@id"/>
         <li id="{$id}">
             <xsl:value-of select="." />
+            <xsl:if test="@quantidade | @unidade-medida" >
+                <ul type="0">
+                    <xsl:if test="@quantidade"><li>Quantidade : <xsl:value-of select="@quantidade"/></li></xsl:if>
+                    <xsl:if test="@unidade-medida"><li>Unidade de medida : <xsl:value-of select="@unidade-medida"/></li></xsl:if>
+                </ul>
+            </xsl:if>
         </li>
         <xsl:if test="not(//r:ingredienteRef[@ref = $id])"><xsl:message>Ingrediente criado que não é utilizado na receita</xsl:message></xsl:if>
     </xsl:template>
