@@ -47,7 +47,7 @@ Investimento em drones :
     
     Pretendido :
         o pretendido no presente projeto é a investigação e desenvolvimento de um drone que realize voo em modo automático e tenha capacidade de realizar leitura/inventário ao stock existente, dentro de um armazém onde não é possível geolocalização e evitar autilização de frequências em circuito aberto.
-        Novo drone que pode ser utilizado e adaptado tendo em conta as necessidades que podem existir em diferentes armazéns, com diferentes dimensões, embalagens e etiquetas.
+        Novo drone que  .
     
     Beneficios : 
         Os benefícios comerciais dos drones são significativos e imediatos devido ao baixo CapEx e investimentos em infraestrutura, acesso a hardware já comoditizado e soluções baseadas em SaaS para operações de armazém.A conectividade em nuvem de drones, combinado com integração baseada em APIs, torna mais fácil aos sistemas de gestão de armazém existentes integrar frotas de drones autónomos em fluxos de trabalho.
@@ -66,7 +66,7 @@ Investimento em drones :
     Objetivos :
         Colocar a MyCarrier numa posição de liderança de mercado no desenvolvimento da tecnologia de automação de integridade indoor / inventário
         Drone a desenvolver se diferencie através da sua capacidade de leitura de etiquetas de códigos de barra( tanto em altura como no chão )
-        pretende-se estudar, especificar, desenvolver e testar um processo de leitura de etiquetas e verificação física das embalagens, na tentativa de eliminar a possibilidade de erro humano.
+        estudar, especificar, desenvolver e testar um processo de leitura de etiquetas e verificação física das embalagens, na tentativa de eliminar a possibilidade de erro humano.
 
     Mercado de drones atual constituído por pequenas empresas com drones civis por conta de restrições ao nivel regulatorio;
 
