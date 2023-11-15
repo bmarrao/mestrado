@@ -27,10 +27,10 @@
         </HTML>
     </xsl:template>
     <xsl:template name="tabela-conteudo">
-        <ol type="1">
+        <ul>
             <xsl:apply-templates select="r:parte"  mode="tabela-conteudo"/>
             <xsl:apply-templates select="r:seção" mode="tabela-conteudo"/>
-        </ol>
+        </ul>
     </xsl:template>
     
     <xsl:template match="r:cabecalho">
@@ -48,17 +48,19 @@
 
     <xsl:template match="r:parte" mode="tabela-conteudo">
         <li>
-            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
-            <ol type="1">
+            <a href="#{generate-id()}">Parte <xsl:number format="1."/> -
+                <xsl:value-of select="r:titulo"/></a>
+            <ul>
                 <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
                 <xsl:apply-templates select="r:seção" mode="tabela-conteudo"/>
-            </ol>
+            </ul>
         </li>
     </xsl:template >
 
     <xsl:template match="r:parte" mode="normal">
         <hr/>
-        <h2 id="#{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h2>
+        <h2 id="#{generate-id()}" class="center">Parte <xsl:number format="1."/> -
+            <xsl:value-of select="@titulo"/> </h2>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
@@ -68,18 +70,20 @@
 
     <xsl:template match="r:seção" mode="tabela-conteudo">
         <li>
-            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
+            <a href="#{generate-id()}">Seção <xsl:number format="1." count="r:receita | r:parte |r:seção " level="multiple"/> -
+                <xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
-            <ol type="1">
+            <ul>
                 <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
                 <xsl:apply-templates select="r:sub-seção" mode="tabela-conteudo"/>
-            </ol>
+            </ul>
         </li>
     </xsl:template>
 
     <xsl:template match="r:seção" mode="normal">
         <hr/>
-        <h2 id="{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h2>
+        <h3 id="{generate-id()}" class="center">Seção <xsl:number format="1." count="r:receita | r:parte |r:seção " level="multiple"/> -
+            <xsl:value-of select="r:titulo"/> </h3>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
@@ -90,17 +94,19 @@
 
     <xsl:template match="r:sub-seção" mode="tabela-conteudo">
         <li>
-            <a href="#{generate-id()}"><xsl:value-of select="r:titulo"/></a>
+            <a href="#{generate-id()}">Sub-secção <xsl:number format="1." count="r:parte |r:seção | r:sub-seção" level="multiple"/> -
+                <xsl:value-of select="r:titulo"/></a>
             <!-- FALTA O HREF -->
-            <ol type="1">
+            <ul>
                 <xsl:apply-templates select="r:receita" mode="tabela-conteudo"/>
-            </ol>
+            </ul>
         </li>
     </xsl:template>
 
     <xsl:template match="r:sub-seção" mode="normal">
         <hr/>
-        <h3 id="{generate-id()}" class="center"><xsl:value-of select="r:titulo"/></h3>
+        <h4 id="{generate-id()}" class="center">Sub-secção <xsl:number format="1." count="r:parte |r:seção | r:sub-seção" level="multiple"/> -
+            <xsl:value-of select="r:titulo"/></h4>
         <xsl:if test="@ilustração"><img src="{@ilustração}" alt="imagem" class="center"/></xsl:if>
         <p><xsl:value-of select="r:texto-introdutorio"/></p>
         <hr/>
