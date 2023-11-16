@@ -101,7 +101,7 @@
                         </ingrediente>
                     </ingredientes>
                     <instruções>
-                        <passo ilustração="images/bater-leite">
+                        <passo ilustração="images/bater-leite.jpeg">
                             Bata o <ingredienteRef ref="leite"/> na batedeira até obter um chantilly firme.
                         </passo>
                         <passo>

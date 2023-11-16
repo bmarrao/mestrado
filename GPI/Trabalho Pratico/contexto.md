@@ -15,3 +15,5 @@ Com este projeto a MyCarrier tem os objetivos de :
 Com esses requisitos e o objetivos o projeto foi iniciado e foram desenvolvidos 2 prototipos 
 
 Trabalho a frente : continuar o desenvolvimento dos segundo prototipo melhorando sua capacacidade de leitura , otimizando a velocidade de leitura de voo nos diferentes espaços do armazém, bem como a melhoria na aplicação de interpretação de códigos de barras
+
+A metodologia escolhida para o projeto é o Agile pois é um projeto com uma grande componente de desenvolvimento de software no qual o Agile é mais eficiente pela sua adaptabilidade e pela estrutura colaborativa do projeto 

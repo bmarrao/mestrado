@@ -75,7 +75,7 @@
                 </ingrediente>
             </ingredientes>
             <instruções>
-                <passo ilustração="teste"> teste de passo</passo>
+                <passo > teste de passo</passo>
                 <receitaRef ref="Canoli">Seguir a receita  de canoli</receitaRef>
             </instruções>
         </receita>
