@@ -190,3 +190,9 @@ out 26, 2023 9:19:56 DA TARDE ds.assign.entropy.Server run
 INFO: server: new connection from 127.0.0.1
 out 26, 2023 9:20:26 DA TARDE ds.assign.entropy.Server run
 INFO: server: new connection from 127.0.0.1
+nov 24, 2023 9:42:52 DA TARDE ds.assign.chat.Server run
+INFO: server: endpoint running at port 3000 ...
+nov 24, 2023 9:44:21 DA TARDE ds.assign.chat.Server run
+INFO: server: endpoint running at port 3000 ...
+nov 24, 2023 9:45:10 DA TARDE ds.assign.chat.Server run
+INFO: server: endpoint running at port 3000 ...

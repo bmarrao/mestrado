@@ -45,8 +45,8 @@ class Data
     {
 
         this.peers = peers;
-        int tamanho = peer.size();
-        int meuIndice = indice; 
+        tamanho = peers.size();
+        meuIndice = indice; 
 
     }
 
@@ -55,19 +55,30 @@ class Data
     {
         Socket socket ;
         PrintWriter   out;
-        BufferedReader in;
         counter++;
-        String message= palavra + ";" + count + ";" + meuIndice;
-        for (Tuple tuple : peers)
+        String message= palavra + ";" + this.counter + ";" + this.meuIndice;
+        try 
         {
-            socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            System.out.println("Array que to mandando " + arr);
-            out.println(message);
-            out.flush();
-            socket.close();
 
+            for (int i = 0 ; i < this.tamanho; i++)
+            {
+
+                if (i!= this.meuIndice)
+                {
+                    Tuple tuple = peers.get(i);
+                    socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    out.println(message);
+                    out.flush();
+                    socket.close();
+                }
+            }
         }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     public void receive(String pack)
@@ -81,7 +92,7 @@ class Data
         {
             this.counter = ts;
         }
-        if(!(unpack[0].equals(ack)))
+        if(!(unpack[0].equals("ack")))
         {
             this.send("ack");
         }
@@ -92,34 +103,43 @@ class Data
     public void deliver()
     {
         String m = queue.get(0);
-        if(m.equals("ack"))
+        String[] unpack =  m.split(";");
+ 
+        if(unpack[0].equals("ack"))
         {
             queue.remove(0);
         }
         else
         {
-            int[] arr = new int[peers.size()];
-            String[] unpack =  pack.split(";");;
+            int[] arr = new int[this.tamanho];
+            arr[meuIndice] = 1;
             int ind;
+            String[] payload;
+
             for(String pack :queue)
             {
-                unpack = pack.split(";");
-                ind = Integer.parseInt(unpack[1]);
+                payload = pack.split(";");
+                ind = Integer.parseInt(payload[1]);
                 arr[ind] = 1;
 
             }
-
-            for(int i = 0 ; i< arr.length ; i++)
+            int i  = 0;
+            for(; i< this.tamanho ; i++)
             {
                 if (arr[i] != 1)
                 {
-                    return ;           
+                    break;         
                 }
 
             }
 
-            counter++;
-            System.out.println(unpack[0]);
+            if(i == this.tamanho)
+            {
+                System.out.println(unpack[0]);
+
+                counter++;
+
+            }
 
         }
 
@@ -155,15 +175,18 @@ public class Peer
         Peer peer = new Peer(args[0]);
         System.out.printf("new peer @ host=%s\n", args[0]);
         ArrayList<Tuple> peers = new ArrayList<Tuple>();
-        Data data = new Data();
         
-        for (int i = 1; i < args.length; i+=2)
+        for (int i = 0; i < args.length-1; i+=2)
         {
             peers.add(new Tuple(args[i],Integer.parseInt(args[i+1])));
         }
+        int indice= Integer.parseInt(args[args.length-1]);
+
+        Data data = new Data(peers,indice);
         
-        new Thread (new Server(Integer.parseInt(args[0]),data, peer.logger)).start();
-        new Thread (new Client(peers,data,peer.logger,1)).start();
+        Tuple meuPeer = peers.get(indice);
+        new Thread (new Server(meuPeer.port,data, peer.logger)).start();
+        new Thread (new Client(peers,data,peer.logger,5)).start();
     }
 }
 
@@ -210,20 +233,10 @@ class Client implements Runnable
     {
         try
         {
-            String arr ="";
-            Socket socket ;
-            PrintWriter   out;
-            BufferedReader in;
             int t;
             Random rand =new Random();
-            int peer ;
-            Tuple tuple;
-            inr x ;
+            int x ;
             String palavra="";
-            synchronized (data) 
-            {
-                data.append(dic.get(x));
-            }
             while(true)
             {
                 try 
@@ -232,8 +245,6 @@ class Client implements Runnable
                     Thread.sleep(t);
                     x = rand.nextInt(466549);
                     palavra= this.dic.get(x);
-                    peer = rand.nextInt(this.tamanho-1) + 1;
-                    tuple = this.peers.get(peer);
                     synchronized(data)
                     {
                         data.send(palavra);
@@ -280,13 +291,13 @@ class Server implements Runnable
             BufferedReader in ;
             PrintWriter out;
             int ts ;
-            logger.info("server: endpoint running at port " + port + " ...");
+            //logger.info("server: endpoint running at port " + port + " ...");
             while(true) 
             {
                 try 
                 {
                     client = server.accept();
-                    logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
+                    //logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
                     in = new BufferedReader(new InputStreamReader(client.getInputStream()));    
 	                out = new PrintWriter(client.getOutputStream(), true);
                     String message = in.readLine();
