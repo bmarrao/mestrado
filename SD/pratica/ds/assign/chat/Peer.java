@@ -57,13 +57,13 @@ class Data
         PrintWriter   out;
         BufferedReader in;
         counter++;
+        String message= palavra + ";" + count + ";" + meuIndice;
         for (Tuple tuple : peers)
         {
             socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
             out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Array que to mandando " + arr);
-            out.println(palavra + ";" + count + ";" + meuIndice);
+            out.println(message);
             out.flush();
             socket.close();
 
@@ -73,14 +73,17 @@ class Data
     public void receive(String pack)
     {
         String[] unpack = pack.split(";");
-        int ts = Integer.parseInt(unpack[0]);
+        int ts = Integer.parseInt(unpack[1]);
+        int ind =  Integer.parseInt(unpack[2]);
+        String palavra = unpack[0];
+
         if (ts > this.counter)
         {
             this.counter = ts;
         }
         if(!(unpack[0].equals(ack)))
         {
-            this.send("ack"+";"+this.counter + ";" + meuIndice);
+            this.send("ack");
         }
         this.queue.add(unpack[0]+";" + unpack[2]);
         this.deliver();
@@ -89,7 +92,36 @@ class Data
     public void deliver()
     {
         String m = queue.get(0);
-        if(pa)
+        if(m.equals("ack"))
+        {
+            queue.remove(0);
+        }
+        else
+        {
+            int[] arr = new int[peers.size()];
+            String[] unpack =  pack.split(";");;
+            int ind;
+            for(String pack :queue)
+            {
+                unpack = pack.split(";");
+                ind = Integer.parseInt(unpack[1]);
+                arr[ind] = 1;
+
+            }
+
+            for(int i = 0 ; i< arr.length ; i++)
+            {
+                if (arr[i] != 1)
+                {
+                    return ;           
+                }
+
+            }
+
+            counter++;
+            System.out.println(unpack[0]);
+
+        }
 
     }
 
@@ -187,7 +219,7 @@ class Client implements Runnable
             int peer ;
             Tuple tuple;
             inr x ;
-            String palavra=""
+            String palavra="";
             synchronized (data) 
             {
                 data.append(dic.get(x));
@@ -205,7 +237,6 @@ class Client implements Runnable
                     synchronized(data)
                     {
                         data.send(palavra);
-
                     }
 
                 }
