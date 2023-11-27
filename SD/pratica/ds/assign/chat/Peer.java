@@ -24,23 +24,42 @@ class Tuple
 {
     public String ip ;
     public int port;
-    public int count;
 
     public Tuple(String ip, int port)
     {
         this.ip = ip;
         this.port = port;
     }
-
 }
+
+class Message
+{
+    public String payload ;
+    public int cj;
+    public int indice;
+
+    public message(String payload, int cj,int indice)
+    {
+        this.payload = payload;
+        this.cj = cj;
+        this.indice = indice;
+    }
+} 
 
 class Data
 {
-    private ArrayList<String> queue = new ArrayList<String>() ;
+    private ArrayList<Message> queue = new ArrayList<String>() ;
     private ArrayList<Tuple> peers;
     int tamanho;
     int counter = 0;
     int meuIndice;
+    Comparator<Message> comparator = new Comparator<>() {
+        @Override
+        public int compare(Message m1, Message m2) {
+            return m1.cj
+                    - mn2.cj; 
+        }
+    };
     public Data ( ArrayList<Tuple> peers, int indice)
     {
 
@@ -59,13 +78,14 @@ class Data
         String message= palavra + ";" + this.counter + ";" + this.meuIndice;
         try 
         {
+            Tuple tuple ;
 
             for (int i = 0 ; i < this.tamanho; i++)
             {
 
                 if (i!= this.meuIndice)
                 {
-                    Tuple tuple = peers.get(i);
+                    tuple= peers.get(i);
                     socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(message);
@@ -96,7 +116,8 @@ class Data
         {
             this.send("ack");
         }
-        this.queue.add(unpack[0]+";" + unpack[2]);
+        this.ADICIONAR O ARRAY(palavra,ts,ind);
+        this.queue.sort(this.comparator);
         this.deliver();
     }
 
@@ -136,7 +157,7 @@ class Data
             if(i == this.tamanho)
             {
                 System.out.println(unpack[0]);
-
+                queue.remove(0);
                 counter++;
 
             }
