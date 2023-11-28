@@ -86,14 +86,18 @@ class Data
             for (int i = 0 ; i < this.tamanho; i++)
             {
 
+                System.out.println("O I :" + i + " O MEU INDICE "+ this.meuIndice);
                 if (i!= this.meuIndice)
                 {
+                    System.out.println("Entrei");
                     tuple= peers.get(i);
                     socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(message);
                     if (!palavra.equals("ack"))
                     {
+                        this.queue.add(new Message(palavra,this.counter,this.meuIndice));
+                        this.queue.sort(this.comparator);
                     }
                     out.flush();
                     socket.close();
@@ -148,9 +152,10 @@ class Data
 
             for(Message messa :queue)
             {
-                //System.out.println("Palavra " + messa.payload + " Indice : " + messa.indice + " Timestamp : " + messa.cj);
-                arr[messa.indice] = 1;
-
+                if (m.cj < messa.cj)
+                {
+                    arr[messa.indice] = 1;
+                }
             }
 
             int i  = 0;
@@ -319,8 +324,6 @@ class Server implements Runnable
         {
             Socket client ;
             BufferedReader in ;
-            PrintWriter out;
-            int ts ;
             //logger.info("server: endpoint running at port " + port + " ...");
             while(true) 
             {
@@ -329,7 +332,6 @@ class Server implements Runnable
                     client = server.accept();
                     //logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
                     in = new BufferedReader(new InputStreamReader(client.getInputStream()));    
-	                out = new PrintWriter(client.getOutputStream(), true);
                     String message = in.readLine();
                     synchronized(data)
                     {
