@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.locks.*;
+import java.lang.*;
+import java.util.Comparator;
 
 import ds.assign.poisson.PoissonProcess;
 
@@ -38,7 +40,7 @@ class Message
     public int cj;
     public int indice;
 
-    public message(String payload, int cj,int indice)
+    public Message(String payload, int cj,int indice)
     {
         this.payload = payload;
         this.cj = cj;
@@ -48,16 +50,17 @@ class Message
 
 class Data
 {
-    private ArrayList<Message> queue = new ArrayList<String>() ;
+    private ArrayList<Message> queue = new ArrayList<Message>() ;
     private ArrayList<Tuple> peers;
     int tamanho;
     int counter = 0;
     int meuIndice;
+
     Comparator<Message> comparator = new Comparator<>() {
         @Override
         public int compare(Message m1, Message m2) {
             return m1.cj
-                    - mn2.cj; 
+                    - m2.cj; 
         }
     };
     public Data ( ArrayList<Tuple> peers, int indice)
@@ -89,6 +92,9 @@ class Data
                     socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(message);
+                    if (!palavra.equals("ack"))
+                    {
+                    }
                     out.flush();
                     socket.close();
                 }
@@ -116,34 +122,37 @@ class Data
         {
             this.send("ack");
         }
-        this.ADICIONAR O ARRAY(palavra,ts,ind);
+        this.queue.add(new Message(palavra,ts,ind));
         this.queue.sort(this.comparator);
+
         this.deliver();
     }
 
     public void deliver()
     {
-        String m = queue.get(0);
-        String[] unpack =  m.split(";");
+        Message m = queue.get(0);
  
-        if(unpack[0].equals("ack"))
+        if(m.payload.equals("ack"))
         {
             queue.remove(0);
         }
         else
         {
             int[] arr = new int[this.tamanho];
-            arr[meuIndice] = 1;
-            int ind;
-            String[] payload;
-
-            for(String pack :queue)
+            for (int a = 0 ; a < this.tamanho; a++)
             {
-                payload = pack.split(";");
-                ind = Integer.parseInt(payload[1]);
-                arr[ind] = 1;
+                arr[a] = 0;
+            }
+            arr[this.meuIndice] = 1;
+
+
+            for(Message messa :queue)
+            {
+                //System.out.println("Palavra " + messa.payload + " Indice : " + messa.indice + " Timestamp : " + messa.cj);
+                arr[messa.indice] = 1;
 
             }
+
             int i  = 0;
             for(; i< this.tamanho ; i++)
             {
@@ -156,7 +165,7 @@ class Data
 
             if(i == this.tamanho)
             {
-                System.out.println(unpack[0]);
+                System.out.println(m.payload);
                 queue.remove(0);
                 counter++;
 
