@@ -67,8 +67,8 @@ class Data
     {
 
         this.peers = peers;
-        tamanho = peers.size();
-        meuIndice = indice; 
+        this.tamanho = peers.size();
+        this.meuIndice = indice; 
 
     }
 
@@ -83,22 +83,21 @@ class Data
         {
             Tuple tuple ;
 
+            if (!palavra.equals("ack"))
+                    {
+                        this.queue.add(new Message(palavra,this.counter,this.meuIndice));
+                        this.queue.sort(this.comparator);
+                        this.deliver();
+                    }
             for (int i = 0 ; i < this.tamanho; i++)
             {
 
-                System.out.println("O I :" + i + " O MEU INDICE "+ this.meuIndice);
                 if (i!= this.meuIndice)
                 {
-                    System.out.println("Entrei");
                     tuple= peers.get(i);
                     socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(message);
-                    if (!palavra.equals("ack"))
-                    {
-                        this.queue.add(new Message(palavra,this.counter,this.meuIndice));
-                        this.queue.sort(this.comparator);
-                    }
                     out.flush();
                     socket.close();
                 }
