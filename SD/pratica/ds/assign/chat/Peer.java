@@ -84,11 +84,9 @@ class Data
             Tuple tuple ;
 
             if (!palavra.equals("ack"))
-                    {
-                        this.queue.add(new Message(palavra,this.counter,this.meuIndice));
-                        this.queue.sort(this.comparator);
-                        this.deliver();
-                    }
+            {
+                this.queue.add(new Message(palavra,this.counter,this.meuIndice));
+            }
             for (int i = 0 ; i < this.tamanho; i++)
             {
 
