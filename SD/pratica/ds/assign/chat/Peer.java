@@ -228,7 +228,7 @@ public class Peer
         
         Tuple meuPeer = peers.get(indice);
         new Thread (new Server(meuPeer.port,data, peer.logger)).start();
-        new Thread (new Client(peers,data,peer.logger,5)).start();
+        new Thread (new Client(peers,data,peer.logger,60)).start();
     }
 }
 
