@@ -77,16 +77,19 @@ class Data
     {
         Socket socket ;
         PrintWriter   out;
-        counter++;
-        String message= palavra + ";" + this.counter + ";" + this.meuIndice;
-        try 
+        synchronized(this)
         {
-            Tuple tuple ;
-
+            counter++;
             if (!palavra.equals("ack"))
             {
                 this.queue.add(new Message(palavra,this.counter,this.meuIndice));
             }
+        }
+        String message= palavra + ";" + this.counter + ";" + this.meuIndice;
+        try 
+        {
+            Tuple tuple ;   
+
             for (int i = 0 ; i < this.tamanho; i++)
             {
 
@@ -100,6 +103,7 @@ class Data
                     socket.close();
                 }
             }
+
         }
         catch(Exception e)
         {
@@ -115,66 +119,72 @@ class Data
         int ind =  Integer.parseInt(unpack[2]);
         String palavra = unpack[0];
 
-        if (ts > this.counter)
-        {
-            this.counter = ts;
-        }
         if(!(unpack[0].equals("ack")))
         {
             this.send("ack");
         }
-        this.queue.add(new Message(palavra,ts,ind));
-        this.queue.sort(this.comparator);
+        synchronized(this)
+        {
+            if (ts > this.counter)
+            {
+                this.counter = ts;
+            }
+            this.queue.add(new Message(palavra,ts,ind));
+            this.queue.sort(this.comparator);
+        }
 
         this.deliver();
     }
 
     public void deliver()
     {
-        Message m = queue.get(0);
- 
-        if(m.payload.equals("ack"))
+        synchronized(this)
         {
-            queue.remove(0);
-        }
-        else
-        {
-            int[] arr = new int[this.tamanho];
-            for (int a = 0 ; a < this.tamanho; a++)
+            Message m = queue.get(0);
+
+            if(m.payload.equals("ack"))
             {
-                arr[a] = 0;
-            }
-            arr[this.meuIndice] = 1;
-
-
-            for(Message messa :queue)
-            {
-                if (m.cj < messa.cj)
-                {
-                    arr[messa.indice] = 1;
-                }
-            }
-
-            int i  = 0;
-            for(; i< this.tamanho ; i++)
-            {
-                if (arr[i] != 1)
-                {
-                    break;         
-                }
-
-            }
-
-            if(i == this.tamanho)
-            {
-                System.out.println(m.payload);
                 queue.remove(0);
-                counter++;
+            }
+            else
+            {
+                int[] arr = new int[this.tamanho];
+                for (int a = 0 ; a < this.tamanho; a++)
+                {
+                    arr[a] = 0;
+                }
+                arr[this.meuIndice] = 1;
+
+
+                for(Message messa :queue)
+                {
+                    if (m.cj < messa.cj)
+                    {
+                        arr[messa.indice] = 1;
+                    }
+                }
+
+                int i  = 0;
+                for(; i< this.tamanho ; i++)
+                {
+                    if (arr[i] != 1)
+                    {
+                        break;         
+                    }
+
+                }
+
+                if(i == this.tamanho)
+                {
+                    System.out.println(m.payload);
+                    queue.remove(0);
+                    counter++;
+
+                }
 
             }
-
         }
-
+        
     }
 
     
@@ -277,10 +287,10 @@ class Client implements Runnable
                     Thread.sleep(t);
                     x = rand.nextInt(466549);
                     palavra= this.dic.get(x);
-                    synchronized(data)
-                    {
-                        data.send(palavra);
-                    }
+                    //synchronized(data)
+                    //{
+                    data.send(palavra);
+                    //}
 
                 }
                 catch (Exception e) 
@@ -320,7 +330,6 @@ class Server implements Runnable
         try 
         {
             Socket client ;
-            BufferedReader in ;
             //logger.info("server: endpoint running at port " + port + " ...");
             while(true) 
             {
@@ -328,12 +337,13 @@ class Server implements Runnable
                 {
                     client = server.accept();
                     //logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
-                    in = new BufferedReader(new InputStreamReader(client.getInputStream()));    
-                    String message = in.readLine();
-                    synchronized(data)
-                    {
-                        data.receive(message);
-                    }
+                    //synchronized(data)
+                    //{
+
+                    new Thread(new Connection(client, data)).start();
+
+                    //data.receive(message);
+                    //}
                 }
                 catch(Exception e) 
                 {
@@ -347,5 +357,31 @@ class Server implements Runnable
         }
     }
 }
-
         
+class Connection implements Runnable {
+    Socket clientSocket;
+    private final Data data;
+
+    public Connection(Socket clientSocket,Data data) 
+    {
+        this.clientSocket  = clientSocket;
+        this.data = data;
+    }
+
+    @Override
+    public void run() 
+    {
+        try 
+        {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));    
+            String message = in.readLine();
+            data.receive(message);
+            clientSocket.close();
+
+        } 
+        catch(Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+}
