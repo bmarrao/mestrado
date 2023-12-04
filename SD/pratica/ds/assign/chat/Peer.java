@@ -58,9 +58,14 @@ class Data
 
     Comparator<Message> comparator = new Comparator<>() {
         @Override
-        public int compare(Message m1, Message m2) {
-            return m1.cj
-                    - m2.cj; 
+        public int compare(Message m1, Message m2) 
+        {
+            int comp1 = m1.cj-m2.cj;
+
+            if (comp1!= 0) {
+               return comp1;
+            } 
+            return m1.indice-m2.indice;
         }
     };
     public Data ( ArrayList<Tuple> peers, int indice)
@@ -80,11 +85,9 @@ class Data
         synchronized(this)
         {
             counter++;
-            if (!palavra.equals("ack"))
-            {
-                this.queue.add(new Message(palavra,this.counter,this.meuIndice));
-            }
+            this.queue.add(new Message(palavra,this.counter,this.meuIndice));
         }
+
         String message= palavra + ";" + this.counter + ";" + this.meuIndice;
         try 
         {
@@ -112,79 +115,111 @@ class Data
 
     }
 
+    public void sendAck(String palavra)
+    {
+        Socket socket ;
+        PrintWriter   out;
+        String message= palavra + ";" + this.counter + ";" + this.meuIndice;
+        try 
+        {
+            Tuple tuple ;   
+
+            for (int i = 0 ; i < this.tamanho; i++)
+            {
+                tuple= peers.get(i);
+                socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
+                out = new PrintWriter(socket.getOutputStream(), true);
+                out.println(message);
+                out.flush();
+                socket.close();
+                
+            }
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
     public void receive(String pack)
     {
         String[] unpack = pack.split(";");
         int ts = Integer.parseInt(unpack[1]);
         int ind =  Integer.parseInt(unpack[2]);
         String palavra = unpack[0];
-
-        if(!(unpack[0].equals("ack")))
-        {
-            this.send("ack");
-        }
+        int i = 0;
         synchronized(this)
         {
+            if(!(unpack[0].equals("ack")))
+            {
+                i =1;
+            }
             if (ts > this.counter)
             {
                 this.counter = ts;
             }
             this.queue.add(new Message(palavra,ts,ind));
-            this.queue.sort(this.comparator);
+            this.deliver();
+
         }
 
-        this.deliver();
+        if(i == 1   )
+        {
+            this.sendAck("ack");
+        }
+        
+
     }
 
     public void deliver()
     {
-        synchronized(this)
+        this.queue.sort(this.comparator);
+
+        Message m = queue.get(0);
+
+        if(m.payload.split(" ")[0].equals("ack"))
         {
-            Message m = queue.get(0);
-
-            if(m.payload.equals("ack"))
-            {
-                queue.remove(0);
-            }
-            else
-            {
-                int[] arr = new int[this.tamanho];
-                for (int a = 0 ; a < this.tamanho; a++)
-                {
-                    arr[a] = 0;
-                }
-                arr[this.meuIndice] = 1;
-
-
-                for(Message messa :queue)
-                {
-                    if (m.cj < messa.cj)
-                    {
-                        arr[messa.indice] = 1;
-                    }
-                }
-
-                int i  = 0;
-                for(; i< this.tamanho ; i++)
-                {
-                    if (arr[i] != 1)
-                    {
-                        break;         
-                    }
-
-                }
-
-                if(i == this.tamanho)
-                {
-                    System.out.println(m.payload);
-                    queue.remove(0);
-                    counter++;
-
-                }
-
-            }
+            queue.remove(0);
         }
-        
+        else
+        {
+            int[] arr = new int[this.tamanho];
+            for (int a = 0 ; a < this.tamanho; a++)
+            {
+                arr[a] = 0;
+            }
+            arr[this.meuIndice] = 1;
+
+
+            for(Message messa :queue)
+            {
+                if (m.cj < messa.cj)
+                {
+                    arr[messa.indice] = 1;
+                }
+            }
+
+            int i  = 0;
+            for(; i< this.tamanho ; i++)
+            {
+                if (arr[i] != 1)
+                {
+                    break;         
+                }
+
+            }
+
+            if(i == this.tamanho)
+            {
+                System.out.println(m.payload + " " + m.cj );
+                queue.remove(0);
+                counter++;
+
+            }
+
+        }        
     }
 
     
@@ -228,6 +263,7 @@ public class Peer
         
         Tuple meuPeer = peers.get(indice);
         new Thread (new Server(meuPeer.port,data, peer.logger)).start();
+        Thread.sleep(50000);
         new Thread (new Client(peers,data,peer.logger,60)).start();
     }
 }
@@ -287,10 +323,7 @@ class Client implements Runnable
                     Thread.sleep(t);
                     x = rand.nextInt(466549);
                     palavra= this.dic.get(x);
-                    //synchronized(data)
-                    //{
                     data.send(palavra);
-                    //}
 
                 }
                 catch (Exception e) 
@@ -336,14 +369,7 @@ class Server implements Runnable
                 try 
                 {
                     client = server.accept();
-                    //logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
-                    //synchronized(data)
-                    //{
-
                     new Thread(new Connection(client, data)).start();
-
-                    //data.receive(message);
-                    //}
                 }
                 catch(Exception e) 
                 {
