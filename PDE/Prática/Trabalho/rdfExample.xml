@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:tpde="rdfs.xml" xml:base="rdfs.xml">
+
+
+    <rdf:Description rdf:about="livro-receitas">
+        <rdf:type rdf:resource="livro"/>
+        <dc:title>Livro de receitas do Breno</dc:title>
+        <dc:creator>Breno Fernando Guerra Marrão</dc:creator>
+        <dc:creator>Se quiser posso adicionar outros autores</dc:creator>
+        <dc:date>2023-10-19</dc:date>
+        <dc:description>Esse é o resumo opcional</dc:description>
+
+        <tpde:conteudo>
+            <tpde:Parte>
+                <tpde:nome>Comida Italiana</tpde:nome>
+                <tpde:receita>Spaghetti Bolonhesa</tpde:receita>
+                <tpde:conteudo>
+                    <tpde:seção>
+                        <tpde:nome>Comida de roma</tpde:nome>
+                        <tpde:receita>Spaghetti Alfredo</tpde:receita>
+                        <tpde:conteudo>
+                            <tpde:sub-seção>
+                                <tpde:nome>Sobremesas</tpde:nome>
+                                <tpde:receita>Tiramisy</tpde:receita>
+                            </tpde:sub-seção>
+                        </tpde:conteudo>
+                    </tpde:seção>
+                </tpde:conteudo>
+
+            </tpde:Parte>
+        </tpde:conteudo>
+    </rdf:Description>
+
+</rdf:RDF>
+
