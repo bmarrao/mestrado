@@ -1,69 +1,60 @@
-<?xml version="1.0" encoding="UTF-8"?><rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rep="http://www.dccfc.up.pt/~zp">
-    
-        Sobremesas Italianas
-        Breno Fernando Guerra Marrão
-        
-            2023-10-23
-        
-    
-    
-        Sobremesas do sul italiano
-        Nesta parte iremos abordar sobremesas que pertencem ao sul italiano
-        
-            Canoli
-            
-                
-                    pistachio
-                
-                
-                    sal
-                
-                
-                    açucar
-                
-                
-                    ovos
-                
-                
-                    Óleo vegetal
-                
-                
-                    canela
-                
-                
-                    vinho-marsala
-                
-                
-                    farinha de trigo sem fermento
-                
-                
-                    quejo creme
-                
-            
-            
-                
-                    1. Para fazer a massa numa batedeira misture 2 chávenas e meia de  com . Adicione 1  e 3 c. de .
-                    2. Utilize o acessório de massa para bater e, de seguida, adicione 1 c. de  e 3 c. de sopa de . Bata novamente.
-                    3. Coloque a massa numa superfície coberta com  e trabalhe-a até ficar com uma espessura de cerca de 0,5cm. Corte-a em discos de 10 a 15 cm de diâmetro.
-                    4. Com a ajuda de um cilindro de cannoli, enrole a massa à sua volta e com 1 clara de  cole a ponta. Aqueça óleo numa frigideira e coloque os cannolis para fritar. Retire e coloque num prato com papel absorvente.
-                    5. Recheio: Enquanto arrefecem, numa taça coloque 500g de ricotta, 250g de queijo creme e 4 c. de sopa de açúcar em pó. Misture tudo.
-                    6. Dentro de um prato coloque  grosseiramente picados com uma pitada de . Num saco de pasteleiro coloque a mistura de  e recheie o interior dos cannolis. Passe as pontas pelo prato com os.
-                    7. Polvilhe, no final, com  em pó.
-                    Teste de referencia de receita
-                
+<?xml version="1.0" encoding="UTF-8"?><rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:tpde="http://www.dcc.fc.up.pt/trabalhoPDE" xmlns:r="trabalhoPDE">
+    <rdf:Description rdf:about="livro-receitas">
+        <rdf:type rdf:resource="livro"/>
             
         
-        
-            receita-exemplo
-            400
-            
-                ing-teste
-            
+        <dc:title>Livro de receitas do Breno</dc:title>
+                
+        <dc:creator>Breno Fernando Guerra Marrão</dc:creator>
+                
+        <dc:creator>Se quiser posso adicionar outros autores</dc:creator>
+                
+        <dc:date>
+            2023-10-19
+        </dc:date>
+                
+        <dc:description>
+            Esse é o resumo opcional
+        </dc:description>
             
 
-                 teste de passo  
-                Seguir a receita  de canoli
-            
-        
     
+        <tpde:conteudo>
+            <tpde:parte>
+                        
+                <dc:title>Comida italiana</dc:title>
+                        Esse é o texto-introdutorio opcional
+        
+                <tpde:receita>
+                Spaghetti Bolonhesa
+            </tpde:receita>
+                        
+                <tpde:conteudo>
+                    <tpde:seção>
+                                    
+                        <dc:title>
+                Comida de Roma
+            </dc:title>
+                                    
+                        <tpde:receita>Spaghetti Alfredo</tpde:receita>
+                                    
+                        <tpde:conteudo>
+                            <tpde:sub-seção>
+                                                
+                                <dc:title>Sobremesas</dc:title>
+                                                
+                                <tpde:receita>
+                        tiramisu
+                    </tpde:receita>
+                                            
+                            </tpde:sub-seção>
+                        </tpde:conteudo>
+                                
+                    </tpde:seção>
+                </tpde:conteudo>
+                    
+            </tpde:parte>
+        </tpde:conteudo>
+        
+    </rdf:Description>
 </rdf:RDF>

@@ -6,13 +6,12 @@
         <!ENTITY  rel  "http://www.dcc.fc.up.pt/~zp/relatorio/">
         ]>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-         xmlns:rel="rdfs.xml" xml:base="rdfs.xml">
-        <rdfs:Class rdf:about="livro"/>
+         xmlns:tpde="http://www.dcc.fc.up.pt/trabalhoPDE" xml:base="http://www.dcc.fc.up.pt/trabalhoPDE">
 
+    <rdfs:Class rdf:about="livro"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
 
-        <rdfs:Class rdf:about="Parte"/>
-        <rdfs:Class rdf:about="Sub-seccao"><rdfs:subClassOf</rdfs:Class>
-        <rdfs:Class rdf:about="Relatorio"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
+    <rdfs:Class rdf:about="parte"/>
+        <rdfs:Class rdf:about="sub-seção"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
         <rdfs:Class rdf:about="Seccao"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
         <rdfs:Class rdf:about="Subseccao"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
         <rdfs:Property rdf:about="conteudo">
