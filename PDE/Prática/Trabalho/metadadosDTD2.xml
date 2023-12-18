@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE rdf:RDF[
+                <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+                <!ENTITY dc  "http://purl.org/dc/elements/1.1/">
+                <!ENTITY  tpde "http://www.dcc.fc.up.pt/trabalhoPDE">
+                ]>
+<rdf:RDF xmlns:dc="&dc;" xmlns:rdf="&rdf;" xmlns:tpde="&tpde;" xml:base="&tpde;">
+<rdf:Description rdf:about="livro-receitas" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:type rdf:resource="livro"/>
+        
+        
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Sobremesas Italianas</dc:title>
+            
+    <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Breno Fernando Guerra Marrão</dc:creator>
+            
+    <dc:date xmlns:dc="http://purl.org/dc/elements/1.1/">
+            2023-10-23
+        </dc:date>
+        
+    
+    <tpde:conteudo xmlns:tpde="http://www.dcc.fc.up.pt/trabalhoPDE">
+        <tpde:seção>
+                    
+            <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Sobremesas do sul italiano</dc:title>
+                    
+            <tpde:resumo>Nesta parte iremos abordar sobremesas que pertencem ao sul italiano</tpde:resumo>
+                    
+            <tpde:receita>Canoli</tpde:receita>
+                    
+            <tpde:receita>receita-exemplo</tpde:receita>
+                
+        </tpde:seção>
+    </tpde:conteudo>
+    
+</rdf:Description></rdf:RDF>

@@ -6,7 +6,8 @@
         <!ENTITY  rel  "http://www.dcc.fc.up.pt/~zp/relatorio/">
         ]>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-         xmlns:tpde="http://www.dcc.fc.up.pt/trabalhoPDE" xml:base="http://www.dcc.fc.up.pt/trabalhoPDE">
+         xmlns:tpde="http://www.dcc.fc.up.pt/trabalhoPDE" xml:base="http://www.dcc.fc.up.pt/trabalhoPDE"
+         xmlns:dc="http://purl.org/dc/elements/1.1/" >
 
     <rdfs:Class rdf:about="livro"><rdfs:subClassOf rdf:resource="Parte"/></rdfs:Class>
 
@@ -19,6 +20,10 @@
             <rdfs:range rdf:resource="Parte"/>
         </rdfs:Property>
         <rdfs:Property rdf:about="nome">
+            <rdfs:domain  rdf:resource="Parte"/>
+            <rdfs:range rdf:resource="&rdfs;Literal"/>
+        </rdfs:Property>
+        <rdfs:Property rdf:about="resumo">
             <rdfs:domain  rdf:resource="Parte"/>
             <rdfs:range rdf:resource="&rdfs;Literal"/>
         </rdfs:Property>
