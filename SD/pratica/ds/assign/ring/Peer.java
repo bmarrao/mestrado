@@ -20,17 +20,21 @@ import java.util.Random;
 
 import ds.assign.poisson.PoissonProcess;
 
+
+//Classe para passar Informação 
 class Data 
 {
+	//Guarda Operações
     private ArrayList<String> arr = new ArrayList<String>() ;
 	public boolean flag;
 
+	//Adicionar operação e sinalizar que tem operações
     public void send(String message)
 	{
 		arr.add(message);
 		this.flag = true;
     }
-
+	//Mandar array e marcar flag como falsa
     public ArrayList<String> receive() 
 	{
 		this.flag =false;
@@ -62,9 +66,12 @@ public class Peer
 		Data dataOperations = new Data();
 		Peer peer = new Peer(args[0]);
 		System.out.printf("new peer @ host=%s\n", args[0]);
+		//Creating Server
 		new Thread(new ServerPeer("localhost", Integer.parseInt(args[0]),peer.logger,dataOperations,args[1],Integer.parseInt(args[2]),args[3],Integer.parseInt(args[4]))).start();
+		//Creating Operations
 		new Thread(new CreateOperations(4,dataOperations)).start();
 
+		//Ve sê é pra começar , neste caso manda uma mensagem com o token
 		if (args.length == 6)
 		{
 			try
@@ -117,15 +124,15 @@ class CreateOperations implements Runnable {
 			{
 				try {
 					t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
-					System.out.println("Irei esperar " + t/1000 + "segundos a thread enquanto dorme");
 					Thread.sleep(t);
-					System.out.println("Terminou de dormir");
+					//Gerar os inteiros
 					op = rand.nextInt(4);
 					x = rand.nextInt();
 					y = rand.nextInt();
-					synchronized (data) {
+					synchronized (data) 
+					{
+						//Guardar operação no array
 						data.send(operations[op] + ":" + x + ":" + y);
-						System.out.println("Coloquei operação");
 					}
 				}
 				catch(Exception e)
@@ -198,8 +205,10 @@ class ServerPeer implements Runnable {
 						//logger.info("server: message from host " + clientAddress + "[command = " + command + "]");
 							try
 							{
+								// Obter lock , para não adicionar novas operacoes
 								synchronized (dataOperations)
 								{
+									//Checar se tem operações pra serem feitas
 									if(dataOperations.flag)
 									{
 										operations = dataOperations.receive();
@@ -214,14 +223,15 @@ class ServerPeer implements Runnable {
 											out.println(s);
 											out.flush();
 											result = in.readLine();
-	
+											// Imprimir resultado
 											System.out.printf("result is: %f\n", Double.parseDouble(result));
 										}
+										//Retirar as operações antigas
 										operations.clear();
 										socket.close();
 									}
+									//Passar o token pra frente
 									socket  = new Socket(InetAddress.getByName(Mip), Mport);
-									//logger.info("client: connected to server " + socket.getInetAddress() + "[port = " + socket.getPort() + "]");
 									out = new PrintWriter(socket.getOutputStream(), true);
 									in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 									out.println("token");

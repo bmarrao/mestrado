@@ -20,6 +20,7 @@ import java.util.concurrent.locks.*;
 
 import ds.assign.poisson.PoissonProcess;
 
+// Clase pra guardar o ip e port
 class Tuple
 {
     public String ip ;
@@ -33,11 +34,13 @@ class Tuple
 
 }
 
+// Faz read and write , serve de comunicação e tem outras funcionalidades para ajudar com a transcrição de array pra string e string pra array
 class Data
 {
     private ArrayList<String> arr = new ArrayList<String>() ;
 
 
+    // Transforma array string
     public String turnToString(ArrayList<String> xArr)
     {
         String str = "";
@@ -51,6 +54,7 @@ class Data
 
     }
 
+    // Transforma string em arary
     public ArrayList<String> turnFromString(String xArr)
     {
         ArrayList<String> newArr = new ArrayList<String>() ;
@@ -63,18 +67,21 @@ class Data
         return newArr;
     }
 
+    //Adiciona string no array
     public void append(String x)
     {
         
         this.arr.add(x);
     }
 
+    // Transforma array na string
     public String getStringArr()
     {
         return this.turnToString(arr);
     }
 
-    
+
+    // Faz push and pull
     public String give(String arrayPush)
     {
 
@@ -85,6 +92,7 @@ class Data
         boolean flag ;
         String novo ;
         String recebido;
+        // Ve qual o menor array 
         if (received.size() < this.arr.size())
         {
             flag = true;
@@ -95,20 +103,24 @@ class Data
             flag = false;
             menor = this.arr.size();
         }
+        // Percorre o menor array até o fina 
         for (int i = 0; i< menor ; i++)
         {
             novo = this.arr.get(i);
             recebido = received.get(i);
+            // Se for igual adiciona só uma vez
             if (novo.equals(recebido))
             {
                 newArray.add(novo);
             }
+            // Se for diferente adiciona os dois
             else
             {
                 newArray.add(novo);
                 newArray.add(recebido);
             }
         }
+        // Adiciona as q sobrarem do menor array
         if (flag)
         {
             for (int j = menor ; j < this.arr.size()  ; j++)
@@ -171,7 +183,7 @@ public class Peer
         }
         
         new Thread (new Server(Integer.parseInt(args[0]),data, peer.logger)).start();
-        new Thread (new PutInArray(2,data)).start();
+        new Thread (new PutInArray(6,data)).start();
         new Thread (new Client(peers,data,peer.logger,1)).start();
     }
 }
@@ -214,21 +226,23 @@ class Client implements Runnable
                 {
                     t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                     Thread.sleep(t);
+                    //Seleciona peer aleatoriamente
                     peer = rand.nextInt(this.tamanho);
                     tuple = this.peers.get(peer);
                     synchronized(data)
                     {
+                        //Envia o array que temos
                         arr = data.getStringArr();
                         socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
 						out = new PrintWriter(socket.getOutputStream(), true);
 						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        System.out.println("Array que to mandando " + arr);
                         out.println(arr);
                         out.flush();
+                        //Recebe o array depois de feita a operação
                         arr = in.readLine();
                         data.receive(arr);
-
-                        System.out.println("array depois "+ data.getStringArr());
+                        //Array no finald do push and pull
+                        System.out.println(data.getStringArr());
                     }
 
                 }
@@ -291,7 +305,7 @@ class Server implements Runnable
     }
 }
 
-
+//Gera palavras novas pra por no array
 class PutInArray implements Runnable 
 {
     Scanner scanner;
@@ -313,7 +327,7 @@ class PutInArray implements Runnable
         int x ;
         String r ;
         ArrayList<String> dic = new ArrayList<String>() ;
-
+        //Configura dicionario
         try (FileInputStream fis = new FileInputStream("./ds/assign/entropy/words.txt");
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader br = new BufferedReader(isr))
@@ -333,7 +347,9 @@ class PutInArray implements Runnable
             {
                 t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                 Thread.sleep(t);
+                //Gera palavra aleatoria do dicionario
                 x = rand.nextInt(466549);
+                //Adiciona palavra no array
                 synchronized (data) 
                 {
                     data.append(dic.get(x));
@@ -372,11 +388,9 @@ class Connection implements Runnable {
             synchronized(data)
             {
                 String antes = data.getStringArr();
-                System.out.println("Antes ::::  \n" + antes);
-                System.out.println("Array que recebi ::: \n "+ arr );
                 result = data.give(arr);
             }
-            System.out.println("Depois :::: \n" + result);
+            //Array que temos no final do push and pull
             out.println(result);
             out.flush();
             clientSocket.close();

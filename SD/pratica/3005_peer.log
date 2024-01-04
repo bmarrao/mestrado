@@ -50172,3 +50172,13 @@ nov 07, 2023 10:20:32 DA MANHÃ ds.assign.entropy.Server run
 INFO: server: endpoint running at port 3005 ...
 nov 07, 2023 10:21:25 DA MANHÃ ds.assign.entropy.Server run
 INFO: server: endpoint running at port 3005 ...
+jan 04, 2024 9:08:48 DA TARDE ds.assign.ring.Peer main
+INFO: client: connected to server localhost/127.0.0.1[port = 3005]
+jan 04, 2024 9:15:45 DA TARDE ds.assign.ring.Peer main
+INFO: client: connected to server localhost/127.0.0.1[port = 3005]
+jan 04, 2024 9:44:43 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3005 ...
+jan 04, 2024 9:45:37 DA TARDE ds.assign.entropy.Server run
+INFO: server: endpoint running at port 3005 ...
+jan 04, 2024 9:46:55 DA TARDE ds.assign.entropy.Server run
+INFO: server: new connection from 127.0.0.1
