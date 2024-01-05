@@ -14,7 +14,10 @@ import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Arrays;
+import java.util.Set;
+
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.concurrent.locks.*;
@@ -47,15 +50,16 @@ class Data
         String str = "";
         Set<String> setOfKeys = ht.keySet();
  
-        
         for (String key : setOfKeys) 
         {
             str+= key + ":";
-            for (Integer value : ht.get(key))
+            ArrayList<Integer> arr = ht.get(key);
+            int tamanho = arr.size();
+            for (int i = 0 ; i < tamanho-1; i++)
             {
-                str+= value + ",";
+                str += arr.get(i) + ",";
             }
-            str+= ";";
+            str += arr.get(tamanho-1) + ";";
         }
         return str;
 
@@ -78,19 +82,21 @@ class Data
 
             newHt.put(par[0],newArr);
         }
-        return newArr;
+        return newHt;
     }
 
     //Adiciona string no array
     public void append(String x, int port)
     {    
-        this.data.put(x,port);
+        ArrayList<Integer> ports = new ArrayList<Integer>();
+        ports.add(port);
+        this.data.put(x,ports);
     }
 
     // Transforma array na string
     public String getStringArr()
     {
-        return this.turnToString(arr);
+        return this.turnToString(this.data);
     }
 
 
@@ -106,7 +112,10 @@ class Data
         {
             if (this.data.containsKey(key))
             {
-                
+                Set<Integer> set = new LinkedHashSet<Integer>(recebido.get(key));
+                set.addAll(this.data.get(key));
+                ArrayList<Integer> combinedList = new ArrayList<Integer>(set);
+                this.data.put(key,combinedList);
             }
             else
             {
@@ -114,14 +123,14 @@ class Data
             }
             
         }       
-        return turnToString(newHt);
+        return turnToString(this.data);
 
         
     }
 
-    public void receive(String newArr)
+    public void receive(String newHt)
     {
-        this.arr = this.turnFromString(newArr);
+        this.data= this.turnFromString(newHt);
     }
 
 }
@@ -160,7 +169,7 @@ public class Peer
         }
         
         new Thread (new Server(Integer.parseInt(args[0]),data, peer.logger)).start();
-        new Thread (new PutInArray(6,data)).start();
+        new Thread (new PutInArray(6,data,Integer.parseInt(args[0]))).start();
         new Thread (new Client(peers,data,peer.logger,1)).start();
     }
 }
@@ -194,9 +203,6 @@ class Client implements Runnable
             PrintWriter   out;
             BufferedReader in;
             int t;
-            Random rand =new Random();
-            int peer ;
-            Tuple tuple;
             while(true)
             {
                 try 
@@ -204,23 +210,25 @@ class Client implements Runnable
                     t = (int) (this.pp.timeForNextEvent() * 60.0 * 1000.0);
                     Thread.sleep(t);
                     //Seleciona peer aleatoriamente
-                    peer = rand.nextInt(this.tamanho);
-                    tuple = this.peers.get(peer);
-                    synchronized(data)
+                    for (Tuple tuple : peers)
                     {
-                        //Envia o array que temos
-                        arr = data.getStringArr();
-                        socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
-						out = new PrintWriter(socket.getOutputStream(), true);
-						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        out.println(arr);
-                        out.flush();
-                        //Recebe o array depois de feita a operação
-                        arr = in.readLine();
-                        data.receive(arr);
-                        //Array no finald do push and pull
-                        System.out.println(data.getStringArr());
+                        synchronized(data)
+                        {
+                            //Envia o array que temos
+                            arr = data.getStringArr();
+                            socket  = new Socket(InetAddress.getByName(tuple.ip), tuple.port);
+                            out = new PrintWriter(socket.getOutputStream(), true);
+                            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            out.println(arr);
+                            out.flush();
+                            //Recebe o array depois de feita a operação
+                            arr = in.readLine();
+                            data.receive(arr);
+                            //Array no finald do push and pull
+                            System.out.println(data.getStringArr());
+                        }
                     }
+                   
 
                 }
                 catch (Exception e) 
@@ -285,11 +293,13 @@ class PutInArray implements Runnable
 {
     Scanner scanner;
     PoissonProcess pp;
+    int port;
     private final Data data;
-    public PutInArray(int frequency, Data data) throws Exception 
+    public PutInArray(int frequency, Data data, int port) throws Exception 
     {
         this.data = data;
         this.pp = new PoissonProcess(frequency, new Random(0));
+        this.port = port;
 
 
     }
@@ -327,7 +337,7 @@ class PutInArray implements Runnable
                 //Adiciona palavra no array
                 synchronized (data) 
                 {
-                    data.append(dic.get(x));
+                    data.append(dic.get(x),port);
                 }
             
             }
