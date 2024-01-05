@@ -15,6 +15,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Random;
 import java.util.concurrent.locks.*;
 
@@ -34,44 +35,56 @@ class Tuple
 
 }
 
-// Faz read and write , serve de comunicação e tem outras funcionalidades para ajudar com a transcrição de array pra string e string pra array
+// Faz read and write , serve de comunicação e tem outras funcionalidades para ajudar com a transcrição de hastable pra string e string pra hashtable
 class Data
 {
-    private ArrayList<String> arr = new ArrayList<String>() ;
+    private Hashtable<String, ArrayList<Integer>> data = new Hashtable<String, ArrayList<Integer>>();
 
 
-    // Transforma array string
-    public String turnToString(ArrayList<String> xArr)
+    // Transforma hashTable em string
+    public String turnToString(Hashtable<String, ArrayList<Integer>> ht)
     {
         String str = "";
-        int tamanho = xArr.size();
-        for (int i  = 0; i < tamanho-1; i++)
+        Set<String> setOfKeys = ht.keySet();
+ 
+        
+        for (String key : setOfKeys) 
         {
-            str+= xArr.get(i) +"," ;
+            str+= key + ":";
+            for (Integer value : ht.get(key))
+            {
+                str+= value + ",";
+            }
+            str+= ";";
         }
-        str+= xArr.get(tamanho-1);
         return str;
 
     }
 
     // Transforma string em arary
-    public ArrayList<String> turnFromString(String xArr)
+    public Hashtable<String, ArrayList<Integer>> turnFromString(String ht)
     {
-        ArrayList<String> newArr = new ArrayList<String>() ;
-
-        String[] palavras = xArr.split(",");
-        for (String x : palavras)
+        Hashtable<String, ArrayList<Integer>> newHt = new Hashtable<String, ArrayList<Integer>>();
+        String[] palavras = ht.split(";");
+        for (int i = 0; i < palavras.length; i++)
         {
-            newArr.add(x);
+            ArrayList<Integer> newArr = new ArrayList<Integer>();
+            String[] par = palavras[i].split(":");
+            String[] ports = par[1].split(",");
+            for (int j = 0 ; j <ports.length;j++)
+            {
+                newArr.add(Integer.parseInt(ports[j]));
+            }
+
+            newHt.put(par[0],newArr);
         }
         return newArr;
     }
 
     //Adiciona string no array
-    public void append(String x)
-    {
-        
-        this.arr.add(x);
+    public void append(String x, int port)
+    {    
+        this.data.put(x,port);
     }
 
     // Transforma array na string
@@ -82,62 +95,26 @@ class Data
 
 
     // Faz push and pull
-    public String give(String arrayPush)
+    public String give(String ht)
     {
-
-        ArrayList<String> newArray = new ArrayList<String>() ;
-        ArrayList<String> received = new ArrayList<String>() ;
-        received = this.turnFromString(arrayPush);
-        int menor ;
-        boolean flag ;
-        String novo ;
-        String recebido;
-        // Ve qual o menor array 
-        if (received.size() < this.arr.size())
+        Hashtable<String, ArrayList<Integer>> recebido = turnFromString(ht);
+        String str = "";
+        Set<String> setOfKeys = recebido.keySet();
+ 
+        
+        for (String key : setOfKeys) 
         {
-            flag = true;
-            menor = received.size();
-        }
-        else
-        {
-            flag = false;
-            menor = this.arr.size();
-        }
-        // Percorre o menor array até o fina 
-        for (int i = 0; i< menor ; i++)
-        {
-            novo = this.arr.get(i);
-            recebido = received.get(i);
-            // Se for igual adiciona só uma vez
-            if (novo.equals(recebido))
+            if (this.data.containsKey(key))
             {
-                newArray.add(novo);
+                
             }
-            // Se for diferente adiciona os dois
             else
             {
-                newArray.add(novo);
-                newArray.add(recebido);
+                this.data.put(key,recebido.get(key));
             }
-        }
-        // Adiciona as q sobrarem do menor array
-        if (flag)
-        {
-            for (int j = menor ; j < this.arr.size()  ; j++)
-            {
-                newArray.add(this.arr.get(j));
-            }
-        }
-        else
-        {
-            for (int j = menor ; j < received.size()  ; j++)
-            {
-                newArray.add(received.get(j));
-            }
-        }
-    
-        this.arr = newArray;
-        return this.turnToString(this.arr);
+            
+        }       
+        return turnToString(newHt);
 
         
     }
@@ -282,13 +259,11 @@ class Server implements Runnable
         try 
         {
             Socket client ;
-            logger.info("server: endpoint running at port " + port + " ...");
             while(true) 
             {
                 try 
                 {
                     client = server.accept();
-                    logger.info("server: new connection from " + client.getInetAddress().getHostAddress());
                     new Thread(new Connection(client, data)).start();
 
                 }
