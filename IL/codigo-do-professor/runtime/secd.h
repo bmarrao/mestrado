@@ -3,8 +3,10 @@
  * Pedro Vasconcelos, 2013
  */
 #include <stdint.h>
+#include "heap.h"
 
-/* opcodes 
+/* opcodes for SECD instructions;
+ * these have to be kept in sync with the Haskell compiler!
  */
 #define HALT    0
 #define LDC     1
@@ -25,22 +27,27 @@
 typedef intptr_t value_t;
 
 /* environments:
-   single linked list of values 
+   single linked list of cells
 */
-typedef struct _env_node_t {
-  value_t elm;
-  struct _env_node_t *next;
-} env_node_t;
+typedef cell *env_t;
 
-typedef env_node_t *env_t;
+/* getters and setters for envionment fields
+ */
+#define GET_ELM(ptr)    ((value_t)((ptr)->fst))
+#define GET_NEXT(ptr)   ((env_t)((ptr)->snd))
+#define SET_ELM(ptr,v)  ((ptr)->fst = (intptr_t)(v))
+#define SET_NEXT(ptr,e) ((ptr)->snd = (intptr_t)(e))
 
 /* closures 
 */
-typedef struct {
-  int pc;      // program counter
-  env_t env;   // environment
-} closure_t;
+typedef cell closure_t;
 
+/* getters and setters for closure fields
+ */
+#define GET_CODE(ptr)   ((int)((ptr)->fst))
+#define GET_ENV(ptr)    ((env_t)((ptr)->snd))
+#define SET_CODE(ptr,c) ((ptr)->fst = (intptr_t)(c))
+#define SET_ENV(ptr,e)  ((ptr)->snd = (intptr_t)(e))
 
 /* dump entry
    pair of program counter and environment pointer
@@ -55,4 +62,4 @@ typedef struct {
 #define CODE_MAX  1000
 #define STACK_MAX 1000
 #define DUMP_MAX  1000
-
+#define HEAP_MAX  10000

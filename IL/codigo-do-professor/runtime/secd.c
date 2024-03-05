@@ -1,47 +1,59 @@
 /*
  * A bytecode interpreter for a SECD-like machine 
- * Pedro Vasconcelos <pbv@dcc.fc.up.pt>, 2013
+ * Pedro Vasconcelos <pbv@dcc.fc.up.pt>, 2024
  */
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include "secd.h"
 
-int     code[CODE_MAX];       /* code segment */
-value_t stack[STACK_MAX];     /* stack segment */
-dump_t  dump[DUMP_MAX];       /* dump segment */
+int     *code;       /* code segment */
+value_t *stack;      /* stack segment */
+dump_t  *dump;       /* dump segment */
 
-
-/* extend an environment (prepend a value to a list) 
-  env -> v:env
-*/
-env_t extend(value_t elm, env_t env) {
-  env_t nenv = (env_t) malloc(sizeof(env_node_t));
-  assert(nenv != NULL);
-  nenv->elm = elm;
-  nenv->next= env;
-  return nenv;
+void init_segments(int code_size, int stack_size, int dump_size) {
+  code = (int*) malloc(code_size*sizeof(int));
+  stack = (value_t*)malloc(stack_size*sizeof(value_t));
+  dump = (dump_t*) malloc(dump_size*sizeof(dump_t));
+  assert(code != NULL);
+  assert(stack != NULL);
+  assert(dump != NULL);
 }
 
+void free_segments(void) {
+  free(code);
+  free(stack);
+  free(dump);
+}
+
+
+/* extend an environment with a new value, i.e.
+   cons a value on to a list 
+*/
+env_t extend(value_t elm, env_t env) {
+  env_t nenv = alloc_cell();
+  SET_ELM(nenv, elm);
+  SET_NEXT(nenv, env);
+  return nenv;
+}
 
 /* lookup a value in an environment by index 
 */
 value_t lookup(int n, env_t env) {
-  while(n>0) {
-    assert(env!=NULL);
-    env = env->next;
+  while(n > 0) {
+    assert(env != NULL);
+    env = GET_NEXT(env);
     n--;
   }
-  return env->elm;
+  return GET_ELM(env);
 }
 
 /* allocate a new closure 
 */
 closure_t *mkclosure(int pc, env_t env) {
-  closure_t *ptr = (closure_t*) malloc(sizeof(closure_t));
-  assert(ptr!=NULL);
-  ptr->pc = pc;
-  ptr->env = env;
+  closure_t *ptr = alloc_cell();
+  SET_CODE(ptr,pc);
+  SET_ENV(ptr,env);
   return ptr;
 }
 
@@ -65,7 +77,7 @@ value_t interp(void) {
     switch(opcode) {
     case LDC: 
       opa = (value_t)code[pc++];  // fetch operand
-      stack[sp++] = opa;  // push it
+      stack[sp++] = opa;          // push it
       break;
 
     case LD: 
@@ -111,7 +123,7 @@ value_t interp(void) {
       t = code[pc++]; // fetch code address
       nenv = extend((value_t)NULL, env);
       cptr = mkclosure(t, nenv);
-      nenv->elm = (value_t)cptr;   // tie the knot in the environment
+      SET_ELM(nenv,cptr);  // tie the knot in the environment
       stack[sp++] = (value_t)cptr; // push closure
       break;
 
@@ -121,8 +133,8 @@ value_t interp(void) {
       dump[dp].pc = pc;                 // save registers on dump 
       dump[dp].env = env;
       dp++;
-      env = extend(opa, cptr->env);   // augment environment
-      pc = cptr->pc;                  // jump to code address in closure
+      env = extend(opa, GET_ENV(cptr));   // augment environment
+      pc = GET_CODE(cptr);                // jump to code address in closure
       break;
 
     case RTN:
@@ -149,6 +161,7 @@ value_t interp(void) {
     assert(dp>=0 && dp<DUMP_MAX);
     assert(pc>=0 && pc<CODE_MAX);
   }
+
 }
 
 
@@ -167,10 +180,21 @@ int read_code(FILE *f) {
 
 
 int main(void) {
-  value_t v;  /* top of stack */
+  value_t top;  /* top of stack */
 
+  /* allocate segments and heap
+   */
+  init_segments(CODE_MAX, STACK_MAX, DUMP_MAX);
+  init_heap(HEAP_MAX);
   read_code(stdin);
-  v = interp();
-  printf("%d\n", (int)v);
+  top = interp();
+  printf("%d\n", (int)top);
+
+  /* clean-up 
+   */
+  free_segments();
+  free_heap();
   return 0;
 }
+
+//make gcc -Wall -o secd secd.c heap.c
