@@ -79,7 +79,6 @@ value_t interp(void) {
       opa = (value_t)code[pc++];  // fetch operand
       stack[sp++] = opa;          // push it
       break;
-
     case LD: 
       t = code[pc++];       // fetch index
       stack[sp++] = lookup(t, env); // lookup in environment and push it
@@ -198,3 +197,4 @@ int main(void) {
 }
 
 //make gcc -Wall -o secd secd.c heap.c
+// /runtime/secd < fact10.bc 
