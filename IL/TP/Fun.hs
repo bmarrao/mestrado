@@ -30,11 +30,18 @@ data Term = Var Ident               -- variables
           | IfZero Term Term Term   -- conditional
           | Let Ident Term Term     -- local definition
           | Fix Term                -- fixed-point operator
+          | True                    -- Booleano Verdadeiro
+          | False                   -- Booleano Falso
+          | If Term Term Term       -- Novo if com Bools 
+          | Pair (Term, Term)       -- Pair
+          | Fst Term                -- First term of pair
+          | Snd Term                -- Snd Term of pair
+          | List Empty              -- Representation of empty List
+          | List Cons Term Term     -- Representation of a cons list 
             deriving Show
 
 {- 
-This is a
-multi-line comment
+Definição Bool True e Bool e List Empty talvez estejam erradas
 -}
 -- indentifiers are just strings
 type Ident = String
@@ -50,6 +57,12 @@ fv (e1 :+ e2)   = fv e1 `union` fv e2
 fv (e1 :* e2)   = fv e1 `union` fv e2
 fv (e1 :- e2)   = fv e1 `union` fv e2
 fv (IfZero e1 e2 e3) = fv e1 `union` fv e2 `union` fv e3
+fv (If e1 e2 e3) = fv e1 `union` fv e2 `union` fv e3
+fv (Pair e1 e2) = fv e1 `union` fv e2
+fv (Fst e) = fv e 
+fv (Snd e) = fv e
+fv (List Empty) = []
+fv (List Cons e1 e2) = fv e1 `union` fv e2 
 fv (Let x e1 e2) = fv e1 `union` delete x (fv e2)
 fv (Fix e)       = fv e
 
