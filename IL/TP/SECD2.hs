@@ -126,6 +126,14 @@ compile (Snd e) sym =
   = compile (Lambda "p" ("p" False))
 
 compile (Empty) = 
+  = compile (Pair True True)
+
+compile (Cons e1 e2)
+  = compile (App (False) (Pair e1 e2))
+
+compile (Case e1 e2 e3)
+  = compile (If (Fst e1) e2 (e3 (Snd e1)))
+  
 
 
 -- compile a top-level expression
