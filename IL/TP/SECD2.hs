@@ -117,7 +117,7 @@ compile (MyFalse) sym
   = compile (Lambda "x" (Lambda" y" (Var "y"))) sym
  -- IF IS READY TO TEST
 
-compile (Snd e) sym 
+compile (Fst e) sym 
   = compile (Lambda "p" (App (Var "p")  MyTrue)) sym
 
 compile (Snd e) sym 
