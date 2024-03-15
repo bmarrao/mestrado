@@ -103,36 +103,37 @@ compile (IfZero e1 e2 e3) sym
        lMyFalse<- newBlock (code3 ++ [JOIN])
        return (code1 ++ [SEL lMyTrue lMyFalse])
 
-compile (If e1 e2 e3) sym 
-  = compile (App (compile e1) (e2 e3))
 
 compile (Let x e1 e2) sym
     = compile (App (Lambda x e2) e1) sym
 
+compile (If e1 e2 e3) sym 
+  = compile (App (App e1 e2) e3) sym
+
 compile (MyTrue) sym 
-  = compile (Lambda "x" (Lambda" y" Var "x"))
+  =  compile (Lambda "x" (Lambda" y" (Var "x"))) sym
 
 compile (MyFalse) sym 
-  = compile (Lambda "x" (Lambda" y" Var "y"))
+  = compile (Lambda "x" (Lambda" y" (Var "y"))) sym
  -- IF IS READY TO TEST
 
-compile (Fst e) sym 
-  = compile (Lambda "p" ("p" MyTrue))
-
-compile (Pair e1 e2) sym
-  = compile (Lambda "x" (Var "x" e1 e2))
+compile (Snd e) sym 
+  = compile (Lambda "p" (App (Var "p")  MyTrue)) sym
 
 compile (Snd e) sym 
-  = compile (Lambda "p" ("p" MyFalse))
+  = compile (Lambda "p" (App (Var "p")  MyFalse)) sym
+
+compile (Pair e1 e2) sym
+  = compile (Lambda "x" (App (App (Var "x") e1) e2)) sym
 
 compile (Empty) sym
-  = compile (Pair MyTrue MyTrue)
+  = compile (Pair MyTrue MyTrue) sym
 
 compile (Cons e1 e2) sym
-  = compile (App (MyFalse) (Pair e1 e2))
+  = compile (App (MyFalse) (Pair e1 e2)) sym
 
 compile (Case e1 e2 e3) sym
-  = compile (If (Fst e1) e2 (e3 (Snd e1)))
+  = compile (If (Fst e1) (App e2 Empty) (App e3 (Snd e1))) sym
   
 
 
