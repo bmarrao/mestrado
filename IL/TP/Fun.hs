@@ -36,8 +36,9 @@ data Term = Var Ident               -- variables
           | Pair (Term, Term)       -- Pair
           | Fst Term                -- First term of pair
           | Snd Term                -- Snd Term of pair
-          | List Empty              -- Representation of empty List
-          | List Cons Term Term     -- Representation of a cons list 
+          | Empty              -- Representation of empty List
+          | Cons Term Term     -- Representation of a cons list 
+          | Case Term Term; Term
             deriving Show
 
 {- 
@@ -61,8 +62,10 @@ fv (If e1 e2 e3) = fv e1 `union` fv e2 `union` fv e3
 fv (Pair e1 e2) = fv e1 `union` fv e2
 fv (Fst e) = fv e 
 fv (Snd e) = fv e
-fv (List Empty) = []
-fv (List Cons e1 e2) = fv e1 `union` fv e2 
+fv (Empty) = []
+fv (True) = []
+fv (False) = []
+fv (Cons e1 e2) = fv e1 `union` fv e2 
 fv (Let x e1 e2) = fv e1 `union` delete x (fv e2)
 fv (Fix e)       = fv e
 

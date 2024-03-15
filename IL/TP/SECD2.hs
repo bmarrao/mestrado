@@ -104,10 +104,28 @@ compile (IfZero e1 e2 e3) sym
        return (code1 ++ [SEL ltrue lfalse])
 
 compile (If e1 e2 e3) sym 
-  = compile (App (e1) (e2 e3))
+  = compile (App (compile e1) (e2 e3))
+
 compile (Let x e1 e2) sym
     = compile (App (Lambda x e2) e1) sym
 
+compile (True) sym = 
+  = compile (Lambda "x" (Lambda" y" Var "x"))
+
+compile (False) sym = 
+  = compile (Lambda "x" (Lambda" y" Var "y"))
+ -- IF IS READY TO TEST
+
+compile (Fst e) sym = 
+  = compile (Lambda "p" ("p" True))
+
+compile (Pair e1 e2) =
+  = compile (Lambda "x" (Var "x" e1 e2))
+
+compile (Snd e) sym = 
+  = compile (Lambda "p" ("p" False))
+
+compile (Empty) = 
 
 
 -- compile a top-level expression
