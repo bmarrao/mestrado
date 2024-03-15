@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "yapinterface.h": "c",
+        "random": "c",
+        "functional": "c"
+    }
+}
