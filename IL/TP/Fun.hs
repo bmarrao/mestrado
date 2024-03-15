@@ -30,10 +30,10 @@ data Term = Var Ident               -- variables
           | IfZero Term Term Term   -- conditional
           | Let Ident Term Term     -- local definition
           | Fix Term                -- fixed-point operator
-          | True                    -- Booleano Verdadeiro
-          | False                   -- Booleano Falso
+          | MyTrue                    -- Booleano Verdadeiro
+          | MyFalse                   -- Booleano Falso
           | If Term Term Term       -- Novo if com Bools 
-          | Pair (Term, Term)       -- Pair
+          | Pair Term Term      -- Pair
           | Fst Term                -- First term of pair
           | Snd Term                -- Snd Term of pair
           | Empty              -- Representation of empty List
@@ -42,7 +42,7 @@ data Term = Var Ident               -- variables
             deriving Show
 
 {- 
-Definição Bool True e Bool e List Empty talvez estejam erradas
+Definição Bool MyTrue e Bool e List Empty talvez estejam erradas
 -}
 -- indentifiers are just strings
 type Ident = String
@@ -63,8 +63,8 @@ fv (Pair e1 e2) = fv e1 `union` fv e2
 fv (Fst e) = fv e 
 fv (Snd e) = fv e
 fv (Empty) = []
-fv (True) = []
-fv (False) = []
+fv (MyTrue) = []
+fv (MyFalse) = []
 fv (Cons e1 e2) = fv e1 `union` fv e2 
 fv (Let x e1 e2) = fv e1 `union` delete x (fv e2)
 fv (Fix e)       = fv e
