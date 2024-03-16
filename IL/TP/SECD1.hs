@@ -217,7 +217,7 @@ compile (Empty) sym
   = compile (Pair MyTrue MyTrue) sym
 
 compile (Cons e1 e2) sym
-  = compile (App (MyFalse) (Pair e1 e2)) sym
+  = compile (Pair (MyFalse) (Pair e1 e2)) sym
 
 compile (Case e1 e2 e3) sym
   = compile (If (Fst e1) (App e2 Empty) (App e3 (Snd e1))) sym

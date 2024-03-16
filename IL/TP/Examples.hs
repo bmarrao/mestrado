@@ -59,6 +59,11 @@ ex10 = ( If (MyTrue) (Const 42) (Const 5))
 
 ex11 = (If (MyFalse) (Const 42) (Const 5))
 
+ex12 = (Fst (Pair (Const 5) (Const 6)))
+
+ex13 = (Snd (Pair (Const 5) (Const 6)))
+
+ex14 = Case Empty (Lambda "x" (Const 5)) (Lambda "p" (Const 6))
 -- buggy expressions (type errors)
 
 bug1 = Const 42 :+ Lambda "x" (Var "x")
