@@ -57,6 +57,8 @@ ex8 = Fix
 
 ex10 = ( If (MyTrue) (Const 42) (Const 5))
 
+ex11 = (If (MyFalse) (Const 42) (Const 5))
+
 -- buggy expressions (type errors)
 
 bug1 = Const 42 :+ Lambda "x" (Var "x")
