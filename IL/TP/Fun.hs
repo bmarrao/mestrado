@@ -37,7 +37,7 @@ data Term = Var Ident               -- variables
           | Fst Term                -- First term of pair
           | Snd Term                -- Snd Term of pair
           | Empty              -- Representation of empty List
-          | Cons Term Term     -- Representation of a cons list 
+          | Cons Term      -- Representation of a cons list 
           | Case Term Term Term
             deriving Show
 

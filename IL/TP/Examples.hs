@@ -69,5 +69,3 @@ ex14 = Case Empty (Lambda "x" (Const 5)) (Lambda "p" (Const 6))
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
 bug2 = App (Const 42) (Const 1)
-
-
