@@ -64,6 +64,23 @@ ex12 = (Fst (Pair (Const 5) (Const 6)))
 ex13 = (Snd (Pair (Const 5) (Const 6)))
 
 ex14 = Case Empty (Lambda "x" (Const 5)) (Lambda "p" (Const 6))
+
+ex15 = Case (Cons (Const 5) (Cons (Const 6) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Const 6))
+
+ex16 =(Case (Cons (Const 5) (Cons (Const 6) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Fst (Var "p"))))
+
+ex17 = Case (Cons (Const 5) (Cons (Const 7) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Fst (Snd (Var "p"))))
+
+tamanho = (Lambda "l" 
+            App ((App (lengthAux))
+          )
+lengthAux = Fix 
+      (Lambda "f" 
+       (Lambda "l"
+        (Lambda "n"
+         (
+          Case l (Var "n") (Lambda "p" (Var "f" (Snd (Var "p") (Var "n" :+ Const 1))))
+         ))))
 -- buggy expressions (type errors)
 
 bug1 = Const 42 :+ Lambda "x" (Var "x")
