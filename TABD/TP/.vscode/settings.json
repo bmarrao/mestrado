@@ -2,6 +2,8 @@
     "files.associations": {
         "typeinfo": "c",
         "stdio.h": "c",
-        "functional": "c"
+        "functional": "c",
+        "yapinterface.h": "c",
+        "string.h": "c"
     }
 }
