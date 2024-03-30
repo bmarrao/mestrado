@@ -55,31 +55,19 @@ ex8 = Fix
            ((Var "n" :* Var "n") :+ 
             App (Var "f") (Var "n" :- Const 1)))))
 
-ex10 = ( If (MyTrue) (Const 42) (Const 5))
 
-ex11 = (If (MyFalse) (Const 42) (Const 5))
+ex9 = (Fst (Pair (Const 5) (Const 6)))
 
-ex12 = (Fst (Pair (Const 5) (Const 6)))
+ex10 = (Snd (Pair (Const 5) (Const 6)))
 
-ex13 = (Snd (Pair (Const 5) (Const 6)))
+tamanho = Lambda "x" (tamanhoAux (Var "x") (Const 0))
 
-ex14 = Case Empty (Lambda "x" (Const 5)) (Lambda "p" (Const 6))
-
-ex15 = Case (Cons (Const 5) (Cons (Const 6) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Const 6))
-
-ex16 =(Case (Cons (Const 5) (Cons (Const 6) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Fst (Var "p"))))
-
-ex17 = Case (Cons (Const 5) (Cons (Const 7) (Empty)))(Lambda "x" (Const 5)) (Lambda "p" (Fst (Snd (Var "p"))))
-
-tamanho = (Lambda "l" 
-            App ((App (lengthAux))
-          )
-lengthAux = Fix 
+tamanhoAux = Fix 
       (Lambda "f" 
        (Lambda "l"
         (Lambda "n"
          (
-          Case l (Var "n") (Lambda "p" (Var "f" (Snd (Var "p") (Var "n" :+ Const 1))))
+          IfZero (MyNull  (Var"l")) (Var"n") ((1 :+ (Var "n")) :+ (MyTail (Var "l")) )
          ))))
 -- buggy expressions (type errors)
 

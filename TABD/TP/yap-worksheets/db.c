@@ -21,6 +21,7 @@ int init_db_row (void)
     db_row_data->pair = YAP_MkNewPairTerm();
     db_row_data->root = db_row_data->pair;
     db_row_data->arity = mysql_num_fields(db_row_data->result);
+    printf("COMECO\n");
     return db_row();
 }
 int db_row(void)

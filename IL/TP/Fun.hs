@@ -37,8 +37,10 @@ data Term = Var Ident               -- variables
           | Fst Term                -- First term of pair
           | Snd Term                -- Snd Term of pair
           | Empty              -- Representation of empty List
-          | Cons Term      -- Representation of a cons list 
-          | Case Term Term Term
+          | Term :$ Term      -- Representation of a cons list 
+          | MyNull Term 
+          | MyHead Term 
+          | MyTail Term
             deriving Show
 
 {- 
@@ -63,9 +65,7 @@ fv (Pair e1 e2) = fv e1 `union` fv e2
 fv (Fst e) = fv e 
 fv (Snd e) = fv e
 fv (Empty) = []
-fv (MyTrue) = []
-fv (MyFalse) = []
-fv (Cons e1 e2) = fv e1 `union` fv e2 
+fv (e1 :$ e2) = fv e1 `union` fv e2 
 fv (Let x e1 e2) = fv e1 `union` delete x (fv e2)
 fv (Fix e)       = fv e
 
