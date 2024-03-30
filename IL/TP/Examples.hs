@@ -56,19 +56,18 @@ ex8 = Fix
             App (Var "f") (Var "n" :- Const 1)))))
 
 
-ex9 = (Fst (Pair (Const 5) (Const 6)))
+--ex9 = (Fst (Pair (Const 5) (Const 6)))
 
-ex10 = (Snd (Pair (Const 5) (Const 6)))
+--ex10 = (Snd (Pair (Const 5) (Const 6)))
 
-tamanho = Lambda "x" (tamanhoAux (Var "x") (Const 0))
-
-tamanhoAux = Fix 
+tamanho = (Fix 
       (Lambda "f" 
        (Lambda "l"
-        (Lambda "n"
          (
-          IfZero (MyNull  (Var"l")) (Var"n") ((1 :+ (Var "n")) :+ (MyTail (Var "l")) )
-         ))))
+          IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
+         )))
+
+ex11 = run(compileMain (App tamanho ((Const 0) :$ (Const 1))))
 -- buggy expressions (type errors)
 
 bug1 = Const 42 :+ Lambda "x" (Var "x")

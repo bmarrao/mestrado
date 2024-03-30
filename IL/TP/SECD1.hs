@@ -7,6 +7,7 @@
  -}
 module SECD1 where
 import Fun
+import Examples
 import Data.List (elemIndex)
 import Data.Map (Map)
 import qualified Data.Map as Map
