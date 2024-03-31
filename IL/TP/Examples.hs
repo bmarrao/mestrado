@@ -74,16 +74,27 @@ tamanho = (Fix
          (
           IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
          )))  
-
-zip = (Fix 
+--run(compileMain (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+--run (compileMain(App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))))
+somaPar = (Lambda "x" ((Fst (Var "x")) :+ (Snd (Var "x"))))
+myzip = (Fix 
       (Lambda "f" 
        (Lambda "l1"
         (Lambda "l2"
           (
-           IfZero (MyNull  (Var"l1")) (Empty) (IfZero(MyNull "l2") (Empty) ((Pair (MyHead (Var"l1")(MyHead (Var"l2")))) :$ (App(App(Var"f") (MyTail (Var "l1")))(MyTail (Var "l2")) )
-        )))))))
---run(compileMain (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
--- run (compileMain(App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))))
+           IfZero (MyNull  (Var"l1")) (Empty) (IfZero(MyNull (Var "l2")) (Empty) ((Pair (MyHead (Var"l1"))(MyHead (Var"l2")))) :$ (App(App(Var"f") (MyTail (Var "l1")))(MyTail (Var "l2")) )
+        ))))))
+exZip = App (App myzip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+
+--run (compileMain (App (App zip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))))
+mymap = (Fix 
+      (Lambda "f" 
+       (Lambda "l"
+        (Lambda "func"
+          (
+           IfZero (MyNull  (Var"l")) (Empty) (App (Var "func")( MyHead (Var "l"))) :$ (App (Var "f") (MyTail (Var "l")))) 
+        ))))
+exMap = (App (App mymap(exZip))(somaPar))
 -- buggy expressions (type errors)
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
