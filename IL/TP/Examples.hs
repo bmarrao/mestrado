@@ -24,7 +24,7 @@ ex4 = Lambda "x"
       (Lambda "y"
        (IfZero (Var "x" :- Var "y") 
         (Var "y") (Var "x")))
-                       
+--run(compileMain (App(App ex4 (Const 5)) (Const 6)))                   
 -- an example that builds a closure with free vars
 ex5 = Let "x" (Const 42) (Lambda "y" (Var "x" :+ Var "y"))
 
@@ -60,16 +60,23 @@ ex8 = Fix
 
 --ex10 = (Snd (Pair (Const 5) (Const 6)))
 
+append = (Fix 
+      (Lambda "f" 
+       (Lambda "l"
+        (Lambda "n"
+          (
+           IfZero (MyNull  (Var"l")) ((Var "n") :$ Empty) ((MyHead (Var "l")) :$ (App(App (Var "f") (MyTail (Var "l"))) (Var "n"))) )
+        ))))
+--run(compileMain (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5)))
 tamanho = (Fix 
       (Lambda "f" 
        (Lambda "l"
          (
           IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
-         )))
-
-ex11 = run(compileMain (App tamanho ((Const 0) :$ (Const 1))))
+         )))  
+--run(compileMain (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+-- run (compileMain(App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))))
 -- buggy expressions (type errors)
-
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
 bug2 = App (Const 42) (Const 1)
