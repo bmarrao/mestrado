@@ -74,6 +74,14 @@ tamanho = (Fix
          (
           IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
          )))  
+
+zip = (Fix 
+      (Lambda "f" 
+       (Lambda "l1"
+        (Lambda "l2"
+          (
+           IfZero (MyNull  (Var"l1")) (Empty) (IfZero(MyNull "l2") (Empty) ((Pair (MyHead (Var"l1")(MyHead (Var"l2")))) :$ (App(App(Var"f") (MyTail (Var "l1")))(MyTail (Var "l2")) )
+        )))))))
 --run(compileMain (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
 -- run (compileMain(App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))))
 -- buggy expressions (type errors)
