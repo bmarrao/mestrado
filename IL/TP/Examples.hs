@@ -67,16 +67,20 @@ append = (Fix
           (
            IfZero (MyNull  (Var"l")) ((Var "n") :$ Empty) ((MyHead (Var "l")) :$ (App(App (Var "f") (MyTail (Var "l"))) (Var "n"))) )
         ))))
---run(compileMain (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5)))
+exAppend = (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))
+
 tamanho = (Fix 
       (Lambda "f" 
        (Lambda "l"
          (
           IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
          )))  
---run(compileMain (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
---run (compileMain(App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))))
+
+exTamanho1 =  (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+exTamanho2 = (App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5)))
+
 somaPar = (Lambda "x" ((Fst (Var "x")) :+ (Snd (Var "x"))))
+
 myzip = (Fix 
       (Lambda "f" 
        (Lambda "l1"
@@ -85,7 +89,7 @@ myzip = (Fix
            IfZero (MyNull  (Var"l1")) (Empty) (IfZero(MyNull (Var "l2")) (Empty) ((Pair (MyHead (Var"l1"))(MyHead (Var"l2")))) :$ (App(App(Var"f") (MyTail (Var "l1")))(MyTail (Var "l2")) )
         ))))))
 exZip = App (App myzip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
-
+exTamanho3 =  (App tamanho (exZip))
 --run (compileMain (App (App zip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))))
 mymap = (Fix 
       (Lambda "f" 
@@ -95,6 +99,17 @@ mymap = (Fix
            IfZero (MyNull  (Var"l")) (Empty) (App (Var "func")( MyHead (Var "l"))) :$ (App (Var "f") (MyTail (Var "l")))) 
         ))))
 exMap = (App (App mymap(exZip))(somaPar))
+exTamanho4 =  (App tamanho (exMap))
+
+exMap2 = (App (App mymap(exZip))(Lambda"z" ((Var "z"):+(Const 1))))
+mysum = (Fix 
+      (Lambda "f" 
+       (Lambda "l"
+         (
+          IfZero (MyNull  (Var"l")) (Const 0) ((MyHead (Var"l")) :+ (App (Var "f") (MyTail (Var "l")))) )
+         ))) 
+
+exSum = (App mysum (exAppend))
 -- buggy expressions (type errors)
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
