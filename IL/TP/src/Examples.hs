@@ -65,7 +65,11 @@ append = (Fix
        (Lambda "l"
         (Lambda "n"
           (
-           IfZero (MyNull  (Var"l")) ((Var "n") :$ Empty) ((MyHead (Var "l")) :$ (App(App (Var "f") (MyTail (Var "l"))) (Var "n"))) )
+           IfZero (MyNull  (Var"l")) 
+                  ((Var "n") :$ Empty) 
+                  ((MyHead (Var "l")) :$ 
+                           (App(App (Var "f") (MyTail (Var "l"))) (Var "n"))
+                  ) )
         ))))
 exAppend = (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))
 

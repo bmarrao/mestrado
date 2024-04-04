@@ -30,17 +30,16 @@ data Term = Var Ident               -- variables
           | IfZero Term Term Term   -- conditional
           | Let Ident Term Term     -- local definition
           | Fix Term                -- fixed-point operator
-          | MyTrue                    -- Booleano Verdadeiro
-          | MyFalse                   -- Booleano Falso
-          | If Term Term Term       -- Novo if com Bools 
-          | Pair Term Term      -- Pair
+          | MyTrue                  -- Boolean true
+          | MyFalse                 -- Boolean false
+          | Pair Term Term          -- Pair
           | Fst Term                -- First term of pair
           | Snd Term                -- Snd Term of pair
-          | Empty              -- Representation of empty List
-          | Term :$ Term      -- Representation of a cons list 
-          | MyNull Term 
-          | MyHead Term 
-          | MyTail Term
+          | Empty                   -- Representation of empty List
+          | Term :$ Term            -- Representation of a cons list 
+          | MyNull Term             -- yield 0 if it is null and 1 if it isn't
+          | MyHead Term             -- yields the head of a list
+          | MyTail Term             -- yields the tail of a list
             deriving Show
 
 {- 
@@ -60,10 +59,11 @@ fv (e1 :+ e2)   = fv e1 `union` fv e2
 fv (e1 :* e2)   = fv e1 `union` fv e2
 fv (e1 :- e2)   = fv e1 `union` fv e2
 fv (IfZero e1 e2 e3) = fv e1 `union` fv e2 `union` fv e3
-fv (If e1 e2 e3) = fv e1 `union` fv e2 `union` fv e3
 fv (Pair e1 e2) = fv e1 `union` fv e2
 fv (Fst e) = fv e 
-fv (Snd e) = fv e
+fv (MyTail e) = fv e
+fv (MyHead e) = fv e
+fv (MyNull e) = fv e
 fv (Empty) = []
 fv (e1 :$ e2) = fv e1 `union` fv e2 
 fv (Let x e1 e2) = fv e1 `union` delete x (fv e2)
