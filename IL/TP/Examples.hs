@@ -80,6 +80,8 @@ exTamanho1 =  (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
 exTamanho2 = (App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5)))
 
 somaPar = (Lambda "x" ((Fst (Var "x")) :+ (Snd (Var "x"))))
+par = (Pair (Const 1) (Const 2))
+exSomaPar = (App (somaPar) (par))
 
 myzip = (Fix 
       (Lambda "f" 
@@ -96,12 +98,12 @@ mymap = (Fix
        (Lambda "l"
         (Lambda "func"
           (
-           IfZero (MyNull  (Var"l")) (Empty) (App (Var "func")( MyHead (Var "l"))) :$ (App (Var "f") (MyTail (Var "l")))) 
-        ))))
-exMap = (App (App mymap(exZip))(somaPar))
-exTamanho4 =  (App tamanho (exMap))
+           IfZero (MyNull  (Var"l")) (Empty) ((App (Var "func")( MyHead (Var "l"))) :$ (App(App(Var"f") (MyTail (Var "l")))(Var "func"))) 
+        )))))
 
-exMap2 = (App (App mymap(exZip))(Lambda"z" ((Var "z"):+(Const 1))))
+exMap1 = (App (App mymap(exZip))(somaPar))
+exMap2 =(App (App mymap(exAppend))(ex3))
+exTamanho4 =  (App tamanho (exMap2))
 mysum = (Fix 
       (Lambda "f" 
        (Lambda "l"
@@ -110,6 +112,8 @@ mysum = (Fix
          ))) 
 
 exSum = (App mysum (exAppend))
+exSum2 = (App mysum (exMap1))
+
 -- buggy expressions (type errors)
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
