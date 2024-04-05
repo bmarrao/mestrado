@@ -60,6 +60,8 @@ ex8 = Fix
 
 --ex10 = (Snd (Pair (Const 5) (Const 6)))
 
+exList = (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+
 append = (Fix 
       (Lambda "f" 
        (Lambda "l"
@@ -71,7 +73,7 @@ append = (Fix
                            (App(App (Var "f") (MyTail (Var "l"))) (Var "n"))
                   ) )
         ))))
-exAppend = (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5))
+exAppend = (App (App append (exList))(Const 5))
 
 tamanho = (Fix 
       (Lambda "f" 
@@ -80,8 +82,8 @@ tamanho = (Fix
           IfZero (MyNull  (Var"l")) (Const 0) ((Const 1) :+ (App (Var "f") (MyTail (Var "l")))) )
          )))  
 
-exTamanho1 =  (App tamanho ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
-exTamanho2 = (App tamanho (App (App append ((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))(Const 5)))
+exTamanho1 =  (App tamanho exList)
+exTamanho2 = (App tamanho (App (App append (exList))(Const 5)))
 
 somaPar = (Lambda "x" ((Fst (Var "x")) :+ (Snd (Var "x"))))
 par = (Pair (Const 1) (Const 2))
@@ -94,7 +96,7 @@ myzip = (Fix
           (
            IfZero (MyNull  (Var"l1")) (Empty) (IfZero(MyNull (Var "l2")) (Empty) ((Pair (MyHead (Var"l1"))(MyHead (Var"l2")))) :$ (App(App(Var"f") (MyTail (Var "l1")))(MyTail (Var "l2")) )
         ))))))
-exZip = App (App myzip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))
+exZip = App (App myzip exList ) (exList)
 exTamanho3 =  (App tamanho (exZip))
 --run (compileMain (App (App zip ((((Const 0) :$((Const 2) :$ ((Const 1):$ Empty)))))) (((Const 0) :$((Const 2) :$ ((Const 1):$ Empty))))))
 mymap = (Fix 
@@ -118,6 +120,19 @@ mysum = (Fix
 exSum = (App mysum (exAppend))
 exSum2 = (App mysum (exMap1))
 
+myreverse = (Lambda "l" (App(App(myReserveAux) (Var "l"))(Empty)))
+
+myReserveAux = Fix 
+                (Lambda "f" 
+                  (Lambda "l1"
+                    (Lambda "l2"
+                      (
+                      IfZero (MyNull  (Var"l1")) (Var "l2") ((App(App(Var"f") (MyTail (Var "l1")))((MyHead(Var"l1")) :$ (Var "l2"))))
+                ))))
+
+exReverse = (App myreverse (exAppend))
+exTamanho5 = (App tamanho (exReverse))
+exSum3 = (App mysum (exAppend))
 -- buggy expressions (type errors)
 bug1 = Const 42 :+ Lambda "x" (Var "x")
 
