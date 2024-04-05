@@ -3,6 +3,8 @@
 #include <string.h>
 #include <mysql.h>
 
+//gcc -c -shared -fPIC db.c `mysql_config --cflags --libs`
+//ld -shared -o db.so db.o `mysql_config --cflags --libs`
 typedef struct 
 {
     MYSQL_RES *result;
@@ -55,7 +57,8 @@ int db_row(void)
 
     }
 }
-
+//if (mysql_real_connect(con, "localhost", "newuser", "Tabd2324!","testdb", 0, NULL, 0) == NULL)    
+// db_connect("localhost", "newuser", "Tabd2324!", "testdb", C).
 int db_connect(void)
 {
     YAP_Term arg_host = YAP_ARG1;
@@ -115,12 +118,13 @@ int db_query(void)
     return (YAP_Unify(YAP_ARG3,YAP_MkIntTerm((int)result)));
 }
 
+// load_foreign_files ("db",[], init_predicates").
 void init_predicates()
 {
     YAP_UserCPredicate("db_connect",db_connect,5);
     YAP_UserCPredicate("db_disconnect",db_disconnect,1);
     YAP_UserCPredicate("db_query",db_query,3);
-    YAP_UserBackCPredicate("db_row", init_db_row, db_row, 2, 1);
+    YAP_UserBackCPredicate("db_row", init_db_row, db_row, 2, 4);
 
 }
 

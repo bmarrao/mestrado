@@ -43,11 +43,21 @@ female(I,N) :- person(I,N,f,_,_).
 
 mother(NM, NF) :- female(I,NM) , parent(_, I ,IF) , person(IF, NF,_ ,_ ,_).
 
-grandChildId(X,Y) :- parent(_,X,I) , parent(_,I,Y) .
+grandSon(X,Y) := parent(_,X,I) , parent(_,I,Y) .
 
-grandChildName(NV,NN) :- grandChildId(X,Y) , person(X,NV,_,_,_) , person(Y,NN,_,_,_).
+sibling (IP,IS) :- parent (_, I, IP), parent (_, I, IS), IP \== IS
 
-sibling(I,IP,IS) :- parent(_, I , IP ) , parent(_, I, IS ), IP \== IS .
+uncle(X,Y) :- parent(_,X,I) , sibling(X,Y) .
+
+father (X, Y) :- parent (_, X, I) , (X, _, m, _, _) .
+
+mother (X, Y) :- parent (_, X, I) , (X, _, f, _, _) .
+
+divorced (X,Y):- marriage (_,X,Y,_,D) , D \== 'NULL' .
+
+widower (X) :- marriage(Y, Z , H) , person(Z, _,m,_,_), person (Y, _,_,_,D) , D \== 'NULL'. 
+
+
 
 
 
