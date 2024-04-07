@@ -86,7 +86,9 @@ exTamanho1 =  (App tamanho exList)
 exTamanho2 = (App tamanho (App (App append (exList))(Const 5)))
 
 somaPar = (Lambda "x" ((Fst (Var "x")) :+ (Snd (Var "x"))))
-par = (Pair (Const 1) (Const 2))
+par = (Pair (Const 1) (Const 2)) 
+exFst = (Fst par)
+exSnd = (Snd par)
 exSomaPar = (App (somaPar) (par))
 
 myzip = (Fix 

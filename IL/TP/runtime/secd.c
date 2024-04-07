@@ -174,7 +174,6 @@ int read_code(FILE *f) {
     fscanf(f, "%d\n", &data);
     code[i++] = data;
   }
-  printf("Hello\n");
   return i;
 }
 
