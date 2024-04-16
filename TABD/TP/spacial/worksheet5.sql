@@ -1,3 +1,4 @@
+// psql -U brenin -d postgres
 select count(id) from taxi_stands;
 SELECT ST_AsText(location)FROM taxi_stands WHERE name = 'Infante';
 SELECT name, ST_Y(location) FROM taxi_stands Order by ST_Y(location) desc limit 1;

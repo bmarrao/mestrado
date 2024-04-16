@@ -1,0 +1,16 @@
+compile and use as follows:
+
+$ gcc -Wno-deprecated-declarations -o libmemalloc.so -fPIC -shared memalloc.c
+$ LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+$ ls
+memalloc.c		libmemalloc.so
+$ gcc testalloc.c -o testalloc -L. -lmemalloc
+$ ./testalloc 0.5
+$ ./testalloc 0.75
+$ ./testalloc 0.99
+
+note that, because of the LD_LIBRARY_PATH definition, any
+application using malloc() or free() should now be using
+these versions instead of the ones from libc. Run it on a 
+debugger to make sure! This is also true for libc functions.
+
