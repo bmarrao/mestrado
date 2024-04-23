@@ -10,8 +10,8 @@
 
 
 //Talvez colocar external
-List*  roots;
+extern List*  roots;
 
-Heap*  heap;
+extern Heap*  heap;
 
 #endif

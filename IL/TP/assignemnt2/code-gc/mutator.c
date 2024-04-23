@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
    heap  = (Heap*)malloc(sizeof(Heap));
    roots = (List*)malloc(sizeof(List));
 
+   //mark_sweep_gc , alter this to see other gc's
    heap_init(heap, HEAP_SIZE, mark_sweep_gc);
    list_init(roots);
 
