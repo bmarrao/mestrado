@@ -12,10 +12,11 @@ void mark_sweep_gc(List* roots) {
     * go throught all roots,
     * traverse trees,
     * mark reachable
-    */
    List* isMarked  = (List*)malloc(sizeof(List));
    list_init(isMarked);
    markFromRoots(roots, isMarked);
+
+    */
 
    /*
     * sweep phase:
@@ -32,10 +33,10 @@ void mark_compact_gc(List* roots) {
     * go throught all roots,
     * traverse trees,
     * mark reachable
-    */
    List* isMarked  = (List*)malloc(sizeof(List));
    list_init(isMarked);
    markFromRoots(roots,isMarked);
+    */
 
    /*
     * compact phase:
@@ -57,14 +58,14 @@ void copy_collection_gc(List* roots) {
    return;
 }
 
+/*
 List* markFromRoots(List* roots, List* isMarked)
 {
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
    for (int i = 0; i< list_size(roots); i++)
    {
-      list_get(root, workList)
+         BisTree* chosen  = list_get(roots, i);
    }
 }
-
-
+*/

@@ -22,3 +22,16 @@ select extract(hour from to_timestamp(initial_ts)), count(*) from taxi_services 
 select extract(hour from to_timestamp(initial_ts)), count(*) from taxi_services where extract(dow from to_timestamp(initial_ts)) in (0,6) group by 1 order by 1;
 
 select extract(hour from to_timestamp(initial_ts)), count(*) from taxi_services where extract(dow from to_timestamp(initial_ts)) not  in (0,6) group by 1 order by 1;
+
+
+Select  d.freguesia , count (*) 
+from cont_aad_caop2018 as o , cont_aad_caop2018 as d, taxi_services 
+where st_within(st_transform(final_point :: geometry,3763), d.proj_boundary) 
+and st_within(st_transform(initial_point :: geometry,3763), o.proj_boundary)  and o.concelho ='PORTO' 
+group by  1
+order by 2 desc ;
+
+select ST_Length(ST_Transform(track, 3763))/1000, extract(day from to_timestamp(ts))
+from tracks 
+where id = 1000;
+

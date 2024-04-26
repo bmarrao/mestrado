@@ -9,7 +9,6 @@
 #include "heap.h"
 
 
-//Talvez colocar external
 extern List*  roots;
 
 extern Heap*  heap;
