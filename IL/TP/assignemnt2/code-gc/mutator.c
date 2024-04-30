@@ -63,9 +63,9 @@ int main(int argc, char** argv) {
             /* populate tree with keys between 0-100 */
             bistree_insert(t, random() % MAX_KEY_VALUE);
          }
-         fprintf(stdout, "tree size is %d\n", bistree_size(t));
-         fprintf(stdout, "(inorder traversal)\n");
-         bistree_inorder(t);
+         fprintf(stdout, "INSERTED tree size is %d\n", bistree_size(t));
+         //fprintf(stdout, "(inorder traversal)\n");
+         //bistree_inorder(t);
       } 
       else { // remove nodes
          /* skip if there are no roots to manipulate */
@@ -81,9 +81,9 @@ int main(int argc, char** argv) {
              /* this is checked in bistree_remove */
              bistree_remove(chosen, random() % MAX_KEY_VALUE);
          }
-         fprintf(stdout, "tree size is %d\n", bistree_size(chosen));
-         fprintf(stdout, "(inorder traversal)\n");
-         bistree_inorder(chosen);
+         fprintf(stdout, "REMOVED tree size is %d\n", bistree_size(chosen));
+         //fprintf(stdout, "(inorder traversal)\n");
+         //bistree_inorder(chosen);
       }
    }
    /* caught ^C ! */

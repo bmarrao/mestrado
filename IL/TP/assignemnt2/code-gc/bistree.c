@@ -31,7 +31,7 @@ bool bistree_lookup(BisTree* tree, int data) {
 
 BiTreeNode* bitreenode_insert(BiTreeNode* node, int data) {
    if (node == NULL) {
-      BiTreeNode* node = (BiTreeNode*)malloc(sizeof(BiTreeNode));
+      BiTreeNode* node = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
       node->data = data;
       node->left = NULL;
       node->right= NULL;
@@ -67,7 +67,6 @@ BiTreeNode* bitreenode_remove(BiTreeNode* node, int data) {
         lnode = lnode->right;
      node->data = lnode->data;
      node->left = bitreenode_remove(node->left, lnode->data);
-     free(lnode);
    }
    return node;
 }

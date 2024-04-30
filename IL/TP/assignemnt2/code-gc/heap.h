@@ -7,12 +7,14 @@
 
 #include "list.h"
 
-typedef struct {
+typedef struct 
+{
    unsigned int marked;
    unsigned int size;
 } _block_header;
 
-typedef struct {
+typedef struct 
+{
    unsigned int size;
    char*        base;
    char*        top;
