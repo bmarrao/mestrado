@@ -7,8 +7,9 @@
 #include "list.h"
 #include "heap.h"
 #include "bistree.h"
+#include <stdlib.h>
 
-void mark_sweep_gc(List* roots, Heap* heap) {
+void mark_sweep_gc() {
    /*
     * mark phase:
     * go throught all roots,
@@ -16,9 +17,8 @@ void mark_sweep_gc(List* roots, Heap* heap) {
     * mark reachable
    */
 
+   printf("MarkFromRoots\n");
    markFromRoots(roots);
-
-   sweep(heap->base, heap->limit);
 
 
    /*
@@ -26,11 +26,14 @@ void mark_sweep_gc(List* roots, Heap* heap) {
     * go through entire heap,
     * add unmarked to free list
     */
+   printf("Sweep\n");   
+   sweep(heap->base, heap->limit);
+
    printf("gcing()...\n");
    return;
  }
 
-void mark_compact_gc(List* roots) {
+void mark_compact_gc() {
    /*
     * mark phase:
     * go throught all roots,
@@ -40,7 +43,7 @@ void mark_compact_gc(List* roots) {
 
 
    markFromRoots(roots);
-   compact(heap->base,heap->limit,roots);
+   //compact(heap->base,heap->limit,roots);
    /*
     * compact phase:
     * go through entire heap,
@@ -51,30 +54,62 @@ void mark_compact_gc(List* roots) {
    return;
  }
 
-void copy_collection_gc(List* roots) {
-   /*
-    * go throught all roots,
-    * traverse trees in from_space,
-    * copy reachable to to_space
-    */
+/*
+void copy_collection_gc() {
+
+
+   char* fromSpace = heap->base;
+   char* extent = (heap->limit - heap->base)/ 2;
+   char* toSpace = heap->base + extent;
+   char* top = toSpace;
+   char* free = fromSpace;
+   flip(fromSpace,toSpace,top,extent,free);
+
+   List* workList  = (List*)malloc(sizeof(List));
+   list_init(workList);
+   for (int i = 0; i < list_size(roots); i++)
+   {
+      process((list_get(roots, i)));
+   }
+
+   char* ref;
+   while (!list_isempty(workList))
+   {
+      
+   }
    printf("gcing()...\n");
    return;
 }
 
+void process (void* field)
+{
+   if (*field != NULL)
+   {
 
+   }   
+}
+
+void flip(char* fromSpace,char* toSpace,char* top, char* extent, char* free)
+{
+   fromSpace = toSpace;
+   toSpace = fromSpace; 
+   top = fromSpace + extent;
+   free = fromSpace;
+}
+*/
 void markFromRoots(List* roots)
 {
-   list_print(roots);
-
+   
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
-
-      _block_header* q = (_block_header*)(list_get(roots, i) - tamanho);
+      BisTree* b = (BisTree*)(list_get(roots, i));
+      BiTreeNode* node = b->root;
+      _block_header* q = ((_block_header*)node)-1;
       q->marked= 1;
-      list_addlast(workList,list_get(roots,i));
+      list_addlast(workList,node);
       mark(workList);
    }
    free(workList);
@@ -83,43 +118,32 @@ void markFromRoots(List* roots)
 void mark(List* workList )
 {
    size_t tamanho = sizeof(_block_header);
-   size_t tamanho1 = sizeof(BisTree);
-   size_t tamanho2 = sizeof(BiTreeNode);
+
 
 
    while(! list_isempty(workList))
    {
-      _block_header* q = (_block_header*)(list_get(workList, 0) - tamanho);
+      BiTreeNode* node = list_get(workList, 0);
+      _block_header* q = ((_block_header*)node) - 1;
+      q->marked=1;
       list_removefirst(workList);
-      if (q->size == tamanho1 )
+      if (node->left != NULL)
       {
-         BisTree* b = (BisTree*)(q+tamanho);
-         q= (_block_header*)(b->root - tamanho);
+         q= ((_block_header*)node->left) - 1;
          q->marked=1;
-         list_addlast(workList,b->root);
+         list_addlast(workList,node->left);
       }
-      else 
+      if (node->right != NULL)
       {
-         BiTreeNode* b = (BiTreeNode*)(q+tamanho);
-         q= (_block_header*)(b->left - tamanho);
+         q= ((_block_header*)node->right) - 1;
          q->marked=1;
-         list_addlast(workList,b->left);
-         q= (_block_header*)(b->right - tamanho);
-         q->marked=1;
-         list_addlast(workList,b->right);
+         list_addlast(workList,node->right);
       }
+
+   
    }
 }
 
-typedef struct 
-{
-   unsigned int size;
-   char*        base;
-   char*        top;
-   char*        limit;
-   List*        freeb;
-   void (*collector)(List*);
-} Heap;
 
 void sweep(char* start, char* end)
 {
@@ -128,18 +152,19 @@ void sweep(char* start, char* end)
    while (scan < end)
    {
       _block_header* q = (_block_header*)(scan);
-      if (q->marked == 0)
+      if (q->marked == 0 && q->collected == 0)
       {
-         free(q);
-         free(q+tamanho);
+         list_addlast(heap->freeb,q+1);
       }
       else 
       {
          q->marked = 0;
+         q->collected=1;
       }
       scan = scan + tamanho + q->size;
    }
 }
+/*
 
 void compact (char* start, char* end, List* roots)
 {
@@ -169,10 +194,39 @@ void computeLocations(char* start, char* end, char* toRegion)
 
 void updateReferences(char* start, char* end, List* roots)
 {
+   for (int i = 0; i < list_size(roots); i++)
+   {
+      BisTree* b = (BisTree*)(list_get(roots, i));
+      if (b!=NULL )
+      {
+         b = forwardinAdress(b);
+      }
+   }
+   char* scan = start;
+   while (scan < end )
+   {
+      _block_header* q = (_block_header*)(scan);
+      if(q->marked == 1)
+      {
 
+      }
+   }
 }
 
 void relocate(char* start, char* end)
 {
-
+   char* scan = start ;
+   while (scan < end)
+   {
+      _block_header* q = (_block_header*)(scan);
+      if (q->marked==1 )
+      {
+         char * dest = forwardingAdress(scan);
+         move(scan,dest);
+         q->marked= 0;
+      }
+      scan = scan + sizeof(_block_header) + q->size;
+   }
 }
+
+*/

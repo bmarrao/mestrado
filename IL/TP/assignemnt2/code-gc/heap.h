@@ -11,6 +11,7 @@ typedef struct
 {
    unsigned int marked;
    unsigned int size;
+   unsigned int collected;
 } _block_header;
 
 typedef struct 

@@ -36,18 +36,34 @@ void* my_malloc(unsigned int nbytes) {
        _block_header* q = (_block_header*)(heap->top);
        q->marked = 0;
        q->size   = nbytes;
+       q->collected = 0;
        char *p = heap->top + sizeof(_block_header);
        heap->top = heap->top + sizeof(_block_header) + nbytes;
        return p;
      } 
      else 
      {
+       /*
        printf("my_malloc: not enough space, performing GC...\n");
        heap->collector(roots);
+       printf("OUT OF GARBAGE COLLECTOR\n");
        if ( list_isempty(heap->freeb) ) {
           printf("my_malloc: not enough space after GC...");
           return NULL;
        }
-       return list_getfirst(heap->freeb);
+        return list_getfirst(heap->freeb);
+       */
+        if ( list_isempty(heap->freeb) ) 
+        {
+          heap->collector(roots);
+          printf("OUT OF GARBAGE COLLECTOR\n");
+          if ( list_isempty(heap->freeb) ) 
+          {
+            printf("my_malloc: not enough space after GC...");
+            return NULL;
+          }
+          return list_getfirst(heap->freeb);
+        }
+        return list_getfirst(heap->freeb);
     }
 }

@@ -53,7 +53,10 @@ void list_addlast(List* list, void* data) {
 void* list_getfirst(List* list) {
    if (list_isempty(list))
       return NULL;
-   return list->first->data;
+
+   void* ret = list->first->data;
+   list_removefirst( list);
+   return ret;
 }
 
 void* list_getlast(List* list) {
