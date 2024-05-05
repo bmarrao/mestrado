@@ -55,17 +55,17 @@ void mark_compact_gc() {
  }
 
 /*
-void copy_collection_gc() {
+void copy_collection_gc() 
+{
 
 
-   char* fromSpace = heap->base;
+   
+   List* workList  = (List*)mallhar* fromSpace = heap->base;
    char* extent = (heap->limit - heap->base)/ 2;
    char* toSpace = heap->base + extent;
    char* top = toSpace;
    char* free = fromSpace;
    flip(fromSpace,toSpace,top,extent,free);
-
-   List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
    for (int i = 0; i < list_size(roots); i++)
    {
@@ -96,6 +96,7 @@ void flip(char* fromSpace,char* toSpace,char* top, char* extent, char* free)
    top = fromSpace + extent;
    free = fromSpace;
 }
+
 */
 void markFromRoots(List* roots)
 {
@@ -164,7 +165,7 @@ void sweep(char* start, char* end)
       scan = scan + tamanho + q->size;
    }
 }
-/*
+
 
 void compact (char* start, char* end, List* roots)
 {
@@ -183,8 +184,7 @@ void computeLocations(char* start, char* end, char* toRegion)
       _block_header* q = (_block_header*)(scan);
       if (q->marked = 1)
       {
-         
-         //TODO forwardinAdress ?
+         q->forwardingAdress = free;
          free = free + tamanho + q->size;
       }
       scan = scan + tamanho + q->size;
@@ -195,22 +195,37 @@ void computeLocations(char* start, char* end, char* toRegion)
 
 void updateReferences(char* start, char* end, List* roots)
 {
+   size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
-      BisTree* b = (BisTree*)(list_get(roots, i));
+      void* b = (list_get(roots, i));
       if (b!=NULL )
       {
-         b = forwardinAdress(b);
+         _block_header* q = ((_block_header*)b) - 1;
+         b = ((_block_header*)q->forwardingAdress) + 1;
       }
    }
    char* scan = start;
-   while (scan < end )
+   while (scan < end)
    {
       _block_header* q = (_block_header*)(scan);
-      if(q->marked == 1)
-      {
+      BiTreeNode* node = (BiTreeNode*)(q+1);
 
+      if (q->marked == 1)
+      {
+         if (node->left != NULL)
+         {
+            q= ((_block_header*)node->left) - 1;
+            node->left = q->forwardingAdress;
+         }
+         if (node->right != NULL)
+         {
+            q= ((_block_header*)node->right) - 1;
+            node->right = q->forwardingAdress;
+         }
       }
+      scan = scan + tamanho + q->size;
+
    }
 }
 
@@ -222,12 +237,11 @@ void relocate(char* start, char* end)
       _block_header* q = (_block_header*)(scan);
       if (q->marked==1 )
       {
-         char * dest = forwardingAdress(scan);
-         move(scan,dest);
-         q->marked= 0;
+         void* dest = q->forwardingAdress;
+         memcpy(dest, (q + 1), q->size);
+         q->marked = 0;
       }
       scan = scan + sizeof(_block_header) + q->size;
    }
 }
 
-*/
