@@ -8,6 +8,7 @@
 #include "heap.h"
 #include "bistree.h"
 #include <stdlib.h>
+#include <stddef.h> 
 
 void mark_sweep_gc() {
    /*
@@ -54,17 +55,16 @@ void mark_compact_gc() {
    return;
  }
 
-/*
+
 void copy_collection_gc() 
 {
-
-
-   
-   List* workList  = (List*)mallhar* fromSpace = heap->base;
-   char* extent = (heap->limit - heap->base)/ 2;
+   List* workList = (List*)malloc(sizeof(List));
+   char* fromSpace = heap->base;
+   ptrdiff_t extent = (ptrdiff_t)(heap->limit - heap->base) / 2;
    char* toSpace = heap->base + extent;
    char* top = toSpace;
    char* free = fromSpace;
+
    flip(fromSpace,toSpace,top,extent,free);
    list_init(workList);
    for (int i = 0; i < list_size(roots); i++)
@@ -75,7 +75,9 @@ void copy_collection_gc()
    char* ref;
    while (!list_isempty(workList))
    {
-      
+      void* ref  = list_getfirst(workList);
+      list_removefirst(workList);
+      scan(ref);
    }
    printf("gcing()...\n");
    return;
@@ -83,13 +85,19 @@ void copy_collection_gc()
 
 void process (void* field)
 {
+
+
    if (*field != NULL)
    {
 
    }   
 }
 
-void flip(char* fromSpace,char* toSpace,char* top, char* extent, char* free)
+void forward(void* fromRef)
+{
+   
+}
+void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free)
 {
    fromSpace = toSpace;
    toSpace = fromSpace; 
@@ -97,7 +105,11 @@ void flip(char* fromSpace,char* toSpace,char* top, char* extent, char* free)
    free = fromSpace;
 }
 
-*/
+void scan(void *ref)
+{
+
+}
+
 void markFromRoots(List* roots)
 {
    
