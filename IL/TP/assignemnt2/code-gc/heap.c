@@ -53,6 +53,9 @@ void* my_malloc(unsigned int nbytes) {
        }
         return list_getfirst(heap->freeb);
        */
+      //TODO MARK COLLECTED AS 0
+        void* ret;
+        _block_header* q ;
         if ( list_isempty(heap->freeb) ) 
         {
           heap->collector(roots);
@@ -62,8 +65,14 @@ void* my_malloc(unsigned int nbytes) {
             printf("my_malloc: not enough space after GC...");
             return NULL;
           }
-          return list_getfirst(heap->freeb);
+          ret = list_getfirst(heap->freeb);
+          q = ((_block_header*)ret) - 1;
+          q->collected=0;
+          return ret;
         }
-        return list_getfirst(heap->freeb);
+        ret = list_getfirst(heap->freeb);
+        q = ((_block_header*)ret) - 1;
+        q->collected=0;
+        return ret;
     }
 }

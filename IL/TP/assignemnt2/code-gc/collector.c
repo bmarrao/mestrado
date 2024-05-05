@@ -183,6 +183,7 @@ void computeLocations(char* start, char* end, char* toRegion)
       _block_header* q = (_block_header*)(scan);
       if (q->marked = 1)
       {
+         
          //TODO forwardinAdress ?
          free = free + tamanho + q->size;
       }
