@@ -135,12 +135,19 @@ void markFromRoots(List* roots)
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
+      printf("1 - \n");
       BisTree* b = (BisTree*)(list_get(roots, i));
+      printf("2 - \n");
       BiTreeNode* node = b->root;
+      printf("3 - \n");
       _block_header* q = ((_block_header*)node)-1;
+      printf("4 - \n");
       q->marked= 1;
       list_addlast(workList,node);
+      printf("5 - \n");
+      printf("BEGIN MARK - \n");
       mark(workList);
+      printf("- END OF MARK\n");
    }
    free(workList);
 }
@@ -149,26 +156,22 @@ void mark(List* workList )
 {
    size_t tamanho = sizeof(_block_header);
 
-
-
    while(! list_isempty(workList))
    {
-      BiTreeNode* node = list_get(workList, 0);
+      printf(" - BEGINNING NODE");
+      BiTreeNode* node = list_getfirst(workList);
       _block_header* q = ((_block_header*)node) - 1;
       q->marked=1;
       list_removefirst(workList);
       if (node->left != NULL)
       {
-         q= ((_block_header*)node->left) - 1;
-         q->marked=1;
          list_addlast(workList,node->left);
       }
       if (node->right != NULL)
       {
-         q= ((_block_header*)node->right) - 1;
-         q->marked=1;
          list_addlast(workList,node->right);
       }
+      printf(" - ENDING NODE");
 
    
    }
@@ -184,12 +187,12 @@ void sweep(char* start, char* end)
       _block_header* q = (_block_header*)(scan);
       if (q->marked == 0 && q->collected == 0)
       {
+         q->collected= 1;
          list_addlast(heap->freeb,q+1);
       }
       else 
       {
          q->marked = 0;
-         q->collected=1;
       }
       scan = scan + tamanho + q->size;
    }
