@@ -51,7 +51,9 @@ int main(int argc, char** argv) {
    mutate = true;
    while(mutate) {
       float toss = (float)random() / RAND_MAX;
-      if( toss > threshold ) { // add nodes
+      if( toss > threshold ) 
+      {
+          // add nodes
          /* build new bistree */
          BisTree* t = (BisTree*)malloc(sizeof(BisTree));
          bistree_init(t);

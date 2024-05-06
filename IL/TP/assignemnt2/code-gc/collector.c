@@ -138,16 +138,20 @@ void markFromRoots(List* roots)
       printf("1 - \n");
       BisTree* b = (BisTree*)(list_get(roots, i));
       printf("2 - \n");
-      BiTreeNode* node = b->root;
-      printf("3 - \n");
-      _block_header* q = ((_block_header*)node)-1;
-      printf("4 - \n");
-      q->marked= 1;
-      list_addlast(workList,node);
-      printf("5 - \n");
-      printf("BEGIN MARK - \n");
-      mark(workList);
-      printf("- END OF MARK\n");
+      printf("%d - Size\n", b->size);
+      char* node = b->root;
+      if (node != NULL )
+      {
+         printf("3 - %s\n", node);
+         //printf("%d - data \n", node->data);
+         _block_header* q = ((_block_header*)node)-1;
+         q->marked= 1;
+         printf("4 - \n");
+         list_addlast(workList,node);
+         printf("5 - \n");
+         mark(workList);
+      }
+      
    }
    free(workList);
 }
@@ -158,7 +162,6 @@ void mark(List* workList )
 
    while(! list_isempty(workList))
    {
-      printf(" - BEGINNING NODE");
       BiTreeNode* node = list_getfirst(workList);
       _block_header* q = ((_block_header*)node) - 1;
       q->marked=1;
@@ -171,7 +174,6 @@ void mark(List* workList )
       {
          list_addlast(workList,node->right);
       }
-      printf(" - ENDING NODE");
 
    
    }
