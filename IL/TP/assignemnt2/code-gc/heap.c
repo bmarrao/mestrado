@@ -62,17 +62,19 @@ void* my_malloc(unsigned int nbytes) {
           printf("OUT OF GARBAGE COLLECTOR\n");
           if ( list_isempty(heap->freeb) ) 
           {
-            printf("my_malloc: not enough space after GC...");
+            printf("my_malloc: not enough space after GC...\n ");
             return NULL;
           }
           ret = list_getfirst(heap->freeb);
           q = ((_block_header*)ret) - 1;
           q->collected=0;
+          printf("Returning\n");
           return ret;
         }
         ret = list_getfirst(heap->freeb);
         q = ((_block_header*)ret) - 1;
         q->collected=0;
+        printf("Returning\n");
         return ret;
     }
 }

@@ -56,6 +56,7 @@ void mark_compact_gc() {
  }
 
 
+/*
 void copy_collection_gc() 
 {
    List* workList = (List*)malloc(sizeof(List));
@@ -69,7 +70,7 @@ void copy_collection_gc()
    list_init(workList);
    for (int i = 0; i < list_size(roots); i++)
    {
-      process((list_get(roots, i)));
+      process((list_get(roots, i)), free, workList);
    }
 
    char* ref;
@@ -77,25 +78,29 @@ void copy_collection_gc()
    {
       void* ref  = list_getfirst(workList);
       list_removefirst(workList);
-      scan(ref);
+      scan(ref, free, workList);
    }
    printf("gcing()...\n");
    return;
 }
 
-void process (void* field)
+void process (void* field, char* free, List* workList)
 {
-
-
-   if (*field != NULL)
+   // TODO VER AQUI O Q É APONTADOR E O Q NÂO É 
+   if (field != NULL)
    {
-
+      field = forward(field , free, workList);
    }   
 }
 
-void forward(void* fromRef)
+void* forward( _block_header* fromRef, char*free,List* workList)
 {
-   
+   void* toRef = (fromRef->forwardingAdress);
+   if (toRef != NULL)
+   {
+      toRef = copy(fromRef, free, workList);
+   }
+   return toRef;
 }
 void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free)
 {
@@ -105,11 +110,23 @@ void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free
    free = fromSpace;
 }
 
-void scan(void *ref)
+void scan(void *ref, char*free, List* workList)
 {
-
+   BiTreeNode* node = ref;
+   process(node->left, free, workList);
+   process(node->right, free, workList);
 }
 
+void* copy( _block_header* fromRef, char* free, List* workList)
+{
+   void *toRef = free;
+   free = free+ fromRef->size;
+   memcpy(fromRef, toRef, sizeof(_block_header));
+   fromRef->forwardingAdress = toRef;
+   list_addlast(workList,toRef);
+   return toRef;
+}
+*/
 void markFromRoots(List* roots)
 {
    

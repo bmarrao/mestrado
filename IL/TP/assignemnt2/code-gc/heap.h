@@ -7,7 +7,9 @@
 
 #include "list.h"
 
-typedef struct 
+typedef struct _block_header _block_header;
+
+typedef struct _block_header
 {
    unsigned int marked;
    unsigned int size;
