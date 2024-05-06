@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
    roots = (List*)malloc(sizeof(List));
 
    //mark_sweep_gc , alter this to see other gc's
-   heap_init(heap, HEAP_SIZE, mark_compact_gc);
+   heap_init(heap, HEAP_SIZE, mark_compact_gc,2);
    list_init(roots);
 
    srandom(getpid());

@@ -224,12 +224,15 @@ void computeLocations(char* start, char* end, char* toRegion)
    while (free < end )
    {
       _block_header* q = (_block_header*)(free);
-      q->collected= 1;
-      list_addlast(heap->freeb,q+1);
+      if (q->collected == 0)
+      {
+         q->collected= 1;
+         list_addlast(heap->freeb,q+1);
+      }
       free = free + tamanho + q->size;
 
    }
-
+   //heap->top = free;
 }
 
 void updateReferences(char* start, char* end, List* roots)
@@ -237,12 +240,21 @@ void updateReferences(char* start, char* end, List* roots)
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
+      /*
+      ERROR HERE 
       void* b = (list_get(roots, i));
       if (b!=NULL )
       {
-         _block_header* q = ((_block_header*)b) - 1;
-         b = ((_block_header*)q->forwardingAdress) + 1;
+
+         BisTree* b = (BisTree*)(list_get(roots, i));
+         char* node = b->root;
+         if (node != NULL )
+         {
+            _block_header* q = ((_block_header*)b) - 1;
+            b->root = ((_block_header*)q->forwardingAdress) + 1;
+         }
       }
+      */
    }
    char* scan = start;
    while (scan < end)

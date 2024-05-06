@@ -25,9 +25,10 @@ typedef struct
    char*        limit;
    List*        freeb;
    void (*collector)(List*);
+   unsigned int type_collector;
 } Heap;
 
-void heap_init(Heap* heap, unsigned int size, void (*collector)(List*));
+void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i);
 
 void heap_destroy(Heap* heap);
 
