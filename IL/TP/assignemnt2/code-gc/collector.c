@@ -42,15 +42,17 @@ void mark_compact_gc() {
     * mark reachable
     */
 
-
+   printf("MarkFromRoots\n");
    markFromRoots(roots);
-   //compact(heap->base,heap->limit,roots);
    /*
     * compact phase:
     * go through entire heap,
     * compute new addresses
     * copy objects to new addresses
     */
+   printf("Compact\n");   
+   compact(heap->base,heap->limit,roots);
+
    printf("gcing()...\n");
    return;
  }
@@ -135,20 +137,12 @@ void markFromRoots(List* roots)
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
-      printf("1 - \n");
       BisTree* b = (BisTree*)(list_get(roots, i));
-      printf("2 - \n");
-      printf("%d - Size\n", b->size);
       char* node = b->root;
       if (node != NULL )
       {
-         printf("3 - %s\n", node);
-         //printf("%d - data \n", node->data);
          _block_header* q = ((_block_header*)node)-1;
-         q->marked= 1;
-         printf("4 - \n");
          list_addlast(workList,node);
-         printf("5 - \n");
          mark(workList);
       }
       
@@ -203,8 +197,11 @@ void sweep(char* start, char* end)
 
 void compact (char* start, char* end, List* roots)
 {
+   printf("Compute Locations\n");
    computeLocations(start,end,start);
+   printf("Update References\n");
    updateReferences(start,end,roots);
+   printf("Relocate\n");
    relocate(start,end);
 }
 
@@ -216,12 +213,20 @@ void computeLocations(char* start, char* end, char* toRegion)
    while (scan < end )
    {
       _block_header* q = (_block_header*)(scan);
-      if (q->marked = 1)
+      if (q->marked == 1)
       {
          q->forwardingAdress = free;
          free = free + tamanho + q->size;
       }
       scan = scan + tamanho + q->size;
+
+   }
+   while (free < end )
+   {
+      _block_header* q = (_block_header*)(free);
+      q->collected= 1;
+      list_addlast(heap->freeb,q+1);
+      free = free + tamanho + q->size;
 
    }
 
