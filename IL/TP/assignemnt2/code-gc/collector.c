@@ -131,19 +131,23 @@ void* copy( _block_header* fromRef, char* free, List* workList)
 */
 void markFromRoots(List* roots)
 {
-   
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*)(list_get(roots, i));
+
       char* node = b->root;
+
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node)-1;
+
          list_addlast(workList,node);
+
          mark(workList);
+
       }
       
    }
@@ -156,9 +160,17 @@ void mark(List* workList )
 
    while(! list_isempty(workList))
    {
+      printf("1\n");
+
       BiTreeNode* node = list_getfirst(workList);
+         printf("2\n");
+
       _block_header* q = ((_block_header*)node) - 1;
+         printf("3\n");
+
       q->marked=1;
+         printf("4\n");
+
       list_removefirst(workList);
       if (node->left != NULL)
       {
@@ -168,6 +180,7 @@ void mark(List* workList )
       {
          list_addlast(workList,node->right);
       }
+      printf("5\n");
 
    
    }
@@ -215,7 +228,7 @@ void computeLocations(char* start, char* end, char* toRegion)
       _block_header* q = (_block_header*)(scan);
       if (q->marked == 1)
       {
-         q->forwardingAdress = free;
+         q->forwardingAdress = ((_block_header*)free)+1;
          free = free + tamanho + q->size;
       }
       scan = scan + tamanho + q->size;
@@ -224,7 +237,7 @@ void computeLocations(char* start, char* end, char* toRegion)
    while (free < end )
    {
       _block_header* q = (_block_header*)(free);
-      if (q->collected == 0)
+      if (q->collected == 0 )
       {
          q->collected= 1;
          list_addlast(heap->freeb,q+1);
@@ -240,30 +253,23 @@ void updateReferences(char* start, char* end, List* roots)
    size_t tamanho = sizeof(_block_header);
    for (int i = 0; i < list_size(roots); i++)
    {
-      /*
-      ERROR HERE 
-      void* b = (list_get(roots, i));
-      if (b!=NULL )
-      {
+      BisTree* b = (BisTree*)(list_get(roots, i));
+      char* node = b->root;
 
-         BisTree* b = (BisTree*)(list_get(roots, i));
-         char* node = b->root;
-         if (node != NULL )
-         {
-            _block_header* q = ((_block_header*)b) - 1;
-            b->root = ((_block_header*)q->forwardingAdress) + 1;
-         }
+      if (node != NULL )
+      {
+         _block_header* q = ((_block_header*)b) - 1;
+         b->root = q->forwardingAdress + 1;
       }
-      */
    }
    char* scan = start;
    while (scan < end)
    {
       _block_header* q = (_block_header*)(scan);
-      BiTreeNode* node = (BiTreeNode*)(q+1);
-
       if (q->marked == 1)
       {
+         void* pointer = q+1; 
+         BiTreeNode* node = (BiTreeNode*)(pointer);
          if (node->left != NULL)
          {
             q= ((_block_header*)node->left) - 1;
@@ -289,6 +295,7 @@ void relocate(char* start, char* end)
       if (q->marked==1 )
       {
          void* dest = q->forwardingAdress;
+         //TALVEZ Q+1 esteja errado
          memcpy(dest, (q + 1), q->size);
          q->marked = 0;
       }
