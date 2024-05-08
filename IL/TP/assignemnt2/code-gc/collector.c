@@ -160,16 +160,12 @@ void mark(List* workList )
 
    while(! list_isempty(workList))
    {
-      printf("1\n");
 
       BiTreeNode* node = list_getfirst(workList);
-         printf("2\n");
 
       _block_header* q = ((_block_header*)node) - 1;
-         printf("3\n");
 
       q->marked=1;
-         printf("4\n");
 
       list_removefirst(workList);
       if (node->left != NULL)
@@ -180,7 +176,6 @@ void mark(List* workList )
       {
          list_addlast(workList,node->right);
       }
-      printf("5\n");
 
    
    }
@@ -223,6 +218,8 @@ void computeLocations(char* start, char* end, char* toRegion)
    size_t tamanho = sizeof(_block_header);
    char * scan = start;
    char * free = toRegion;
+   int i  = 0;
+   int j = 0;
    while (scan < end )
    {
       _block_header* q = (_block_header*)(scan);
@@ -230,10 +227,14 @@ void computeLocations(char* start, char* end, char* toRegion)
       {
          q->forwardingAdress = ((_block_header*)free)+1;
          free = free + tamanho + q->size;
+         i++;
       }
       scan = scan + tamanho + q->size;
+      j++;
 
    }
+   printf("%d %d %d\n", i, (j-i), j);
+   /*
    while (free < end )
    {
       _block_header* q = (_block_header*)(free);
@@ -245,7 +246,10 @@ void computeLocations(char* start, char* end, char* toRegion)
       free = free + tamanho + q->size;
 
    }
-   //heap->top = free;
+   */
+   printf(" Previous heap->top %p\n", heap->top);
+   printf(" New heap->top %p\n", free);
+   heap->top = free;
 }
 
 void updateReferences(char* start, char* end, List* roots)
@@ -258,8 +262,8 @@ void updateReferences(char* start, char* end, List* roots)
 
       if (node != NULL )
       {
-         _block_header* q = ((_block_header*)b) - 1;
-         b->root = q->forwardingAdress + 1;
+         _block_header* q = ((_block_header*)node) - 1;
+         b->root = q->forwardingAdress;
       }
    }
    char* scan = start;
