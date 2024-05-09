@@ -16,7 +16,14 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     heap->base  = mmap ( NULL, size, PROT_READ | PROT_WRITE,
                          MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
     heap->size  = size;
-    heap->limit = heap->base + size;
+    if (i == 3)
+    {
+        heap->limit = heap->base + size/2;
+    }
+    else 
+    {
+        heap->limit = heap->base + size;
+    }
     heap->top   = heap->base;
     heap->freeb = (List*)malloc(sizeof(List));
     list_init(heap->freeb);
@@ -42,13 +49,14 @@ void* getTopHeap(unsigned int nbytes)
     heap->top = heap->top + sizeof(_block_header) + nbytes;
     return p;
 }
-void* my_malloc(unsigned int nbytes) {
+void* my_malloc(unsigned int nbytes) 
+{
     if( heap->top + sizeof(_block_header) + nbytes < heap->limit ) 
     {
-       return getTopHeap(nbytes);
-     } 
-     else 
-     {
+        return getTopHeap(nbytes);
+    } 
+    else 
+    {
                         /*
 
         printf("my_malloc: not enough space, performing GC...\n");
@@ -66,13 +74,13 @@ void* my_malloc(unsigned int nbytes) {
         return ret;
         */
 
-       if (heap->type_collector ==1 )
-       {
+        if (heap->type_collector ==1 )
+        {
             printf("my_malloc: not enough space, performing GC...\n");
             heap->collector(roots);
             if ( list_isempty(heap->freeb) ) 
             {
-                printf("my_malloc: not enough space after GC...");
+                printf("my_malloc: not enough space after GC...\n");
                 return NULL;
             }
             void* ret = list_getfirst(heap->freeb);
@@ -82,9 +90,9 @@ void* my_malloc(unsigned int nbytes) {
             q->collected =0;
             q->survived = 0;
             return ret;
-       }
-       else if(heap->type_collector ==2 )
-       {
+        }
+        else if(heap->type_collector ==2 )
+        {
             printf("my_malloc: not enough space, performing GC...\n");
             heap->collector(roots);
             printf("OUT OF GARBAGE COLLECTOR\n");
@@ -94,10 +102,24 @@ void* my_malloc(unsigned int nbytes) {
             }
             else 
             {
-                printf("my_malloc: not enough space after GC...");
+                printf("my_malloc: not enough space after GC...\n");
                 return NULL;
             }
-       }
+        }
+        else if (heap->type_collector == 3)
+        {
+            heap->collector(roots);
+            if( heap->top + sizeof(_block_header) + nbytes < heap->limit ) 
+            {
+                return getTopHeap(nbytes);
+            }
+            else 
+            {
+                printf("my_malloc: not enough space after GC...\n");
+                return NULL;
+            }
+        }
 
     }
 }
+    

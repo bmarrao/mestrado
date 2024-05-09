@@ -37,7 +37,8 @@ void mark_sweep_gc() {
    return;
  }
 
-void mark_compact_gc() {
+void mark_compact_gc()
+{
    /*
     * mark phase:
     * go throught all roots,
@@ -58,19 +59,31 @@ void mark_compact_gc() {
 
    printf("gcing()...\n");
    return;
- }
+}
 
 
 void copy_collection_gc() 
 {
-   List* workList = (List*)malloc(sizeof(List));
-   char* fromSpace = heap->base;
-   ptrdiff_t extent = (ptrdiff_t)(heap->limit - heap->base) / 2;
-   char* toSpace = heap->base + extent;
+   ptrdiff_t extent = (ptrdiff_t)(heap->size) / 2;
+   char* top ;
+   char* free ;
+   char* toSpace;
+   char* fromSpace;
+   if (heap->top >= heap->base + heap->size/2)
+   {
+      fromSpace = heap->top;
+      toSpace = heap->base;
+   }
+   else 
+   {
+      fromSpace = heap->base;
+      toSpace = heap->base + extent;
+
+   }
    char* top = toSpace;
    char* free = fromSpace;
+   List* workList = (List*)malloc(sizeof(List));
 
-   flip(fromSpace,toSpace,top,extent,free);
    list_init(workList);
    for (int i = 0; i < list_size(roots); i++)
    {
@@ -96,9 +109,9 @@ void copy_collection_gc()
 }
 
 /*
+TAKING THIS OUT BECAUSE IT ISNT NECESSARY AS THE SAME OBJECT ISNT REFERENCED MORE THAN ONCE
 void* forward( _block_header* fromRef, char*free,List* workList)
 {
-   TAKING THIS OUT BECAUSE IT ISNT NECESSARY AS THE SAME OBJECT ISNT REFERENCED MORE THAN ONCE
    void* toRef = (fromRef->forwardingAdress);
    if (toRef != NULL)
    {
@@ -108,13 +121,6 @@ void* forward( _block_header* fromRef, char*free,List* workList)
 }
 */
 
-void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free)
-{
-   fromSpace = toSpace;
-   toSpace = fromSpace; 
-   top = fromSpace + extent;
-   free = fromSpace;
-}
 
 
 void* copy( _block_header* fromRef, char* free, List* workList)
