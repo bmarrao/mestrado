@@ -61,7 +61,6 @@ void mark_compact_gc() {
  }
 
 
-/*
 void copy_collection_gc() 
 {
    List* workList = (List*)malloc(sizeof(List));
@@ -75,44 +74,31 @@ void copy_collection_gc()
    list_init(workList);
    for (int i = 0; i < list_size(roots); i++)
    {
-      process((list_get(roots, i)), free, workList);
+      BisTree* b = (BisTree*) list_get(roots,i);
+      char* node = b->root;
+
+      if (node != NULL )
+      {
+         b->root = forward(b->root, free, workList);
+      }
    }
 
    char* ref;
    while (!list_isempty(workList))
    {
-      void* ref  = list_getfirst(workList);
+      BiTreeNode* node  = list_getfirst(workList);
       list_removefirst(workList);
-      scan(ref, free, workList);
+      node->left = forward(node->left, free, workList);
+      node->right = forward(node->right, free, workList);
    }
    printf("gcing()...\n");
    return;
 }
 
-void process (void* field, char* free, List* workList)
-{
-   BisTree* b = (BisTree*)field;
-
-   char* node = b->root;
-
-   if (node != NULL )
-   {
-      _block_header* q = ((_block_header*)node)-1;
-
-      list_addlast(workList,node);
-
-      j = mark(workList,j);
-
-   }
-   // TODO VER AQUI O Q É APONTADOR E O Q NÂO É 
-   if (field != NULL)
-   {
-      field = forward(field , free, workList);
-   }   
-}
-
+/*
 void* forward( _block_header* fromRef, char*free,List* workList)
 {
+   TAKING THIS OUT BECAUSE IT ISNT NECESSARY AS THE SAME OBJECT ISNT REFERENCED MORE THAN ONCE
    void* toRef = (fromRef->forwardingAdress);
    if (toRef != NULL)
    {
@@ -120,6 +106,8 @@ void* forward( _block_header* fromRef, char*free,List* workList)
    }
    return toRef;
 }
+*/
+
 void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free)
 {
    fromSpace = toSpace;
@@ -128,23 +116,17 @@ void flip(char* fromSpace,char* toSpace,char* top, ptrdiff_t  extent, char* free
    free = fromSpace;
 }
 
-void scan(void *ref, char*free, List* workList)
-{
-   BiTreeNode* node = ref;
-   process(node->left, free, workList);
-   process(node->right, free, workList);
-}
 
 void* copy( _block_header* fromRef, char* free, List* workList)
 {
-   void *toRef = free;
-   free = free+ fromRef->size;
-   memcpy(fromRef, toRef, sizeof(_block_header));
-   fromRef->forwardingAdress = toRef;
+    _block_header* toRef = free;
+   free = free+ fromRef->size + sizeof(_block_header);
+   memcpy(fromRef+1, toRef+1, toRef->size);
+   // TAKING THIS OUT AS WELL fromRef->forwardingAdress = toRef;
    list_addlast(workList,toRef);
    return toRef;
 }
-*/
+
 void markFromRoots(List* roots)
 {
    List* workList  = (List*)malloc(sizeof(List));
