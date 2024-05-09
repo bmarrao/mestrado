@@ -37,6 +37,7 @@ void* getTopHeap(unsigned int nbytes)
     q->marked = 0;
     q->size   = nbytes;
     q->collected = 0;
+    q->survived =0;
     char *p = heap->top + sizeof(_block_header);
     heap->top = heap->top + sizeof(_block_header) + nbytes;
     return p;
@@ -48,8 +49,8 @@ void* my_malloc(unsigned int nbytes) {
      } 
      else 
      {
-        /*
-        
+                        /*
+
         printf("my_malloc: not enough space, performing GC...\n");
         heap->collector(roots);
         if ( list_isempty(heap->freeb) ) 
@@ -64,6 +65,7 @@ void* my_malloc(unsigned int nbytes) {
         q->collected =0;
         return ret;
         */
+
        if (heap->type_collector ==1 )
        {
             printf("my_malloc: not enough space, performing GC...\n");
@@ -78,6 +80,7 @@ void* my_malloc(unsigned int nbytes) {
             list_removefirst(heap->freeb);
             q = ((_block_header*)ret) - 1;
             q->collected =0;
+            q->survived = 0;
             return ret;
        }
        else if(heap->type_collector ==2 )
@@ -95,5 +98,6 @@ void* my_malloc(unsigned int nbytes) {
                 return NULL;
             }
        }
+
     }
 }

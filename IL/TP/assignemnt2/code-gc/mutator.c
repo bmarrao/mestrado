@@ -44,7 +44,9 @@ int main(int argc, char** argv) {
    roots = (List*)malloc(sizeof(List));
 
    //mark_sweep_gc , alter this to see other gc's
+   //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1);
    heap_init(heap, HEAP_SIZE, mark_compact_gc,2);
+
    list_init(roots);
 
    srandom(getpid());
@@ -83,7 +85,7 @@ int main(int argc, char** argv) {
              /* this is checked in bistree_remove */
              bistree_remove(chosen, random() % MAX_KEY_VALUE);
          }
-         fprintf(stdout, "REMOVED tree size is %d\n", bistree_size(chosen));
+         fprintf(stdout, "REMOVED tree size is %d was %d\n", bistree_size(chosen),number_nodes);
          //fprintf(stdout, "(inorder traversal)\n");
          //bistree_inorder(chosen);
       }

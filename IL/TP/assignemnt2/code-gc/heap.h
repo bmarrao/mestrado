@@ -11,9 +11,10 @@ typedef struct _block_header _block_header;
 
 typedef struct _block_header
 {
-   unsigned int marked;
+   unsigned int marked; 
    unsigned int size;
    unsigned int collected;
+   unsigned int survived;
    _block_header* forwardingAdress;
 } _block_header;
 
@@ -26,7 +27,17 @@ typedef struct
    List*        freeb;
    void (*collector)(List*);
    unsigned int type_collector;
+   generation_gc* ggc;
 } Heap;
+
+typedef struct 
+{   
+   char* topEden;
+   unsigned int n_surive;
+   void (*c_eden)(List*);
+   void (*c_tenured)(List*);
+
+} generation_gc;
 
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i);
 

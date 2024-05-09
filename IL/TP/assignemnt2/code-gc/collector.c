@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <stddef.h> 
 
+void generational_gc() 
+{
+
+}
 void mark_sweep_gc() {
    /*
     * mark phase:
@@ -17,7 +21,6 @@ void mark_sweep_gc() {
     * traverse trees,
     * mark reachable
    */
-
    printf("MarkFromRoots\n");
    markFromRoots(roots);
 
@@ -88,6 +91,19 @@ void copy_collection_gc()
 
 void process (void* field, char* free, List* workList)
 {
+   BisTree* b = (BisTree*)field;
+
+   char* node = b->root;
+
+   if (node != NULL )
+   {
+      _block_header* q = ((_block_header*)node)-1;
+
+      list_addlast(workList,node);
+
+      j = mark(workList,j);
+
+   }
    // TODO VER AQUI O Q É APONTADOR E O Q NÂO É 
    if (field != NULL)
    {
@@ -134,6 +150,7 @@ void markFromRoots(List* roots)
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
    size_t tamanho = sizeof(_block_header);
+   int j = 0;
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*)(list_get(roots, i));
@@ -146,15 +163,16 @@ void markFromRoots(List* roots)
 
          list_addlast(workList,node);
 
-         mark(workList);
+         j = mark(workList,j);
 
       }
       
    }
+   printf(" Marked : %d\n", j);
    free(workList);
 }
 
-void mark(List* workList )
+int mark(List* workList , int j)
 {
    size_t tamanho = sizeof(_block_header);
 
@@ -164,8 +182,9 @@ void mark(List* workList )
       BiTreeNode* node = list_getfirst(workList);
 
       _block_header* q = ((_block_header*)node) - 1;
-
+      j++;
       q->marked=1;
+      q->survived++;
 
       list_removefirst(workList);
       if (node->left != NULL)
@@ -179,6 +198,7 @@ void mark(List* workList )
 
    
    }
+   return j;
 }
 
 
@@ -186,6 +206,7 @@ void sweep(char* start, char* end)
 {
    size_t tamanho = sizeof(_block_header);
    char* scan = start;
+   int i  = 0;
    while (scan < end)
    {
       _block_header* q = (_block_header*)(scan);
@@ -199,7 +220,9 @@ void sweep(char* start, char* end)
          q->marked = 0;
       }
       scan = scan + tamanho + q->size;
+      i++;
    }
+   printf(" Total : %d", i);
 }
 
 
