@@ -71,7 +71,8 @@ int main(int argc, char** argv) {
          //fprintf(stdout, "(inorder traversal)\n");
          //bistree_inorder(t);
       } 
-      else { // remove nodes
+      else 
+      { // remove nodes
          /* skip if there are no roots to manipulate */
          if (list_isempty(roots))
             continue;

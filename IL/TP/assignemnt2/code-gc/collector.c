@@ -64,7 +64,6 @@ void mark_compact_gc()
 
 void copy_collection_gc() 
 {
-   ptrdiff_t extent = (ptrdiff_t)(heap->size) / 2;
    char* top ;
    char* free ;
    char* toSpace;
@@ -73,11 +72,13 @@ void copy_collection_gc()
    {
       fromSpace = heap->top;
       toSpace = heap->base;
+      heap->limit = heap->base + heap->size/2;
    }
    else 
    {
       fromSpace = heap->base;
-      toSpace = heap->base + extent;
+      toSpace = heap->base + heap->size/2;
+      heap->limit = heap->base + heap->size;
 
    }
    char* top = toSpace;
@@ -92,7 +93,7 @@ void copy_collection_gc()
 
       if (node != NULL )
       {
-         b->root = forward(b->root, free, workList);
+         b->root = copy(b->root, &free, workList);
       }
    }
 
@@ -101,36 +102,33 @@ void copy_collection_gc()
    {
       BiTreeNode* node  = list_getfirst(workList);
       list_removefirst(workList);
-      node->left = forward(node->left, free, workList);
-      node->right = forward(node->right, free, workList);
+      if (node->left != NULL)
+      {
+         node->left = copy(node->left, &free, workList);
+      }
+      if (node->right != NULL)
+      {
+         node->right = copy(node->right, &free, workList);
+      }
    }
+   printf(" Previous heap->top %p\n", heap->top);
+   printf(" New heap->top %p\n", free);
+   heap->top = free;
    printf("gcing()...\n");
    return;
 }
 
-/*
-TAKING THIS OUT BECAUSE IT ISNT NECESSARY AS THE SAME OBJECT ISNT REFERENCED MORE THAN ONCE
-void* forward( _block_header* fromRef, char*free,List* workList)
+
+
+
+void* copy( _block_header* fromRef, char** free, List* workList)
 {
-   void* toRef = (fromRef->forwardingAdress);
-   if (toRef != NULL)
-   {
-      toRef = copy(fromRef, free, workList);
-   }
-   return toRef;
-}
-*/
-
-
-
-void* copy( _block_header* fromRef, char* free, List* workList)
-{
-    _block_header* toRef = free;
-   free = free+ fromRef->size + sizeof(_block_header);
-   memcpy(fromRef+1, toRef+1, toRef->size);
+    _block_header* toRef = (_block_header*)*free;
+    *free = *free + fromRef->size + sizeof(_block_header);
+   memcpy(toRef+1, fromRef+1, toRef->size);
    // TAKING THIS OUT AS WELL fromRef->forwardingAdress = toRef;
    list_addlast(workList,toRef);
-   return toRef;
+   return toRef+1;
 }
 
 void markFromRoots(List* roots)
