@@ -108,6 +108,7 @@ void* my_malloc(unsigned int nbytes)
                 printf("my_malloc: not enough space after GC...\n");
                 return NULL;
             }
+        
         }
         else if (heap->type_collector == 3)
         {

@@ -70,7 +70,7 @@ void copy_collection_gc()
    char* fromSpace;
    if (heap->top >= heap->base + heap->size/2)
    {
-      fromSpace = heap->top;
+      fromSpace = heap->base + heap->size/2;
       toSpace = heap->base;
       heap->limit = heap->base + heap->size/2;
    }
@@ -81,8 +81,7 @@ void copy_collection_gc()
       heap->limit = heap->base + heap->size;
 
    }
-   char* top = toSpace;
-   char* free = fromSpace;
+   char* free = toSpace;
    List* workList = (List*)malloc(sizeof(List));
 
    list_init(workList);
@@ -108,10 +107,10 @@ void copy_collection_gc()
 
       if (node->left != NULL)
       {
-         q->survived++;
 
          if (heap->ggc != NULL)
          {
+            q->survived++;
             if(heap->ggc->n_survive == q->survived)
             {
                moveToTenured(q);
@@ -127,9 +126,9 @@ void copy_collection_gc()
       q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
-         q->survived++;
          if (heap->ggc != NULL)
          {
+            q->survived++;
             if(heap->ggc->n_survive == q->survived)
             {
                moveToTenured(q);
@@ -170,7 +169,7 @@ void* copy( _block_header* fromRef, char** free, List* workList)
     *free = *free + fromRef->size + sizeof(_block_header);
    memcpy(toRef+1, fromRef+1, toRef->size);
    // TAKING THIS OUT AS WELL fromRef->forwardingAdress = toRef;
-   list_addlast(workList,toRef);
+   list_addlast(workList,fromRef+1);
    return toRef+1;
 }
 
@@ -191,7 +190,6 @@ void markFromRoots(List* roots)
          _block_header* q = ((_block_header*)node)-1;
 
          list_addlast(workList,node);
-         printf("Mark\n");
          j = mark(workList,j);
 
       }
@@ -207,7 +205,6 @@ int mark(List* workList , int j)
 
    while(! list_isempty(workList))
    {
-      printf("j : %d\n",j);
       BiTreeNode* node = list_getfirst(workList);
 
       _block_header* q = ((_block_header*)node) - 1;
@@ -297,7 +294,8 @@ void computeLocations(char* start, char* end, char* toRegion)
 
    }
    printf("%d %d %d\n", i, (j-i), j);
-   /*
+         /*
+
    while (free < end )
    {
       _block_header* q = (_block_header*)(free);
@@ -309,10 +307,12 @@ void computeLocations(char* start, char* end, char* toRegion)
       free = free + tamanho + q->size;
 
    }
-   */
+      */
+
    printf(" Previous heap->top %p\n", heap->top);
    printf(" New heap->top %p\n", free);
    heap->top = free;
+
 }
 
 void updateReferences(char* start, char* end, List* roots)
@@ -326,7 +326,10 @@ void updateReferences(char* start, char* end, List* roots)
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node) - 1;
-         b->root = q->forwardingAdress;
+         if (q->marked == 1)
+         {
+            b->root = q->forwardingAdress;
+         }
       }
    }
    char* scan = start;
@@ -340,12 +343,18 @@ void updateReferences(char* start, char* end, List* roots)
          if (node->left != NULL)
          {
             q= ((_block_header*)node->left) - 1;
-            node->left = q->forwardingAdress;
+            if (q->marked == 1)
+            {
+               node->left = q->forwardingAdress;
+            }
          }
          if (node->right != NULL)
          {
             q= ((_block_header*)node->right) - 1;
-            node->right = q->forwardingAdress;
+            if(q->marked == 1)
+            {
+               node->right = q->forwardingAdress;
+            }
          }
       }
       scan = scan + tamanho + q->size;
@@ -362,7 +371,6 @@ void relocate(char* start, char* end)
       if (q->marked==1 )
       {
          void* dest = q->forwardingAdress;
-         //TALVEZ Q+1 esteja errado
          memcpy(dest, (q + 1), q->size);
          q->marked = 0;
       }
