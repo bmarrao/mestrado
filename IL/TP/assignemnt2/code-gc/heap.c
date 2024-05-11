@@ -11,7 +11,7 @@
 #include "collector.h"
 
 
-void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i)
+void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc)
 {
     heap->base  = mmap ( NULL, size, PROT_READ | PROT_WRITE,
                          MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
@@ -28,6 +28,7 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     heap->freeb = (List*)malloc(sizeof(List));
     list_init(heap->freeb);
     heap->collector = collector;
+    heap->ggc = ggc;
     heap->type_collector = i;
     return;
 }

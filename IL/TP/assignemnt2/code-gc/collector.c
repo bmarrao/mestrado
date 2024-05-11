@@ -90,10 +90,12 @@ void copy_collection_gc()
    {
       BisTree* b = (BisTree*) list_get(roots,i);
       char* node = b->root;
+      _block_header* q = ((_block_header*)node)-1;
 
       if (node != NULL )
       {
          b->root = copy(b->root, &free, workList);
+         q->survived++;
       }
    }
 
@@ -102,13 +104,48 @@ void copy_collection_gc()
    {
       BiTreeNode* node  = list_getfirst(workList);
       list_removefirst(workList);
+      _block_header* q = ((_block_header*)node->left)-1;
+
       if (node->left != NULL)
       {
-         node->left = copy(node->left, &free, workList);
+         q->survived++;
+
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               moveToTenured(q);
+               list_addlast(workList,q);
+            }
+            else 
+            {
+               node->left = copy(q, &free, workList);
+            }
+         }
+         node->left = copy(q, &free, workList);
       }
+      q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
-         node->right = copy(node->right, &free, workList);
+         q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               moveToTenured(q);
+               list_addlast(workList,q);
+
+            }
+            else 
+            {
+               node->right = copy(q, &free, workList);
+            }
+         }
+         else 
+         {
+            node->right = copy(q, &free, workList);
+
+         }
       }
    }
    printf(" Previous heap->top %p\n", heap->top);
@@ -118,6 +155,13 @@ void copy_collection_gc()
    return;
 }
 
+void moveToTenured(_block_header* toMove)
+{
+   if(heap->ggc->eden+ sizeof(_block_header) + toMove->size< heap->limit)
+   {
+
+   }
+}
 
 
 
@@ -171,8 +215,15 @@ int mark(List* workList , int j)
       j++;
       q->marked=1;
       q->survived++;
-
       list_removefirst(workList);
+
+      if (heap->ggc != NULL)
+      {
+         if(heap->ggc->n_survive == q->survived)
+         {
+            moveToTenured(q);
+         }
+      }
       if (node->left != NULL)
       {
          list_addlast(workList,node->left);

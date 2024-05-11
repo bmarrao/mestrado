@@ -32,14 +32,14 @@ typedef struct
 
 typedef struct 
 {   
-   char* topEden;
+   char* tenured;
    unsigned int n_surive;
    void (*c_eden)(List*);
    void (*c_tenured)(List*);
 
 } generation_gc;
 
-void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i);
+void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc);
 
 void heap_destroy(Heap* heap);
 

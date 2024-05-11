@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 
    //mark_sweep_gc , alter this to see other gc's
    //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1);
-   heap_init(heap, HEAP_SIZE, mark_compact_gc,2);
+   heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
 
    list_init(roots);
 
