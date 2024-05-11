@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stddef.h> 
 
+void* copy(_block_header* fromRef, char** free, List* workList);
+
 void generational_gc() 
 {
 
@@ -64,8 +66,6 @@ void mark_compact_gc()
 
 void copy_collection_gc() 
 {
-   char* top ;
-   char* free ;
    char* toSpace;
    char* fromSpace;
    if (heap->top >= heap->base + heap->size/2)
@@ -94,7 +94,7 @@ void copy_collection_gc()
 
       if (node != NULL )
       {
-         b->root = copy(b->root, &free, workList);
+         b->root = copy(q, &free, workList);
          q->survived++;
       }
    }
@@ -157,12 +157,11 @@ void copy_collection_gc()
 
 void moveToTenured(_block_header* toMove)
 {
-   if(heap->ggc->eden+ sizeof(_block_header) + toMove->size< heap->limit)
+   if(heap->ggc->tenured+ sizeof(_block_header) + toMove->size< heap->limit)
    {
 
    }
 }
-
 
 
 void* copy( _block_header* fromRef, char** free, List* workList)
@@ -192,7 +191,7 @@ void markFromRoots(List* roots)
          _block_header* q = ((_block_header*)node)-1;
 
          list_addlast(workList,node);
-
+         printf("Mark\n");
          j = mark(workList,j);
 
       }
@@ -208,7 +207,7 @@ int mark(List* workList , int j)
 
    while(! list_isempty(workList))
    {
-
+      printf("j : %d\n",j);
       BiTreeNode* node = list_getfirst(workList);
 
       _block_header* q = ((_block_header*)node) - 1;
@@ -224,11 +223,15 @@ int mark(List* workList , int j)
             moveToTenured(q);
          }
       }
-      if (node->left != NULL)
+      q = ((_block_header*)node->left) - 1;
+
+      if (node->left != NULL && q->marked != 1)
       {
          list_addlast(workList,node->left);
       }
-      if (node->right != NULL)
+      q = ((_block_header*)node->right) - 1;
+
+      if (node->right != NULL && q->marked != 1)
       {
          list_addlast(workList,node->right);
       }

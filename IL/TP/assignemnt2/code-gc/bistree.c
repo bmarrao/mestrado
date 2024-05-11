@@ -30,15 +30,21 @@ bool bistree_lookup(BisTree* tree, int data) {
 }
 
 BiTreeNode* bitreenode_insert(BiTreeNode* node, int data) {
-   if (node == NULL) {
+   if (node == NULL) 
+   {
+      printf("Before MyMalloc\n");
       BiTreeNode* node = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
+      printf("After MyMalloc\n");
       if (node == NULL)
       {
          printf("ERROR\n");
       }
       node->data = data;
+      printf("6\n");
       node->left = NULL;
+      printf("5\n");
       node->right= NULL;
+      printf("4\n");
       return node;
     }
     else if(data < node->data)

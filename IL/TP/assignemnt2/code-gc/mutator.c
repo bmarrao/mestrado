@@ -63,11 +63,17 @@ int main(int argc, char** argv) {
          list_addlast(roots,t);
          /* prepare to insert up to 100 nodes, a minimum of 5 */
          int number_nodes = MIN_NODES + random() % (MAX_NODES - MIN_NODES);
-         for(int i = 0; i < number_nodes; i++) {
+         for(int i = 0; i < number_nodes; i++) 
+         {
+            printf("Before\n");
             /* populate tree with keys between 0-100 */
             bistree_insert(t, random() % MAX_KEY_VALUE);
+            printf("After\n");
          }
+         printf("TRYING TO PRINT INSERTED\n");
          fprintf(stdout, "INSERTED tree size is %d\n", bistree_size(t));
+         printf("BOA TO PRINT INSERTED\n");
+
          //fprintf(stdout, "(inorder traversal)\n");
          //bistree_inorder(t);
       } 

@@ -19,6 +19,15 @@ typedef struct _block_header
 } _block_header;
 
 typedef struct 
+{   
+   char* tenured;
+   unsigned int n_survive;
+   void (*c_eden)(List*);
+   void (*c_tenured)(List*);
+
+} generation_gc;
+
+typedef struct 
 {
    unsigned int size;
    char*        base;
@@ -30,14 +39,6 @@ typedef struct
    generation_gc* ggc;
 } Heap;
 
-typedef struct 
-{   
-   char* tenured;
-   unsigned int n_surive;
-   void (*c_eden)(List*);
-   void (*c_tenured)(List*);
-
-} generation_gc;
 
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc);
 

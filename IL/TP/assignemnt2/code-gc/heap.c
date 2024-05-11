@@ -48,6 +48,7 @@ void* getTopHeap(unsigned int nbytes)
     q->survived =0;
     char *p = heap->top + sizeof(_block_header);
     heap->top = heap->top + sizeof(_block_header) + nbytes;
+    printf("End of getTopHeap\n");
     return p;
 }
 void* my_malloc(unsigned int nbytes) 
@@ -99,6 +100,7 @@ void* my_malloc(unsigned int nbytes)
             printf("OUT OF GARBAGE COLLECTOR\n");
             if( heap->top + sizeof(_block_header) + nbytes < heap->limit ) 
             {
+                printf("Sucessfully done GC..\n");
                 return getTopHeap(nbytes);
             }
             else 
@@ -114,6 +116,7 @@ void* my_malloc(unsigned int nbytes)
             printf("OUT OF GARBAGE COLLECTOR\n");
             if( heap->top + sizeof(_block_header) + nbytes < heap->limit ) 
             {
+                printf("Sucessfully done GC..\n");
                 return getTopHeap(nbytes);
             }
             else 
