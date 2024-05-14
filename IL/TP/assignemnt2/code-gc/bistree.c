@@ -17,13 +17,13 @@ void bistree_init(BisTree* tree) {
 
 bool bitreenode_lookup(BiTreeNode* node, int data) 
 {
-   printf("LOOKUP %p \n", node);
+   printf("NODE %p\n", node);
    if (node == NULL)
       return false;
-   printf("NODE left DATA %p\n", node->left);
+   printf("LEFT NODE %p\n", node);
    if (data < node->data)
       return bitreenode_lookup(node->left, data);
-   printf("NODE Right DATA %p\n", node->right);
+   printf("RIGHT NODE %p\n", node);
    if (data > node->data)
       return bitreenode_lookup(node->right, data);
    return true;
@@ -33,39 +33,33 @@ bool bistree_lookup(BisTree* tree, int data) {
     return bitreenode_lookup(tree->root, data);
 }
 
-BiTreeNode* bitreenode_insert(BiTreeNode* node, int data) 
+BiTreeNode* bitreenode_insert(BiTreeNode* node, int data, BiTreeNode *pointer) 
 {
    if (node == NULL) 
    {
-      BiTreeNode* node = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
-      if (node == NULL)
-      {
-      }
-      node->data = data;
-      node->left = NULL;
-      node->right= NULL;
-      return node;
-    }
-    else if(data < node->data)
-    {
-      node->left = bitreenode_insert(node->left, data);
+      pointer->data = data;
+      pointer->left = NULL;
+      pointer->right= NULL;
+      return pointer;
+   }
+   else if(data < node->data)
+   {
+   node->left = bitreenode_insert(node->left, data,pointer);
 
-    }
+   }
    else
-    {
-      node->left = bitreenode_insert(node->right, data);
-    }
-    return node;
+   {
+   node->right = bitreenode_insert(node->right, data,pointer);
+   }
+   return node;
 }
 
-bool bistree_insert(BisTree* tree, int data) 
+bool bistree_insert(BisTree* tree, int data,BiTreeNode *pointer) 
 {
-   printf("INSERT BOOL\n");
-
+   printf("LOOKUP\n");
    if (bistree_lookup(tree, data))
       return false;
-   printf("AFTER IF \n");
-   tree->root = bitreenode_insert(tree->root, data);
+   tree->root = bitreenode_insert(tree->root, data,pointer);
    tree->size = tree->size + 1;
    return true;
 }

@@ -22,7 +22,7 @@ typedef struct BiTree_ {
 
 void bistree_init(BisTree* tree);
 
-bool bistree_insert(BisTree* tree, int data);
+bool bistree_insert(BisTree* tree, int data,BiTreeNode*pointer);
 
 bool bistree_remove(BisTree* tree, int data);
 

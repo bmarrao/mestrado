@@ -46,6 +46,7 @@ void* getTopHeap(unsigned int nbytes)
     q->size   = nbytes;
     q->collected = 0;
     q->survived =0;
+    q->forwardingAdress = NULL;
     char *p = heap->top + sizeof(_block_header);
     heap->top = heap->top + sizeof(_block_header) + nbytes;
     printf("End of getTopHeap\n");

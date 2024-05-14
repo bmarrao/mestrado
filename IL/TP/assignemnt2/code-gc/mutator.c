@@ -44,13 +44,15 @@ int main(int argc, char** argv) {
    roots = (List*)malloc(sizeof(List));
 
    //mark_sweep_gc , alter this to see other gc's
-   //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1);
+   //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1,NULL);
    heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
 
    list_init(roots);
 
    srandom(getpid());
    mutate = true;
+   BiTreeNode* pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
+
    while(mutate) {
       float toss = (float)random() / RAND_MAX;
       if( toss > threshold ) 
@@ -63,12 +65,20 @@ int main(int argc, char** argv) {
          list_addlast(roots,t);
          /* prepare to insert up to 100 nodes, a minimum of 5 */
          int number_nodes = MIN_NODES + random() % (MAX_NODES - MIN_NODES);
+         bool x ;
          for(int i = 0; i < number_nodes; i++) 
          {            
-            printf("Before\n");
             /* populate tree with keys between 0-100 */
-            bistree_insert(t, random() % MAX_KEY_VALUE);
-            printf("After\n");
+            x = bistree_insert(t, random() % MAX_KEY_VALUE, pointer);
+            if (x)
+            {
+               pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
+               if (pointer == NULL)
+               {
+                  printf("END OF SPACE\n");
+                  return -1;
+               }
+            }
          }
          fprintf(stdout, "INSERTED tree size is %d\n", bistree_size(t));
 

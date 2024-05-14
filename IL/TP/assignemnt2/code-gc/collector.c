@@ -9,6 +9,7 @@
 #include "bistree.h"
 #include <stdlib.h>
 #include <stddef.h> 
+size_t tamanho = sizeof(_block_header);
 
 void* copy(_block_header* fromRef, char** free, List* workList);
 
@@ -25,7 +26,6 @@ void mark_sweep_gc() {
    */
    printf("MarkFromRoots\n");
    markFromRoots(roots);
-
 
    /*
     * sweep phase:
@@ -57,7 +57,7 @@ void mark_compact_gc()
     * copy objects to new addresses
     */
    printf("Compact\n");   
-   compact(heap->base,heap->limit,roots);
+   compact(heap->base,heap->top,roots);
 
    printf("gcing()...\n");
    return;
@@ -66,6 +66,7 @@ void mark_compact_gc()
 
 void copy_collection_gc() 
 {
+   
    char* toSpace;
    char* fromSpace;
    if (heap->top >= heap->base + heap->size/2)
@@ -156,7 +157,7 @@ void copy_collection_gc()
 
 void moveToTenured(_block_header* toMove)
 {
-   if(heap->ggc->tenured+ sizeof(_block_header) + toMove->size< heap->limit)
+   if(heap->ggc->tenured+ tamanho + toMove->size< heap->limit)
    {
 
    }
@@ -166,7 +167,7 @@ void moveToTenured(_block_header* toMove)
 void* copy( _block_header* fromRef, char** free, List* workList)
 {
     _block_header* toRef = (_block_header*)*free;
-    *free = *free + fromRef->size + sizeof(_block_header);
+    *free = *free + fromRef->size + tamanho;
    memcpy(toRef+1, fromRef+1, toRef->size);
    // TAKING THIS OUT AS WELL fromRef->forwardingAdress = toRef;
    list_addlast(workList,fromRef+1);
@@ -177,7 +178,7 @@ void markFromRoots(List* roots)
 {
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
-   size_t tamanho = sizeof(_block_header);
+   
    int j = 0;
    for (int i = 0; i < list_size(roots); i++)
    {
@@ -201,7 +202,7 @@ void markFromRoots(List* roots)
 
 int mark(List* workList , int j)
 {
-   size_t tamanho = sizeof(_block_header);
+   
 
    while(! list_isempty(workList))
    {
@@ -241,7 +242,7 @@ int mark(List* workList , int j)
 
 void sweep(char* start, char* end)
 {
-   size_t tamanho = sizeof(_block_header);
+   
    char* scan = start;
    int i  = 0;
    while (scan < end)
@@ -259,7 +260,7 @@ void sweep(char* start, char* end)
       scan = scan + tamanho + q->size;
       i++;
    }
-   printf(" Total : %d", i);
+   printf(" Total : %d\n", i);
 }
 
 
@@ -275,7 +276,7 @@ void compact (char* start, char* end, List* roots)
 
 void computeLocations(char* start, char* end, char* toRegion)
 {
-   size_t tamanho = sizeof(_block_header);
+   
    char * scan = start;
    char * free = toRegion;
    int i  = 0;
@@ -317,46 +318,51 @@ void computeLocations(char* start, char* end, char* toRegion)
 
 void updateReferences(char* start, char* end, List* roots)
 {
-   size_t tamanho = sizeof(_block_header);
+   
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*)(list_get(roots, i));
       char* node = b->root;
-
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node) - 1;
-         if (q->marked == 1)
-         {
-            b->root = q->forwardingAdress;
-         }
+         b->root = q->forwardingAdress;
       }
    }
+   printf("7\n");
    char* scan = start;
    while (scan < end)
    {
+      printf("1\n");
       _block_header* q = (_block_header*)(scan);
       if (q->marked == 1)
       {
+         printf("2\n");
          void* pointer = q+1; 
          BiTreeNode* node = (BiTreeNode*)(pointer);
+         printf("3\n");
+
          if (node->left != NULL)
          {
+            printf("5\n");
             q= ((_block_header*)node->left) - 1;
-            if (q->marked == 1)
-            {
-               node->left = q->forwardingAdress;
-            }
+            printf("6 %d\n", node->data);
+
+            node->left = q->forwardingAdress;
+            printf("NAO VAI CHEGAR\n");
          }
+         printf("4\n");
+
          if (node->right != NULL)
          {
+            printf("7\n");
             q= ((_block_header*)node->right) - 1;
-            if(q->marked == 1)
-            {
-               node->right = q->forwardingAdress;
-            }
+            printf("8\n");
+            node->right = q->forwardingAdress;
+            printf("NAO VAI CHEGAR\n");
          }
       }
+      printf("5\n");
       scan = scan + tamanho + q->size;
 
    }
@@ -371,10 +377,10 @@ void relocate(char* start, char* end)
       if (q->marked==1 )
       {
          void* dest = q->forwardingAdress;
-         memcpy(dest, (q + 1), q->size);
+         memcpy(dest,q, q->size+tamanho);
          q->marked = 0;
       }
-      scan = scan + sizeof(_block_header) + q->size;
+      scan = scan + tamanho + q->size;
    }
 }
 
