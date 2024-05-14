@@ -329,40 +329,28 @@ void updateReferences(char* start, char* end, List* roots)
          b->root = q->forwardingAdress;
       }
    }
-   printf("7\n");
    char* scan = start;
    while (scan < end)
    {
-      printf("1\n");
       _block_header* q = (_block_header*)(scan);
       if (q->marked == 1)
       {
-         printf("2\n");
          void* pointer = q+1; 
          BiTreeNode* node = (BiTreeNode*)(pointer);
-         printf("3\n");
 
          if (node->left != NULL)
          {
-            printf("5\n");
             q= ((_block_header*)node->left) - 1;
-            printf("6 %d\n", node->data);
 
             node->left = q->forwardingAdress;
-            printf("NAO VAI CHEGAR\n");
          }
-         printf("4\n");
 
          if (node->right != NULL)
          {
-            printf("7\n");
             q= ((_block_header*)node->right) - 1;
-            printf("8\n");
             node->right = q->forwardingAdress;
-            printf("NAO VAI CHEGAR\n");
          }
       }
-      printf("5\n");
       scan = scan + tamanho + q->size;
 
    }
@@ -376,8 +364,9 @@ void relocate(char* start, char* end)
       _block_header* q = (_block_header*)(scan);
       if (q->marked==1 )
       {
-         void* dest = q->forwardingAdress;
+         _block_header*  dest = ((_block_header*) q->forwardingAdress)-1;
          memcpy(dest,q, q->size+tamanho);
+         dest->marked = 0;
          q->marked = 0;
       }
       scan = scan + tamanho + q->size;

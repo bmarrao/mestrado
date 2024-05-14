@@ -49,7 +49,6 @@ void* getTopHeap(unsigned int nbytes)
     q->forwardingAdress = NULL;
     char *p = heap->top + sizeof(_block_header);
     heap->top = heap->top + sizeof(_block_header) + nbytes;
-    printf("End of getTopHeap\n");
     return p;
 }
 void* my_malloc(unsigned int nbytes) 

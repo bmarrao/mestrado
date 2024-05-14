@@ -17,13 +17,10 @@ void bistree_init(BisTree* tree) {
 
 bool bitreenode_lookup(BiTreeNode* node, int data) 
 {
-   printf("NODE %p\n", node);
    if (node == NULL)
       return false;
-   printf("LEFT NODE %p\n", node);
    if (data < node->data)
       return bitreenode_lookup(node->left, data);
-   printf("RIGHT NODE %p\n", node);
    if (data > node->data)
       return bitreenode_lookup(node->right, data);
    return true;
@@ -56,7 +53,6 @@ BiTreeNode* bitreenode_insert(BiTreeNode* node, int data, BiTreeNode *pointer)
 
 bool bistree_insert(BisTree* tree, int data,BiTreeNode *pointer) 
 {
-   printf("LOOKUP\n");
    if (bistree_lookup(tree, data))
       return false;
    tree->root = bitreenode_insert(tree->root, data,pointer);
