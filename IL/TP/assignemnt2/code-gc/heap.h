@@ -21,18 +21,15 @@ typedef struct _block_header
 
 typedef struct 
 {   
-   char* tenured;
    float size ;
    unsigned int n_survive;
-   //unsigned int type_gc_eden;
+   unsigned int type_gc_eden;
    void (*c_eden)(List*);
-    //unsigned int type_gc_tenured;
-
+   unsigned int type_gc_tenured;
    void (*c_tenured)(List*);
-   //Heap* eden;
-   //Heap* tenured;
+   Heap* eden;
+   Heap* tenured;
 } generation_gc;
-/*
 
 
 typedef struct 
@@ -49,18 +46,6 @@ typedef struct
 typedef struct 
 {
    HeapBase*    baseHeap;
-   generation_gc;
-} Heap;
-*/
-typedef struct 
-{
-   unsigned int size;
-   char*        base;
-   char*        top;
-   char*        limit;
-   List*        freeb;
-   void (*collector)(List*);
-   unsigned int type_collector;
    generation_gc* ggc;
 } Heap;
 
@@ -70,5 +55,8 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
 void heap_destroy(Heap* heap);
 
 void* my_malloc(unsigned int nbytes);
+
+void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes) ;
+
 
 #endif

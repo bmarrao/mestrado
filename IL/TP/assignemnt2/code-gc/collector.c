@@ -18,7 +18,7 @@ void generational_gc()
 {
 
 }
-void mark_sweep_gc() {
+void mark_sweep_gc(HeapBase* hb) {
    /*
     * mark phase:
     * go throught all roots,
@@ -26,7 +26,7 @@ void mark_sweep_gc() {
     * mark reachable
    */
    printf("MarkFromRoots\n");
-   markFromRoots(roots);
+   markFromRoots(hb, roots);
 
    /*
     * sweep phase:
@@ -34,13 +34,13 @@ void mark_sweep_gc() {
     * add unmarked to free list
     */
    printf("Sweep\n");   
-   sweep(heap->base, heap->limit);
+   sweep(hb, hb->base, hb->limit);
 
    printf("gcing()...\n");
    return;
  }
 
-void mark_compact_gc()
+void mark_compact_gc(HeapBase* hb)
 {
    /*
     * mark phase:
@@ -50,7 +50,7 @@ void mark_compact_gc()
     */
 
    printf("MarkFromRoots\n");
-   markFromRoots(roots);
+   markFromRoots(hb,roots);
    /*
     * compact phase:
     * go through entire heap,
@@ -58,28 +58,28 @@ void mark_compact_gc()
     * copy objects to new addresses
     */
    printf("Compact\n");   
-   compact(heap->base,heap->top,roots);
+   compact(hb,hb->base,hb->top,roots);
 
    printf("gcing()...\n");
    return;
 }
 
 
-void copy_collection_gc() 
+void copy_collection_gc(HeapBase* hb) 
 {
    char* toSpace;
    char* fromSpace;
-   if (heap->top >= heap->base + heap->size/2)
+   if (hb->top >= hb->base + hb->size/2)
    {
-      fromSpace = heap->base + heap->size/2;
-      toSpace = heap->base;
-      heap->limit = heap->base + heap->size/2;
+      fromSpace = hb->base + hb->size/2;
+      toSpace = hb->base;
+      hb->limit = hb->base + hb->size/2;
    }
    else 
    {
-      fromSpace = heap->base;
-      toSpace = heap->base + heap->size/2;
-      heap->limit = heap->base + heap->size;
+      fromSpace = hb->base;
+      toSpace = hb->base + hb->size/2;
+      hb->limit = hb->base + hb->size;
 
    }
    char* free = toSpace;
@@ -155,16 +155,16 @@ void copy_collection_gc()
          }
       }
    }
-   printf(" Previous heap->top %p\n", heap->top);
-   printf(" New heap->top %p new heap->limit %p\n", free, heap->limit);
-   heap->top = free;
+   printf(" Previous heap->top %p\n", hb->top);
+   printf(" New heap->top %p new heap->limit %p\n", free, hb->limit);
+   hb->top = free;
    printf("gcing()...\n");
    return;
 }
 
 void* moveToTenured(_block_header* toMove)
 {
-   void* pointer = my_malloc(heap->ggc->tenured,toMove->size);
+   void* pointer = my_heap_malloc(heap->ggc->tenured,toMove->size);
    memcpy(pointer, toMove, toMove->size+tamanho);
    return pointer;
 
@@ -174,14 +174,16 @@ void* moveToTenured(_block_header* toMove)
 
 void* copy( _block_header* fromRef, char** free, List* workList)
 {
+   _block_header* toRef = (_block_header*)*free;
    if (heap->ggc != NULL)
    {
       fromRef->survived++;
       if(heap->ggc->n_survive == fromRef->survived)
       {
-         moveToTenured(q);
-         list_addlast(workList,q+1);
-
+         // ADD SURVIVED SO IT DOESNT COME HERE AGAIN
+         fromRef->survived++;
+         list_addlast(workList,fromRef+1);
+         return moveToTenured(fromRef);
       }
    }
     _block_header* toRef = (_block_header*)*free;
@@ -191,7 +193,7 @@ void* copy( _block_header* fromRef, char** free, List* workList)
    return toRef+1;
 }
 
-void markFromRoots(List* roots)
+void markFromRoots(HeapBase* hb,List* roots)
 {
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
@@ -274,7 +276,7 @@ int mark(List* workList , int j)
 }
 
 
-void sweep(char* start, char* end)
+void sweep(HeapBase*hb, char* start, char* end)
 {
    
    char* scan = start;
@@ -285,7 +287,7 @@ void sweep(char* start, char* end)
       if (q->marked == 0 && q->collected == 0)
       {
          q->collected= 1;
-         list_addlast(heap->freeb,q+1);
+         list_addlast(hb->freeb,q+1);
       }
       else 
       {
@@ -298,17 +300,17 @@ void sweep(char* start, char* end)
 }
 
 
-void compact (char* start, char* end, List* roots)
+void compact (HeapBase* hb ,char* start, char* end, List* roots)
 {
    printf("Compute Locations\n");
-   computeLocations(start,end,start);
+   computeLocations(hb,start,end,start);
    printf("Update References\n");
    updateReferences(start,end,roots);
    printf("Relocate\n");
    relocate(start,end);
 }
 
-void computeLocations(char* start, char* end, char* toRegion)
+void computeLocations(HeapBase* hb,char* start, char* end, char* toRegion)
 {
    
    char * scan = start;
@@ -344,9 +346,9 @@ void computeLocations(char* start, char* end, char* toRegion)
    }
       */
 
-   printf(" Previous heap->top %p\n", heap->top);
-   printf(" New heap->top %p new heap->limit %p\n", free, heap->limit);
-   heap->top = free;
+   printf(" Previous heap->top %p\n", hb->top);
+   printf(" New heap->top %p new heap->limit %p\n", free, hb->limit);
+   hb->top = free;
 
 }
 
