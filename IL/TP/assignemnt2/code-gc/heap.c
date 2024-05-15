@@ -30,6 +30,40 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     heap->collector = collector;
     heap->ggc = ggc;
     heap->type_collector = i;
+    /*
+        if (ggc == NULL)
+        {
+            HeapBase* hb = malloc(sizeof(HeapBase));
+            hb->base  = mmap ( NULL, size, PROT_READ | PROT_WRITE,
+                                    MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
+            hb->size  = size;
+            if (i == 3)
+            {
+                heap->limit = heap->base + size/2;
+            }
+            else 
+            {
+                heap->limit = heap->base + size;
+            }
+            hb->top   = hb->base;
+            hb->freeb = (List*)malloc(sizeof(List));
+            list_init(hb->freeb);
+            hb->collector = collector;
+            hb->ggc = ggc;
+            hb->type_collector = i;
+            heap->baseHeap = hb;
+            heap->ggc = ggc;
+        }
+        else 
+        {
+            gcc->eden = (Heap*)malloc(sizeof(Heap));
+            heap_init(gcc->eden, HEAP_SIZE * gcc->size, gcc->c_eden, type_gc_eden,NULL);
+            gcc->tenured = (Heap*)malloc(sizeof(Heap));
+            heap_init(gcc->eden, HEAP_SIZE (HEAP_SIZE * gcc->size), gcc->c_tenured, type_gc_tenured,NULL);
+            heap->baseHeap = NULL;
+        }
+        
+    */
     return;
 }
 
