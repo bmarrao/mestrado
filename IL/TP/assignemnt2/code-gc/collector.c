@@ -162,17 +162,28 @@ void copy_collection_gc()
    return;
 }
 
-void moveToTenured(_block_header* toMove)
+void* moveToTenured(_block_header* toMove)
 {
-   if(heap->ggc->tenured+ tamanho + toMove->size< heap->limit)
-   {
+   void* pointer = my_malloc(heap->ggc->tenured,toMove->size);
+   memcpy(pointer, toMove, toMove->size+tamanho);
+   return pointer;
 
-   }
 }
+
 
 
 void* copy( _block_header* fromRef, char** free, List* workList)
 {
+   if (heap->ggc != NULL)
+   {
+      fromRef->survived++;
+      if(heap->ggc->n_survive == fromRef->survived)
+      {
+         moveToTenured(q);
+         list_addlast(workList,q+1);
+
+      }
+   }
     _block_header* toRef = (_block_header*)*free;
     *free = *free + fromRef->size + tamanho;
    memcpy(toRef, fromRef, toRef->size+tamanho);
@@ -195,7 +206,15 @@ void markFromRoots(List* roots)
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node)-1;
-
+         q->marked=1;
+         q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               b->root= moveToTenured(q);
+            }
+         }
          list_addlast(workList,node);
          j = mark(workList,j);
 
@@ -214,29 +233,38 @@ int mark(List* workList , int j)
    {
       BiTreeNode* node = list_getfirst(workList);
 
-      _block_header* q = ((_block_header*)node) - 1;
-      j++;
-      q->marked=1;
-      q->survived++;
+      
       list_removefirst(workList);
 
-      if (heap->ggc != NULL)
-      {
-         if(heap->ggc->n_survive == q->survived)
-         {
-            moveToTenured(q);
-         }
-      }
-      q = ((_block_header*)node->left) - 1;
-
+      _block_header*  q = ((_block_header*)node->left) - 1;
       if (node->left != NULL && q->marked != 1)
       {
+         q->marked=1;
+         q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               node->left = moveToTenured(q);
+            }
+         }
          list_addlast(workList,node->left);
       }
       q = ((_block_header*)node->right) - 1;
 
       if (node->right != NULL && q->marked != 1)
       {
+
+         q->marked=1;
+         q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               node->right = moveToTenured(q);
+            }
+         }
+         list_addlast(workList,node->left);
          list_addlast(workList,node->right);
       }
 
