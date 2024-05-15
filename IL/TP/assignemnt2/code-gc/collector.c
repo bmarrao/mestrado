@@ -2,6 +2,7 @@
  * collector.c
  */
 
+//cd mestrado/IL/TP/assignemnt2/code-gc/
 #include <stdio.h>
 #include "globals.h"
 #include "list.h"
@@ -66,7 +67,6 @@ void mark_compact_gc()
 
 void copy_collection_gc() 
 {
-   
    char* toSpace;
    char* fromSpace;
    if (heap->top >= heap->base + heap->size/2)
@@ -86,6 +86,7 @@ void copy_collection_gc()
    List* workList = (List*)malloc(sizeof(List));
 
    list_init(workList);
+   printf("Roots\n");
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*) list_get(roots,i);
@@ -98,17 +99,20 @@ void copy_collection_gc()
          q->survived++;
       }
    }
-
+   printf("WORKLIST\n");
    char* ref;
    while (!list_isempty(workList))
    {
+      //printf("1\n");
       BiTreeNode* node  = list_getfirst(workList);
       list_removefirst(workList);
       _block_header* q = ((_block_header*)node->left)-1;
 
+      //printf("2\n");
       if (node->left != NULL)
       {
 
+         //printf("3\n");
          if (heap->ggc != NULL)
          {
             q->survived++;
@@ -122,8 +126,11 @@ void copy_collection_gc()
                node->left = copy(q, &free, workList);
             }
          }
+         //printf("4\n");
+
          node->left = copy(q, &free, workList);
       }
+      //printf("3\n");
       q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
@@ -133,7 +140,7 @@ void copy_collection_gc()
             if(heap->ggc->n_survive == q->survived)
             {
                moveToTenured(q);
-               list_addlast(workList,q);
+               list_addlast(workList,q+1);
 
             }
             else 
@@ -149,7 +156,7 @@ void copy_collection_gc()
       }
    }
    printf(" Previous heap->top %p\n", heap->top);
-   printf(" New heap->top %p\n", free);
+   printf(" New heap->top %p new heap->limit %p\n", free, heap->limit);
    heap->top = free;
    printf("gcing()...\n");
    return;
@@ -168,9 +175,8 @@ void* copy( _block_header* fromRef, char** free, List* workList)
 {
     _block_header* toRef = (_block_header*)*free;
     *free = *free + fromRef->size + tamanho;
-   memcpy(toRef+1, fromRef+1, toRef->size);
-   // TAKING THIS OUT AS WELL fromRef->forwardingAdress = toRef;
-   list_addlast(workList,fromRef+1);
+   memcpy(toRef, fromRef, toRef->size+tamanho);
+   list_addlast(workList,toRef+1);
    return toRef+1;
 }
 
@@ -311,7 +317,7 @@ void computeLocations(char* start, char* end, char* toRegion)
       */
 
    printf(" Previous heap->top %p\n", heap->top);
-   printf(" New heap->top %p\n", free);
+   printf(" New heap->top %p new heap->limit %p\n", free, heap->limit);
    heap->top = free;
 
 }
