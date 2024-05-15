@@ -93,7 +93,7 @@ void* my_malloc(unsigned int nbytes)
     } 
     else 
     {
-                        /*
+        /*
 
         printf("my_malloc: not enough space, performing GC...\n");
         heap->collector(roots);
