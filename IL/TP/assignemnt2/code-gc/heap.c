@@ -49,24 +49,23 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     return;
 }
 
-/*
+
 void heap_destroy(Heap* heap) 
 {
 
-    if (heap->ggc == NULL)
+    if (heap->ggc == NULL) 
     {
         munmap(heap->baseHeap->base, heap->baseHeap->size);
-    }
-    else 
+    } else 
     {
-        // TODO ISSO TALVEZ DE ERRO , NÂO SEI SE NAO PRECISO DESTRUIR CADA HEAP INDIVIDUAL
-        munmap(heap->ggc->eden->base, heap->ggc->tenured>limit);
+        generation_gc* ggc = heap->ggc;
+        HeapBase* eden = ggc->eden;
+        HeapBase* tenured = ggc->tenured;
+        munmap(eden->base,tenured->limit);
     }
-    munmap(heap->base, heap->size);
     return;
 }
 
-*/
 
 void* getTopHeap(HeapBase* hb,unsigned int nbytes)
 {
@@ -110,7 +109,7 @@ void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes)
         else if(myHeap->type_collector ==2 )
         {
             printf("my_malloc: not enough space, performing GC...\n");
-            myHeap->collector(roots);
+            myHeap->collector(myHeap->base);
             printf("OUT OF GARBAGE COLLECTOR\n");
             if( myHeap->top + sizeof(_block_header) + nbytes < myHeap->limit ) 
             {

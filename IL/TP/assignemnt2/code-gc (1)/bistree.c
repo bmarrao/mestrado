@@ -21,7 +21,6 @@ bool bitreenode_lookup(BiTreeNode* node, int data)
       return false;
    if (data < node->data)
       return bitreenode_lookup(node->left, data);
-
    if (data > node->data)
       return bitreenode_lookup(node->right, data);
    return true;
@@ -42,11 +41,12 @@ BiTreeNode* bitreenode_insert(BiTreeNode* node, int data, BiTreeNode *pointer)
    }
    else if(data < node->data)
    {
-      node->left = bitreenode_insert(node->left, data,pointer);
+   node->left = bitreenode_insert(node->left, data,pointer);
+
    }
    else
    {
-      node->right = bitreenode_insert(node->right, data,pointer);
+   node->right = bitreenode_insert(node->right, data,pointer);
    }
    return node;
 }
@@ -57,7 +57,6 @@ bool bistree_insert(BisTree* tree, int data,BiTreeNode *pointer)
       return false;
    tree->root = bitreenode_insert(tree->root, data,pointer);
    tree->size = tree->size + 1;
-
    return true;
 }
 

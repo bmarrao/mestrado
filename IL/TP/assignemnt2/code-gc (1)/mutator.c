@@ -45,8 +45,8 @@ int main(int argc, char** argv) {
 
    //mark_sweep_gc , alter this to see other gc's
    //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1,NULL);
-   heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
-   //heap_init(heap , HEAP_SIZE, copy_collection_gc,3,NULL);
+   //heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
+   heap_init(heap , HEAP_SIZE, copy_collection_gc,3,NULL);
 
    list_init(roots);
 
@@ -74,7 +74,6 @@ int main(int argc, char** argv) {
             if (x)
             {
                pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
-               printf("pointer - %p - %p\n", pointer, t->root);
                if (pointer == NULL)
                {
                   printf("END OF SPACE\n");

@@ -12,13 +12,11 @@
 #include <stddef.h> 
 size_t tamanho = sizeof(_block_header);
 
-void* copy(_block_header* fromRef, char** free, List* workList);
+_block_header* moveToTenured(_block_header* toMove);
+_block_header* copy(_block_header* fromRef, char** free, List* workList);
 
-void generational_gc() 
+void mark_sweep_gc(HeapBase* hb) 
 {
-
-}
-void mark_sweep_gc(HeapBase* hb) {
    /*
     * mark phase:
     * go throught all roots,
@@ -26,7 +24,7 @@ void mark_sweep_gc(HeapBase* hb) {
     * mark reachable
    */
    printf("MarkFromRoots\n");
-   markFromRoots(hb, roots);
+   markFromRoots(roots);
 
    /*
     * sweep phase:
@@ -50,7 +48,7 @@ void mark_compact_gc(HeapBase* hb)
     */
 
    printf("MarkFromRoots\n");
-   markFromRoots(hb,roots);
+   markFromRoots(roots);
    /*
     * compact phase:
     * go through entire heap,
@@ -90,6 +88,7 @@ void copy_collection_gc(HeapBase* hb)
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*) list_get(roots,i);
+      printf("SIZE - %d\n",b->size);
       char* node = b->root;
       _block_header* q = ((_block_header*)node)-1;
 
@@ -118,7 +117,7 @@ void copy_collection_gc(HeapBase* hb)
             q->survived++;
             if(heap->ggc->n_survive == q->survived)
             {
-               moveToTenured(q);
+               node->left = moveToTenured(q);
                list_addlast(workList,q);
             }
             else 
@@ -139,7 +138,7 @@ void copy_collection_gc(HeapBase* hb)
             q->survived++;
             if(heap->ggc->n_survive == q->survived)
             {
-               moveToTenured(q);
+               node->right = moveToTenured(q);
                list_addlast(workList,q+1);
 
             }
@@ -162,19 +161,18 @@ void copy_collection_gc(HeapBase* hb)
    return;
 }
 
-void* moveToTenured(_block_header* toMove)
+_block_header* moveToTenured(_block_header* toMove)
 {
    void* pointer = my_heap_malloc(heap->ggc->tenured,toMove->size);
    memcpy(pointer, toMove, toMove->size+tamanho);
-   return pointer;
+   return (_block_header*) pointer;
 
 }
 
 
 
-void* copy( _block_header* fromRef, char** free, List* workList)
+_block_header* copy( _block_header* fromRef, char** free, List* workList)
 {
-   _block_header* toRef = (_block_header*)*free;
    if (heap->ggc != NULL)
    {
       fromRef->survived++;
@@ -186,14 +184,13 @@ void* copy( _block_header* fromRef, char** free, List* workList)
          return moveToTenured(fromRef);
       }
    }
-    _block_header* toRef = (_block_header*)*free;
-    *free = *free + fromRef->size + tamanho;
+   _block_header* toRef = (_block_header*)*free;    *free = *free + fromRef->size + tamanho;
    memcpy(toRef, fromRef, toRef->size+tamanho);
    list_addlast(workList,toRef+1);
    return toRef+1;
 }
 
-void markFromRoots(HeapBase* hb,List* roots)
+void markFromRoots(List* roots)
 {
    List* workList  = (List*)malloc(sizeof(List));
    list_init(workList);
@@ -202,14 +199,16 @@ void markFromRoots(HeapBase* hb,List* roots)
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*)(list_get(roots, i));
-
-      char* node = b->root;
-
+      BiTreeNode* node = b->root;
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node)-1;
          q->marked=1;
          q->survived++;
+         j++;
+         printf("POINTER %p SIZE - %d\n",node,b->size);
+
+         printf("%d\n", q->size);
          if (heap->ggc != NULL)
          {
             if(heap->ggc->n_survive == q->survived)
@@ -219,7 +218,7 @@ void markFromRoots(HeapBase* hb,List* roots)
          }
          list_addlast(workList,node);
          j = mark(workList,j);
-
+         printf("%d\n",j);
       }
       
    }
@@ -230,6 +229,7 @@ void markFromRoots(HeapBase* hb,List* roots)
 int mark(List* workList , int j)
 {
    
+   printf("mark\n");
 
    while(! list_isempty(workList))
    {
@@ -237,10 +237,13 @@ int mark(List* workList , int j)
 
       
       list_removefirst(workList);
-
+      printf("%p - NODE \n");
       _block_header*  q = ((_block_header*)node->left) - 1;
+      printf(" marked %d  size %d\n", q->marked , q->size);
       if (node->left != NULL && q->marked != 1)
       {
+         printf("Entrei", q->marked , q->size);
+
          q->marked=1;
          q->survived++;
          if (heap->ggc != NULL)
@@ -266,7 +269,6 @@ int mark(List* workList , int j)
                node->right = moveToTenured(q);
             }
          }
-         list_addlast(workList,node->left);
          list_addlast(workList,node->right);
       }
 
@@ -331,20 +333,6 @@ void computeLocations(HeapBase* hb,char* start, char* end, char* toRegion)
 
    }
    printf("%d %d %d\n", i, (j-i), j);
-         /*
-
-   while (free < end )
-   {
-      _block_header* q = (_block_header*)(free);
-      if (q->collected == 0 )
-      {
-         q->collected= 1;
-         list_addlast(heap->freeb,q+1);
-      }
-      free = free + tamanho + q->size;
-
-   }
-      */
 
    printf(" Previous heap->top %p\n", hb->top);
    printf(" New heap->top %p new heap->limit %p\n", free, hb->limit);
