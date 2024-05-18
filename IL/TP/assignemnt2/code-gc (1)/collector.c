@@ -14,7 +14,7 @@ size_t tamanho = sizeof(_block_header);
 
 
 
-void mark_sweep_gc(Heap* hb) 
+void mark_sweep_gc(HeapBase* hb) 
 {
    /*
     * mark phase:
@@ -37,7 +37,7 @@ void mark_sweep_gc(Heap* hb)
    return;
  }
 
-void sweep(Heap*hb, char* start, char* end)
+void sweep(HeapBase*hb, char* start, char* end)
 {
    //TODO TEM ALGO DE ERRADO AQUI
    char* scan = start;
@@ -63,7 +63,7 @@ void sweep(Heap*hb, char* start, char* end)
 }
 
 
-void mark_compact_gc(Heap* hb)
+void mark_compact_gc(HeapBase* hb)
 {
    /*
     * mark phase:
@@ -155,7 +155,7 @@ int mark(List* workList , int j)
 
 
 
-void compact (Heap* hb ,char* start, char* end, List* roots)
+void compact (HeapBase* hb ,char* start, char* end, List* roots)
 {
    printf("Compute Locations\n");
    computeLocations(hb,start,end,start);
@@ -165,7 +165,7 @@ void compact (Heap* hb ,char* start, char* end, List* roots)
    relocate(start,end);
 }
 
-void computeLocations(Heap* hb,char* start, char* end, char* toRegion)
+void computeLocations(HeapBase* hb,char* start, char* end, char* toRegion)
 {
    
    char * scan = start;
@@ -252,10 +252,7 @@ void relocate(char* start, char* end)
 
 void moveToTenured(_block_header* toMove)
 {
-   if(heap->ggc->tenured+ tamanho + toMove->size< heap->limit)
-   {
 
-   }
 }
 
 
@@ -268,7 +265,7 @@ void* copy( _block_header* fromRef, char** free, List* workList)
    return toRef+1;
 }
 
-void copy_collection_gc(Heap* hb) 
+void copy_collection_gc(HeapBase* hb) 
 {
    char* toSpace;
    char* fromSpace;
@@ -316,10 +313,10 @@ void copy_collection_gc(Heap* hb)
       {
 
          //printf("3\n");
-         if (hb->ggc != NULL)
+         if (heap->ggc != NULL)
          {
             q->survived++;
-            if(hb->ggc->n_survive == q->survived)
+            if(heap->ggc->n_survive == q->survived)
             {
                moveToTenured(q);
                list_addlast(workList,q);
@@ -337,10 +334,10 @@ void copy_collection_gc(Heap* hb)
       q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
-         if (hb->ggc != NULL)
+         if (heap->ggc != NULL)
          {
             q->survived++;
-            if(hb->ggc->n_survive == q->survived)
+            if(heap->ggc->n_survive == q->survived)
             {
                moveToTenured(q);
                list_addlast(workList,q+1);

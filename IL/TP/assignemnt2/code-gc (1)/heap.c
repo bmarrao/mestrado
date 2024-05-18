@@ -13,45 +13,76 @@
 
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc)
 {
-    heap->base  = mmap ( NULL, size, PROT_READ | PROT_WRITE,
-                         MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
-    heap->size  = size;
-    if (i == 3)
+
+    if (ggc == NULL)
     {
-        heap->limit = heap->base + size/2;
+        HeapBase* hb = malloc(sizeof(HeapBase));
+        hb->base  = mmap ( NULL, size, PROT_READ | PROT_WRITE,
+                                MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
+        hb->size  = size;
+        if (i == 3)
+        {
+            hb->limit = hb->base + size/2;
+        }
+        else 
+        {
+            hb->limit = hb->base + size;
+        }
+        hb->top   = hb->base;
+        hb->freeb = (List*)malloc(sizeof(List));
+        list_init(hb->freeb);
+        hb->collector = collector;
+        hb->type_collector = i;
+        heap->baseHeap = hb;
+        heap->ggc = ggc;
     }
     else 
     {
-        heap->limit = heap->base + size;
+        ggc->eden = (Heap*)malloc(sizeof(Heap));
+        heap_init(ggc->eden, size * ggc->size, ggc->c_eden, ggc->type_gc_eden,NULL);
+        ggc->tenured = (Heap*)malloc(sizeof(Heap));
+        heap_init(ggc->tenured, size - (size * ggc->size), ggc->c_tenured, ggc->type_gc_tenured,NULL);
+        heap->ggc = ggc;
+        heap->baseHeap = NULL;
     }
-    heap->top   = heap->base;
-    heap->freeb = (List*)malloc(sizeof(List));
-    list_init(heap->freeb);
-    heap->collector = collector;
-    heap->ggc = ggc;
-    heap->type_collector = i;
+    
     return;
 }
 
-void heap_destroy(Heap* heap) 
+void my_heap_destroy(HeapBase* heap) 
 {
     munmap(heap->base, heap->size);
     return;
 }
 
-void* getTopHeap(Heap* hb, unsigned int nbytes)
+void heap_destroy(Heap* heap) 
 {
-    _block_header* q = (_block_header*)(heap->top);
+    if (heap->ggc != NULL)
+    {
+        my_heap_destroy(heap->ggc->eden);
+        my_heap_destroy(heap->ggc->tenured);
+    }
+    else 
+    {
+        my_heap_destroy(heap->baseHeap);
+    }
+    return;
+}
+
+
+void* getTopHeap(HeapBase* hb, unsigned int nbytes)
+{
+    _block_header* q = (_block_header*)(hb->top);
     q->marked = 0;
     q->size   = nbytes;
     q->collected = 0;
     q->survived =0;
     q->forwardingAdress = NULL;
     char *p = hb->top + sizeof(_block_header);
-    heap->top = hb->top + sizeof(_block_header) + nbytes;
+    hb->top = hb->top + sizeof(_block_header) + nbytes;
     return p;
 }
-void* my_heap_malloc(Heap* hb,unsigned int nbytes) 
+void* my_heap_malloc(HeapBase* hb,unsigned int nbytes) 
 {
     if( hb->top + sizeof(_block_header) + nbytes < hb->limit ) 
     {
@@ -118,7 +149,7 @@ void* my_malloc(unsigned int nbytes)
     if(heap->ggc == NULL)
     {
         //return my_heap_malloc(heap->baseHeap,nbytes);
-        return my_heap_malloc(heap,nbytes);
+        return my_heap_malloc(heap->baseHeap,nbytes);
 
     }
     else 
