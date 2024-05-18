@@ -48,4 +48,8 @@ void* my_malloc(unsigned int nbytes);
 
 void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes);
 
+void* generation_gc_init(generation_gc* ggc, float size, unsigned int n_survive,unsigned int type_gc_eden,
+                           void (*c_eden)(HeapBase*),unsigned int type_gc_tenured,
+                           void (*c_tenured)(HeapBase*));
+
 #endif

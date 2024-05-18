@@ -11,9 +11,23 @@
 #include "collector.h"
 
 
+void* generation_gc_init(generation_gc* ggc,int heap_size, float size, unsigned int n_survive,unsigned int type_gc_eden,
+                           void (*c_eden)(HeapBase*),unsigned int type_gc_tenured,
+                           void (*c_tenured)(HeapBase*))
+{
+    ggc->size = size;
+    ggc->n_survive = n_survive;
+    ggc->type_gc_eden = type_gc_eden;
+    ggc->c_eden = c_eden;
+    ggc->type_gc_tenured = type_gc_tenured;
+    ggc->c_tenured = c_tenured;
+    ggc->eden = malloc(sizeof(HeapBase));
+    ggc->tenured = malloc(sizeof(HeapBase));
+    heap_init(ggc->eden,heap_size * size, c_eden,type_gc_eden,NULL);
+    heap_init(ggc->tenured,heap_size -(heap_size * size), c_tenured,type_gc_tenured,NULL);
+}
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc)
 {
-
     if (ggc == NULL)
     {
         HeapBase* hb = malloc(sizeof(HeapBase));
