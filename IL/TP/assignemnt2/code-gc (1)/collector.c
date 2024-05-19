@@ -289,8 +289,20 @@ void* moveToTenured(_block_header* toMove)
 
 void* copy( _block_header* fromRef, char** free, List* workList)
 {
-    _block_header* toRef = (_block_header*)*free;
-    *free = *free + fromRef->size + tamanho;
+
+   if (heap->ggc != NULL)
+   {
+      fromRef->survived++;
+      if(heap->ggc->n_survive == fromRef->survived)
+      {
+         // ADD SURVIVED SO IT DOESNT COME HERE AGAIN
+         fromRef->survived++;
+         list_addlast(workList,fromRef+1);
+         return moveToTenured(fromRef);
+      }
+   }
+   _block_header* toRef = (_block_header*)*free;
+   *free = *free + fromRef->size + tamanho;
    memcpy(toRef, fromRef, toRef->size+tamanho);
    list_addlast(workList,toRef+1);
    return toRef+1;
@@ -342,49 +354,13 @@ void copy_collection_gc(HeapBase* hb)
       //printf("2\n");
       if (node->left != NULL)
       {
-
-         //printf("3\n");
-         if (heap->ggc != NULL)
-         {
-            q->survived++;
-            if(heap->ggc->n_survive == q->survived)
-            {
-               // TODO TROCAR POR NODE LEFT
-               void* left = moveToTenured(q);
-               list_addlast(workList,q);
-            }
-            else 
-            {
-               node->left = copy(q, &free, workList);
-            }
-         }
-         //printf("4\n");
-
          node->left = copy(q, &free, workList);
       }
       //printf("3\n");
       q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
-         if (heap->ggc != NULL)
-         {
-            q->survived++;
-            if(heap->ggc->n_survive == q->survived)
-            {
-               moveToTenured(q);
-               list_addlast(workList,q+1);
-
-            }
-            else 
-            {
-               node->right = copy(q, &free, workList);
-            }
-         }
-         else 
-         {
-            node->right = copy(q, &free, workList);
-
-         }
+         node->right = copy(q, &free, workList);
       }
    }
    printf(" Previous heap->top %p\n", hb->top);

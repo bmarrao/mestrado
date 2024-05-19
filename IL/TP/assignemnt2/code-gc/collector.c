@@ -88,7 +88,6 @@ void copy_collection_gc(HeapBase* hb)
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*) list_get(roots,i);
-      printf("SIZE - %d\n",b->size);
       char* node = b->root;
       _block_header* q = ((_block_header*)node)-1;
 
@@ -237,12 +236,9 @@ int mark(List* workList , int j)
 
       
       list_removefirst(workList);
-      printf("%p - NODE \n");
       _block_header*  q = ((_block_header*)node->left) - 1;
-      printf(" marked %d  size %d\n", q->marked , q->size);
       if (node->left != NULL && q->marked != 1)
       {
-         printf("Entrei", q->marked , q->size);
 
          q->marked=1;
          q->survived++;
