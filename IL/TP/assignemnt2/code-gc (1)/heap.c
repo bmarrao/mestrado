@@ -11,7 +11,7 @@
 #include "collector.h"
 
 
-void* generation_gc_init(generation_gc* ggc,int heap_size, float size, unsigned int n_survive,unsigned int type_gc_eden,
+void generation_gc_init(generation_gc* ggc,unsigned int heap_size, float size, unsigned int n_survive,unsigned int type_gc_eden,
                            void (*c_eden)(HeapBase*),unsigned int type_gc_tenured,
                            void (*c_tenured)(HeapBase*))
 {
@@ -162,14 +162,12 @@ void* my_malloc(unsigned int nbytes)
 {
     if(heap->ggc == NULL)
     {
-        //return my_heap_malloc(heap->baseHeap,nbytes);
         return my_heap_malloc(heap->baseHeap,nbytes);
 
     }
     else 
     {
-        //return my_heap_malloc(heap->ggc->eden, nbytes);
-        return NULL;
+        return my_heap_malloc(heap->ggc->eden, nbytes);
     }
 }
     

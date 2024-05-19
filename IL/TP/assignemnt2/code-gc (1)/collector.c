@@ -12,6 +12,7 @@
 #include <stddef.h> 
 size_t tamanho = sizeof(_block_header);
 
+void* moveToTenured(_block_header* toMove);
 
 
 void mark_sweep_gc(HeapBase* hb) 
@@ -106,6 +107,16 @@ void markFromRoots(List* roots)
          q->marked=1;
          q->survived++;
          j++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               b->root= moveToTenured(q);
+               // TALVEZ ALTERAR ESSA PARTE 
+               q->marked = 0 ;
+               q->survived = 0;
+            }
+         }
          list_addlast(workList,node);
          j = mark(workList,j);
 
@@ -133,6 +144,16 @@ int mark(List* workList , int j)
       {
          q->marked=1;
          q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               node->left = moveToTenured(q);
+               // TODO VER SE ISSO TA CERTO
+               q->marked = 0 ;
+               q->survived = 0;
+            }
+         }
          j++;
          list_addlast(workList,node->left);
       }
@@ -144,6 +165,16 @@ int mark(List* workList , int j)
          j++;
          q->marked=1;
          q->survived++;
+         if (heap->ggc != NULL)
+         {
+            if(heap->ggc->n_survive == q->survived)
+            {
+               node->right = moveToTenured(q);
+               // TODO VER SE ISSO TA CERTO
+               q->marked = 0 ;
+               q->survived = 0;
+            }
+         }
          list_addlast(workList,node->right);
       }
 
@@ -250,9 +281,9 @@ void relocate(char* start, char* end)
    }
 }
 
-void moveToTenured(_block_header* toMove)
+void* moveToTenured(_block_header* toMove)
 {
-
+   return NULL;
 }
 
 
@@ -318,7 +349,8 @@ void copy_collection_gc(HeapBase* hb)
             q->survived++;
             if(heap->ggc->n_survive == q->survived)
             {
-               moveToTenured(q);
+               // TODO TROCAR POR NODE LEFT
+               void* left = moveToTenured(q);
                list_addlast(workList,q);
             }
             else 
