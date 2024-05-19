@@ -11,9 +11,23 @@
 #include "collector.h"
 
 
+void generation_gc_init(generation_gc* ggc,unsigned int heap_size, float size, unsigned int n_survive,unsigned int type_gc_eden,
+                           void (*c_eden)(HeapBase*),unsigned int type_gc_tenured,
+                           void (*c_tenured)(HeapBase*))
+{
+    ggc->size = size;
+    ggc->n_survive = n_survive;
+    ggc->type_gc_eden = type_gc_eden;
+    ggc->c_eden = c_eden;
+    ggc->type_gc_tenured = type_gc_tenured;
+    ggc->c_tenured = c_tenured;
+    ggc->eden = malloc(sizeof(Heap));
+    ggc->tenured = malloc(sizeof(Heap));
+    heap_init(ggc->eden,heap_size * size, c_eden,type_gc_eden,NULL);
+    heap_init(ggc->tenured,heap_size -(heap_size * size), c_tenured,type_gc_tenured,NULL);
+}
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc)
 {
-
     if (ggc == NULL)
     {
         HeapBase* hb = malloc(sizeof(HeapBase));
@@ -38,10 +52,6 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     }
     else 
     {
-        ggc->eden = (Heap*)malloc(sizeof(Heap));
-        heap_init(ggc->eden, size * ggc->size, ggc->c_eden, ggc->type_gc_eden,NULL);
-        ggc->tenured = (Heap*)malloc(sizeof(Heap));
-        heap_init(ggc->tenured, size - (size * ggc->size), ggc->c_tenured, ggc->type_gc_tenured,NULL);
         heap->ggc = ggc;
         heap->baseHeap = NULL;
     }
@@ -49,25 +59,28 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned
     return;
 }
 
+void my_heap_destroy(HeapBase* heap) 
+{
+    munmap(heap->base, heap->size);
+    return;
+}
 
 void heap_destroy(Heap* heap) 
 {
-
-    if (heap->ggc == NULL) 
+    if (heap->ggc != NULL)
     {
-        munmap(heap->baseHeap->base, heap->baseHeap->size);
-    } else 
+        my_heap_destroy(heap->ggc->eden);
+        my_heap_destroy(heap->ggc->tenured);
+    }
+    else 
     {
-        generation_gc* ggc = heap->ggc;
-        HeapBase* eden = ggc->eden;
-        HeapBase* tenured = ggc->tenured;
-        munmap(eden->base,tenured->limit);
+        my_heap_destroy(heap->baseHeap);
     }
     return;
 }
 
 
-void* getTopHeap(HeapBase* hb,unsigned int nbytes)
+void* getTopHeap(HeapBase* hb, unsigned int nbytes)
 {
     _block_header* q = (_block_header*)(hb->top);
     q->marked = 0;
@@ -79,42 +92,40 @@ void* getTopHeap(HeapBase* hb,unsigned int nbytes)
     hb->top = hb->top + sizeof(_block_header) + nbytes;
     return p;
 }
-
-void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes) 
+void* my_heap_malloc(HeapBase* hb,unsigned int nbytes) 
 {
-    if( myHeap->top + sizeof(_block_header) + nbytes < myHeap->limit ) 
+    if( hb->top + sizeof(_block_header) + nbytes < hb->limit ) 
     {
-        return getTopHeap(myHeap,nbytes);
+        return getTopHeap(hb,nbytes);
     } 
     else 
     {
-
-        if (myHeap->type_collector ==1 )
+        if (hb->type_collector ==1 )
         {
             printf("my_malloc: not enough space, performing GC...\n");
-            myHeap->collector(roots);
-            if ( list_isempty(myHeap->freeb) ) 
+            hb->collector(hb);
+            if ( list_isempty(hb->freeb) ) 
             {
                 printf("my_malloc: not enough space after GC...\n");
                 return NULL;
             }
-            void* ret = list_getfirst(myHeap->freeb);
+            void* ret = list_getfirst(hb->freeb);
             _block_header* q ;
-            list_removefirst(myHeap->freeb);
+            list_removefirst(hb->freeb);
             q = ((_block_header*)ret) - 1;
             q->collected =0;
             q->survived = 0;
             return ret;
         }
-        else if(myHeap->type_collector ==2 )
+        else if(hb->type_collector ==2 )
         {
             printf("my_malloc: not enough space, performing GC...\n");
-            myHeap->collector(myHeap->base);
+            hb->collector(hb);
             printf("OUT OF GARBAGE COLLECTOR\n");
-            if( myHeap->top + sizeof(_block_header) + nbytes < myHeap->limit ) 
+            if( hb->top + sizeof(_block_header) + nbytes < hb->limit ) 
             {
                 printf("Sucessfully done GC..\n");
-                return getTopHeap(myHeap,nbytes);
+                return getTopHeap(hb,nbytes);
             }
             else 
             {
@@ -123,15 +134,15 @@ void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes)
             }
         
         }
-        else if (myHeap->type_collector == 3)
+        else if (hb->type_collector == 3)
         {
             printf("my_malloc: not enough space, performing GC...\n");
-            myHeap->collector(roots);
+            hb->collector(hb);
             printf("OUT OF GARBAGE COLLECTOR\n");
-            if( myHeap->top + sizeof(_block_header) + nbytes < myHeap->limit ) 
+            if( hb->top + sizeof(_block_header) + nbytes < hb->limit ) 
             {
                 printf("Sucessfully done GC..\n");
-                return getTopHeap(myHeap,nbytes);
+                return getTopHeap(hb,nbytes);
             }
             else 
             {
@@ -139,14 +150,9 @@ void* my_heap_malloc(HeapBase* myHeap ,unsigned int nbytes)
                 return NULL;
             }
         }
-        else 
-        {
-            
-        }
-
     }
+    return NULL;
 }
-
 
 void* my_malloc(unsigned int nbytes) 
 {
@@ -156,7 +162,8 @@ void* my_malloc(unsigned int nbytes)
     }
     else 
     {
-        return my_heap_malloc(heap->ggc->eden, nbytes);
+        Heap* eden =  heap->ggc->eden;
+        return my_heap_malloc(eden->baseHeap, nbytes);
     }
 }
-
+    

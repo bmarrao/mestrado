@@ -42,18 +42,19 @@ int main(int argc, char** argv) {
 
    heap  = (Heap*)malloc(sizeof(Heap));
    roots = (List*)malloc(sizeof(List));
-
+   generation_gc* ggc = (generation_gc*)malloc(sizeof(generation_gc));
+   generation_gc_init(ggc,HEAP_SIZE,0.7,3,2,mark_compact_gc,2,mark_compact_gc);
    //mark_sweep_gc , alter this to see other gc's
    //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1,NULL);
-   heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
+   heap_init(heap, HEAP_SIZE, mark_compact_gc,2,ggc);
    //heap_init(heap , HEAP_SIZE, copy_collection_gc,3,NULL);
-
    list_init(roots);
 
    srandom(getpid());
    mutate = true;
+   printf("Teste MALLOC\n"); 
    BiTreeNode* pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
-
+   printf("AFTER FIRST MALLOC %p\n", pointer);
    while(mutate) {
       float toss = (float)random() / RAND_MAX;
       if( toss > threshold ) 
@@ -74,7 +75,6 @@ int main(int argc, char** argv) {
             if (x)
             {
                pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
-               printf("pointer - %p - %p\n", pointer, t->root);
                if (pointer == NULL)
                {
                   printf("END OF SPACE\n");
