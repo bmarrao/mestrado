@@ -40,16 +40,54 @@ int main(int argc, char** argv) {
 
    float threshold = atof(argv[1]);  /* a value in the interval (0,1) */
 
+   printf("INIT %d\n", argc);
    heap  = (Heap*)malloc(sizeof(Heap));
    roots = (List*)malloc(sizeof(List));
-   generation_gc* ggc = (generation_gc*)malloc(sizeof(generation_gc));
-   generation_gc_init(ggc,HEAP_SIZE,0.7,3,2,mark_compact_gc,2,mark_compact_gc);
-   //mark_sweep_gc , alter this to see other gc's
-   //heap_init(heap, HEAP_SIZE, mark_sweep_gc,1,NULL);
-   heap_init(heap, HEAP_SIZE, mark_compact_gc,2,ggc);
-   //heap_init(heap , HEAP_SIZE, copy_collection_gc,3,NULL);
+   if (argc > 3)
+   {
+      float size = atof(argv[2]);  /* a value in the interval (0,1) */
+      int n_survive = atoi(argv[3]);
+      generation_gc* ggc = (generation_gc*)malloc(sizeof(generation_gc));
+
+      if (atoi(argv[4]) == 1 && atoi(argv[5]) == 1)
+      {
+         generation_gc_init(ggc,HEAP_SIZE,size,n_survive,1,mark_sweep_gc,1,mark_sweep_gc);
+      }
+      else if (atoi(argv[4]) == 1 && atoi(argv[5]) == 3)
+      {
+         generation_gc_init(ggc,HEAP_SIZE,size,n_survive,1,mark_sweep_gc,3,copy_collection_gc);
+      }
+      else if (atoi(argv[4]) == 3 && atoi(argv[5]) == 1)
+      {
+         generation_gc_init(ggc,HEAP_SIZE,size,n_survive,3,copy_collection_gc,1,mark_sweep_gc);
+      }
+      else 
+      {
+         generation_gc_init(ggc,HEAP_SIZE,size,n_survive,3,copy_collection_gc,3,copy_collection_gc);
+      }
+
+      heap_init(heap, HEAP_SIZE, NULL,0,ggc);
+
+   }
+   else 
+   {
+      if (atoi(argv[2]) == 1)
+      {
+         heap_init(heap, HEAP_SIZE, mark_sweep_gc,1,NULL);
+      }
+      else if (atoi(argv[2]) == 2)
+      {
+         heap_init(heap, HEAP_SIZE, mark_compact_gc,2,NULL);
+      }
+      else 
+      {
+         heap_init(heap , HEAP_SIZE, copy_collection_gc,3,NULL);
+      }
+   }
+
    list_init(roots);
 
+   printf("END INIT\n");
    srandom(getpid());
    mutate = true;
    printf("Teste MALLOC\n"); 

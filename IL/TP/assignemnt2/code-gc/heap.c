@@ -102,12 +102,15 @@ void* my_heap_malloc(HeapBase* hb,unsigned int nbytes)
     {
         if (hb->type_collector ==1 )
         {
-            printf("my_malloc: not enough space, performing GC...\n");
-            hb->collector(hb);
             if ( list_isempty(hb->freeb) ) 
             {
-                printf("my_malloc: not enough space after GC...\n");
-                return NULL;
+                printf("my_malloc: not enough space, performing GC...\n");
+                hb->collector(hb);
+                if (list_isempty(hb->freeb))
+                {
+                    printf("my_malloc: not enough space after GC...\n");
+                    return NULL;
+                }
             }
             void* ret = list_getfirst(hb->freeb);
             _block_header* q ;

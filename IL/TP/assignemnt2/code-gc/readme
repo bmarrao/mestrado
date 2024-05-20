@@ -1,9 +1,13 @@
 compile and run the code as follows:
 
 $ make -f makefile all
-$ ./mutator 0.5
-$ ./mutator 0.9
-$ ./mutator 0.99
+$ ./mutator threshold type_gc -- Without Generation Garbage Collector
+$ ./mutator threshold size_of_eden n_survived type_gc_eden type_gc_tenured
+
+Where type_gc : 
+1 - Mark Sweep 
+2 - Mark Compact 
+3 - Copy Collection
 
 to clean and leave just the source code
 
