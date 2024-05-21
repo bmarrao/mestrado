@@ -23,8 +23,10 @@ void generation_gc_init(generation_gc* ggc,unsigned int heap_size, float size, u
     ggc->c_tenured = c_tenured;
     ggc->eden = malloc(sizeof(Heap));
     ggc->tenured = malloc(sizeof(Heap));
-    heap_init(ggc->eden,heap_size * size, c_eden,type_gc_eden,NULL);
-    heap_init(ggc->tenured,heap_size -(heap_size * size), c_tenured,type_gc_tenured,NULL);
+    int size_eden_heap = heap_size *size;
+    printf(" %d %d \n", size_eden_heap, heap_size);
+    heap_init(ggc->eden,size_eden_heap, c_eden,type_gc_eden,NULL);
+    heap_init(ggc->tenured,heap_size -(size_eden_heap), c_tenured,type_gc_tenured,NULL);
 }
 void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc)
 {

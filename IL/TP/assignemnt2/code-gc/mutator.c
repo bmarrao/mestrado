@@ -40,7 +40,6 @@ int main(int argc, char** argv) {
 
    float threshold = atof(argv[1]);  /* a value in the interval (0,1) */
 
-   printf("INIT %d\n", argc);
    heap  = (Heap*)malloc(sizeof(Heap));
    roots = (List*)malloc(sizeof(List));
    if (argc > 3)
@@ -87,12 +86,9 @@ int main(int argc, char** argv) {
 
    list_init(roots);
 
-   printf("END INIT\n");
    srandom(getpid());
    mutate = true;
-   printf("Teste MALLOC\n"); 
    BiTreeNode* pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
-   printf("AFTER FIRST MALLOC %p\n", pointer);
    while(mutate) {
       float toss = (float)random() / RAND_MAX;
       if( toss > threshold ) 
@@ -105,12 +101,14 @@ int main(int argc, char** argv) {
          list_addlast(roots,t);
          /* prepare to insert up to 100 nodes, a minimum of 5 */
          int number_nodes = MIN_NODES + random() % (MAX_NODES - MIN_NODES);
-         bool x ;
+         bool inserted ;
          for(int i = 0; i < number_nodes; i++) 
          {            
+            //printf("Before insert - %p \n", pointer);
             /* populate tree with keys between 0-100 */
-            x = bistree_insert(t, random() % MAX_KEY_VALUE, pointer);
-            if (x)
+            inserted = bistree_insert(t, random() % MAX_KEY_VALUE, pointer);
+            //printf("after insert\n");
+            if (inserted)
             {
                pointer = (BiTreeNode*)my_malloc(sizeof(BiTreeNode));
                if (pointer == NULL)
@@ -120,7 +118,7 @@ int main(int argc, char** argv) {
                }
             }
          }
-         fprintf(stdout, "INSERTED tree size is %d\n", bistree_size(t));
+         //fprintf(stdout, "INSERTED tree size is %d\n", bistree_size(t));
 
          //fprintf(stdout, "(inorder traversal)\n");
          //bistree_inorder(t);
@@ -140,7 +138,7 @@ int main(int argc, char** argv) {
              /* this is checked in bistree_remove */
              bistree_remove(chosen, random() % MAX_KEY_VALUE);
          }
-         fprintf(stdout, "REMOVED tree size is %d was %d\n", bistree_size(chosen),number_nodes);
+         //fprintf(stdout, "REMOVED tree size is %d was %d\n", bistree_size(chosen),number_nodes);
          //fprintf(stdout, "(inorder traversal)\n");
          //bistree_inorder(chosen);
       }
