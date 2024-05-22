@@ -106,7 +106,16 @@ void* my_heap_malloc(HeapBase* hb,unsigned int nbytes)
         {
             if ( list_isempty(hb->freeb) ) 
             {
-                printf("my_malloc: not enough space, performing GC...\n");
+                Heap* eden = heap->ggc->eden;
+                if (hb->base == eden->baseHeap->base)
+                {
+                    printf("my_malloc: not enough space, performing GC in eden...\n");
+
+                }
+                else
+                {
+                    printf("my_malloc: not enough space, performing GC in tenured...\n");
+                }
                 hb->collector(hb);
                 if (list_isempty(hb->freeb))
                 {
@@ -141,7 +150,16 @@ void* my_heap_malloc(HeapBase* hb,unsigned int nbytes)
         }
         else if (hb->type_collector == 3)
         {
-            printf("my_malloc: not enough space, performing GC...\n");
+            Heap* eden = heap->ggc->eden;
+            if (hb->base == eden->baseHeap->base)
+            {
+                printf("my_malloc: not enough space, performing GC in eden...\n");
+
+            }
+            else
+            {
+                printf("my_malloc: not enough space, performing GC in tenured...\n");
+            }
             hb->collector(hb);
             printf("OUT OF GARBAGE COLLECTOR\n");
             if( hb->top + sizeof(_block_header) + nbytes < hb->limit ) 

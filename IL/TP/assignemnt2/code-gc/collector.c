@@ -13,7 +13,6 @@
 size_t tamanho = sizeof(_block_header);
 
 void* moveToTenured(_block_header* toMove);
-void* moveToTenuredSweep(HeapBase* hb, _block_header* toMove);
 
 void mark_sweep_gc(HeapBase* hb) 
 {
@@ -114,18 +113,19 @@ void markFromRoots(HeapBase* hb, List* roots)
             q->marked=1;
             q->survived++;
             j++;
-         }
-         if (heap->ggc != NULL)
-         {
-            if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+            if (heap->ggc != NULL)
             {
-               b->root= moveToTenuredSweep(hb,q);
-               // TALVEZ ALTERAR ESSA PARTE 
-               q->marked = 0 ;
-               q->survived++;
+               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               {
+                  b->root= moveToTenured(q);
+                  // TALVEZ ALTERAR ESSA PARTE 
+                  q->marked = 0 ;
+                  q->survived++;
+               }
             }
+
          }
-         list_addlast(workList,node);
+         list_addlast(workList,b->root);
          j = mark(hb,workList,j);
 
       }
@@ -155,17 +155,18 @@ int mark(HeapBase* hb, List* workList , int j)
             q->marked=1;
             q->survived++;
             j++;
-         }
-         if (heap->ggc != NULL)
-         {
-            if(heap->ggc->n_survive == q->survived && eden->baseHeap->base <= q <= eden->baseHeap->limit)
+            if (heap->ggc != NULL)
             {
-               node->left= moveToTenuredSweep(hb,q);
-               // TALVEZ ALTERAR ESSA PARTE 
-               q->marked = 0 ;
-               q->survived++;
+               if(heap->ggc->n_survive == q->survived && eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               {
+                  node->left= moveToTenured(q);
+                  // TALVEZ ALTERAR ESSA PARTE 
+                  q->marked = 0 ;
+                  q->survived++;
+               }
             }
          }
+         
          list_addlast(workList,node->left);
       }
       q = ((_block_header*)node->right) - 1;
@@ -178,17 +179,18 @@ int mark(HeapBase* hb, List* workList , int j)
             q->marked=1;
             q->survived++;
             j++;
-         }
-         if (heap->ggc != NULL)
-         {
-            
-            if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+            if (heap->ggc != NULL)
             {
-               node->right= moveToTenuredSweep(hb,q);
-               // TALVEZ ALTERAR ESSA PARTE 
-               q->marked = 0 ;
-            }
+               
+               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               {
+                  node->right= moveToTenured(q);
+                  // TALVEZ ALTERAR ESSA PARTE 
+                  q->marked = 0 ;
+                  q->survived++;
+               }
 
+            }
          }
          list_addlast(workList,node->right);
       }
@@ -315,34 +317,14 @@ void* moveToTenured(_block_header* toMove)
 
 }
 
-void* moveToTenuredSweep(HeapBase* hb, _block_header* toMove)
-{
-   Heap* tenured= heap->ggc->tenured;
-   _block_header* pointer =(_block_header*) my_heap_malloc(tenured->baseHeap,toMove->size);
-   if (pointer == NULL)
-   {
-      printf("NO SPACE IN TENURED\n");
-      return NULL;
-   }
-   else 
-   {
-      toMove->collected=1;
-      list_addlast(hb->freeb,toMove+1);
-      //printf("Space In Tenured\n");
-      size_t size_transfer = toMove->size +tamanho;
-      memcpy(pointer-1, toMove, size_transfer);
-      return pointer;
-   }
 
-}
-
-void* copy( _block_header* fromRef, char** free, List* workList)
+void* copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList)
 {
 
    if (heap->ggc != NULL)
    {
-      Heap* tenured = heap->ggc->tenured;
-      if (tenured->baseHeap->base > fromRef)
+      Heap* eden = heap->ggc->eden;
+      if (eden->baseHeap->base <= fromRef <= eden->baseHeap->limit)
       {
          fromRef->survived++;
          if(heap->ggc->n_survive == fromRef->survived)
@@ -356,8 +338,12 @@ void* copy( _block_header* fromRef, char** free, List* workList)
       }
       else 
       {
-         list_addlast(workList,fromRef+1);
-         return fromRef+1;
+         if (hb->base == eden->baseHeap->base)
+         {
+            list_addlast(workList,fromRef+1);
+            return fromRef+1;
+         }
+
       }
    }
    _block_header* toRef = (_block_header*)*free;
@@ -397,7 +383,7 @@ void copy_collection_gc(HeapBase* hb)
 
       if (node != NULL )
       {
-         b->root = copy(q, &free, workList);
+         b->root = copy(hb,q, &free, workList);
          q->survived++;
       }
    }
@@ -413,13 +399,13 @@ void copy_collection_gc(HeapBase* hb)
       //printf("2\n");
       if (node->left != NULL)
       {
-         node->left = copy(q, &free, workList);
+         node->left = copy(hb,q, &free, workList);
       }
       //printf("3\n");
       q = ((_block_header*)node->right)-1;
       if (node->right != NULL)
       {
-         node->right = copy(q, &free, workList);
+         node->right = copy(hb,q, &free, workList);
       }
    }
    printf(" Previous heap->top %p\n", hb->top);
