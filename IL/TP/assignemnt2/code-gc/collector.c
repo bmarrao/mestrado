@@ -2,7 +2,8 @@
  * collector.c
  */
 
-//cd mestrado/IL/TP/assignemnt2/code-gc/
+// cd mestrado/IL/TP/assignemnt2/code-gc/
+
 #include <stdio.h>
 #include "globals.h"
 #include "list.h"
@@ -107,15 +108,18 @@ void markFromRoots(HeapBase* hb, List* roots)
 
       if (node != NULL )
       {
+
          _block_header* q = ((_block_header*)node)-1;
-         if (hb->base <= q <= hb->limit)
+         char* compare_header = (char*)q;
+
+         if (hb->base <= compare_header && compare_header  <= hb->limit)
          {
             q->marked=1;
             q->survived++;
             j++;
             if (heap->ggc != NULL)
             {
-               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= compare_header && compare_header <= eden->baseHeap->limit)
                {
                   b->root= moveToTenured(q);
                   // TALVEZ ALTERAR ESSA PARTE 
@@ -127,7 +131,6 @@ void markFromRoots(HeapBase* hb, List* roots)
          }
          list_addlast(workList,b->root);
          j = mark(hb,workList,j);
-
       }
       
    }
@@ -150,14 +153,16 @@ int mark(HeapBase* hb, List* workList , int j)
       _block_header*  q = ((_block_header*)node->left) - 1;
       if (node->left != NULL && q->marked != 1)
       {
-         if (hb->base <= q <= hb->limit)
+         char* compare_header = (char*)q;
+
+         if (hb->base <= compare_header && compare_header<= hb->limit)
          {
             q->marked=1;
             q->survived++;
             j++;
             if (heap->ggc != NULL)
             {
-               if(heap->ggc->n_survive == q->survived && eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               if(heap->ggc->n_survive == q->survived && eden->baseHeap->base <= compare_header && compare_header <= eden->baseHeap->limit)
                {
                   node->left= moveToTenured(q);
                   // TALVEZ ALTERAR ESSA PARTE 
@@ -174,7 +179,9 @@ int mark(HeapBase* hb, List* workList , int j)
 
       if (node->right != NULL && q->marked != 1)
       {
-         if (hb->base <= q <= hb->limit)
+         char* compare_header = (char*)q;
+
+         if (hb->base <= compare_header && compare_header <= hb->limit)
          {
             q->marked=1;
             q->survived++;
@@ -182,7 +189,7 @@ int mark(HeapBase* hb, List* workList , int j)
             if (heap->ggc != NULL)
             {
                
-               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= q <= eden->baseHeap->limit)
+               if(heap->ggc->n_survive == q->survived &&  eden->baseHeap->base <= compare_header && compare_header<= eden->baseHeap->limit)
                {
                   node->right= moveToTenured(q);
                   // TALVEZ ALTERAR ESSA PARTE 

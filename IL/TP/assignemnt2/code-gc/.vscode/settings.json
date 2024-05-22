@@ -6,6 +6,7 @@
         "string_view": "c",
         "initializer_list": "c",
         "utility": "c",
-        "collector.h": "c"
+        "collector.h": "c",
+        "random": "c"
     }
 }
