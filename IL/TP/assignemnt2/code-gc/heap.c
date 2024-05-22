@@ -157,15 +157,22 @@ void* my_heap_malloc(HeapBase* hb,unsigned int nbytes)
         }
         else if (hb->type_collector == 3)
         {
-            Heap* eden = heap->ggc->eden;
-            if (hb->base == eden->baseHeap->base)
+            if (heap->ggc != NULL)
             {
-                printf("my_malloc: not enough space, performing GC in eden...\n");
+                Heap* eden = heap->ggc->eden;
+                if (hb->base == eden->baseHeap->base)
+                {
+                    printf("my_malloc: not enough space, performing GC in eden...\n");
 
+                }
+                else
+                {
+                    printf("my_malloc: not enough space, performing GC in tenured...\n");
+                }
             }
-            else
+            else 
             {
-                printf("my_malloc: not enough space, performing GC in tenured...\n");
+                printf("my_malloc: not enough space, performing GC...\n");
             }
             hb->collector(hb);
             printf("OUT OF GARBAGE COLLECTOR\n");
