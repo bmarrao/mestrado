@@ -12,9 +12,18 @@
 #include <stdlib.h>
 #include <stddef.h> 
 #include <errno.h>
+#include <string.h>
+
 size_t tamanho = sizeof(_block_header);
 
+void relocate(char* start, char* end);
 void* moveToTenured(_block_header* toMove);
+void markFromRoots(HeapBase* hb, List* roots);
+void sweep(HeapBase*hb, char* start, char* end);
+void compact (HeapBase* hb ,char* start, char* end, List* roots);
+void computeLocations(HeapBase* hb,char* start, char* end, char* toRegion);
+void updateReferences(char* start, char* end, List* roots);
+int mark(HeapBase* hb, List* workList , int j);
 
 void mark_sweep_gc(HeapBase* hb) 
 {
@@ -105,7 +114,7 @@ void markFromRoots(HeapBase* hb, List* roots)
    {
 
       BisTree* b = (BisTree*)(list_get(roots, i));
-      char* node = b->root;
+      char* node = (char*)b->root;
 
       if (node != NULL )
       {
@@ -135,7 +144,6 @@ void markFromRoots(HeapBase* hb, List* roots)
       }
       
    }
-   printf("Marked : %d\n", j);
    free(workList);
 }
 
@@ -255,11 +263,11 @@ void updateReferences(char* start, char* end, List* roots)
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*)(list_get(roots, i));
-      char* node = b->root;
+      char* node = (char*)b->root;
       if (node != NULL )
       {
          _block_header* q = ((_block_header*)node) - 1;
-         b->root = q->forwardingAdress;
+         b->root = (BiTreeNode *)q->forwardingAdress;
       }
    }
    char* scan = start;
@@ -275,13 +283,13 @@ void updateReferences(char* start, char* end, List* roots)
          {
             q= ((_block_header*)node->left) - 1;
 
-            node->left = q->forwardingAdress;
+            node->left = (BiTreeNode *)q->forwardingAdress;
          }
 
          if (node->right != NULL)
          {
             q= ((_block_header*)node->right) - 1;
-            node->right = q->forwardingAdress;
+            node->right = (BiTreeNode *)q->forwardingAdress;
          }
       }
       scan = scan + tamanho + q->size;
@@ -312,9 +320,7 @@ void* moveToTenured(_block_header* toMove)
    _block_header* pointer =(_block_header*) my_heap_malloc(tenured->baseHeap,toMove->size);
    if (pointer == NULL)
    {
-      fprintf(stderr, "Error: description of the error\n");
-        
-        // End the program with a non-zero status code to indicate an error
+      fprintf(stderr, "Error: NO SPACE IN TENURED\n");
       exit(EXIT_FAILURE);
       return NULL;
    }
@@ -328,61 +334,38 @@ void* moveToTenured(_block_header* toMove)
 
 }
 
-/*
-void* copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList, char* fromSpace, char*toSpace)
+void* normal_copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList)
 {
-   char* compareRef = (char*) fromRef;
-
+   fromRef->survived++;
+   _block_header* toRef = (_block_header*)*free;
+   *free = *free + fromRef->size + tamanho;
+   memcpy(toRef, fromRef, toRef->size+tamanho);
+   list_addlast(workList,toRef+1);
+   return toRef+1;
+}
+void* copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList)
+{
    if (heap->ggc != NULL)
    {
+      char* compareRef = (char*) fromRef;
       Heap* eden = heap->ggc->eden;
-      if ( eden == hb &&eden->baseHeap->base <= compareRef &&  compareRef<= eden->baseHeap->limit)
+      if (hb->base <= compareRef && compareRef < (hb->top))
       {
-         fromRef->survived++;
-         if(heap->ggc->n_survive == fromRef->survived)
+         if(eden->baseHeap == hb && heap->ggc->n_survive == fromRef->survived)
          {
-            // ADD SURVIVED SO IT DOESNT COME HERE AGAIN
             fromRef->survived++;
             void* pointer = moveToTenured(fromRef);
             list_addlast(workList,pointer);
             return pointer;
          }
       }
-   }
-*/
-void* copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList, char* fromSpace,char *toSpace)
-{
-
-   char* compareRef = (char*) fromRef;
-   if (heap->ggc != NULL)
-   {
-      Heap* eden = heap->ggc->eden;
-      if ( eden->baseHeap == hb &&eden->baseHeap->base <= compareRef &&  compareRef<= eden->baseHeap->limit)
+      else 
       {
-         fromRef->survived++;
-         if(heap->ggc->n_survive == fromRef->survived)
-         {
-            // ADD SURVIVED SO IT DOESNT COME HERE AGAIN
-            fromRef->survived++;
-            void* pointer = moveToTenured(fromRef);
-            list_addlast(workList,pointer);
-            return pointer;
-         }
+         list_addlast(workList,fromRef+1);
+         return fromRef+1;
       }
    }
-   if (hb->base <= compareRef && compareRef <= (hb->base +hb->size))
-   {
-      _block_header* toRef = (_block_header*)*free;
-      *free = *free + fromRef->size + tamanho;
-      memcpy(toRef, fromRef, toRef->size+tamanho);
-      list_addlast(workList,toRef+1);
-      return toRef+1;
-   }
-   else 
-   {
-      list_addlast(workList,fromRef+1);
-      return fromRef+1;
-   }
+   return normal_copy(hb,fromRef,free,workList);
 }
       
 
@@ -405,23 +388,21 @@ void copy_collection_gc(HeapBase* hb)
    }
    char* free = toSpace;
    List* workList = (List*)malloc(sizeof(List));
-   char* compareRef;
    list_init(workList);
    printf("Roots\n");
    for (int i = 0; i < list_size(roots); i++)
    {
       BisTree* b = (BisTree*) list_get(roots,i);
-      char* node = b->root;
+      char* node = (char*)b->root;
       _block_header* q = ((_block_header*)node)-1;
 
       if (node != NULL )
       {
-         b->root = copy(hb,q, &free, workList,fromSpace, toSpace);
+         b->root = copy(hb,q, &free, workList);
       }
 
    }
    printf("WORKLIST\n");
-   char* ref;
    while (!list_isempty(workList))
    {
       BiTreeNode* node  = list_getfirst(workList);
@@ -429,18 +410,17 @@ void copy_collection_gc(HeapBase* hb)
       _block_header* q = ((_block_header*)node->left)-1;
       if (node->left != NULL)
       {
-         node->left = copy(hb,q, &free, workList, fromSpace, toSpace);
+         node->left = copy(hb,q, &free, workList);
       }
       q = ((_block_header*)node->right)-1;
-      compareRef = (char*) q;
 
       if (node->right != NULL)
       {
-         node->right = copy(hb,q, &free, workList,fromSpace, toSpace);
+         node->right = copy(hb,q, &free, workList);
       }
    }
    printf(" Previous heap->top %p\n", hb->top);
-   printf(" New heap->top %p new heap->limit %p\n", free, hb->limit);
+   printf("FromSpace %p , toSpace %p ,New heap->top %p new heap->limit %p\n",fromSpace, toSpace, free, hb->limit);
    hb->top = free;
    printf("gcing()...\n");
    return;

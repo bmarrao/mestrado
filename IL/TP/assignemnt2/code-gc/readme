@@ -2,7 +2,6 @@ compile and run the code as follows:
 
 $ make -f makefile all
 $ ./mutator threshold type_gc -- Without Generation Garbage Collector
-$ ./mutator threshold size_of_eden n_survived type_gc_eden type_gc_tenured
 
 Where type_gc : 
 1 - Mark Sweep 
@@ -13,6 +12,8 @@ Examples :
 MarkSweep  - ./mutator 0.5 1 
 MarCompact - ./mutator 0.5 2
 Copy Collection - ./mutator 0.5 3
+
+$ ./mutator threshold size_of_eden n_survived type_gc_eden type_gc_tenured
 GGC MarkSweep MarkSweep - ./mutator 0.5 0.7 3 1 1
 GGC MarkSweep CopyCollection - ./mutator 0.5 0.7 3 1 3
 GGC CopyCollection MarkSweep  - ./mutator 0.5 0.7 3 3 1

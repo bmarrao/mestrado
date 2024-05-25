@@ -40,7 +40,7 @@ typedef struct {
    generation_gc* ggc;
 } Heap;
 
-void heap_init(Heap* heap, unsigned int size, void (*collector)(List*), unsigned int i,   generation_gc* ggc);
+void heap_init(Heap* heap, unsigned int size, void (*collector)(HeapBase*), unsigned int i,   generation_gc* ggc);
 
 void heap_destroy(Heap* heap);
 

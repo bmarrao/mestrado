@@ -56,6 +56,10 @@ int main(int argc, char** argv) {
       {
          generation_gc_init(ggc,HEAP_SIZE,size,n_survive,1,mark_sweep_gc,3,copy_collection_gc);
       }
+      else if (atoi(argv[4]) == 2 && atoi(argv[5]) == 2)
+      {
+         generation_gc_init(ggc,HEAP_SIZE,size,n_survive,1,mark_compact_gc,3,mark_compact_gc);
+      }
       else if (atoi(argv[4]) == 3 && atoi(argv[5]) == 1)
       {
          generation_gc_init(ggc,HEAP_SIZE,size,n_survive,3,copy_collection_gc,1,mark_sweep_gc);

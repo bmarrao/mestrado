@@ -12,6 +12,7 @@
         "deque": "c",
         "string": "c",
         "vector": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "stdlib.h": "c"
     }
 }
