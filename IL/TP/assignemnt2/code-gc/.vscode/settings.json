@@ -13,6 +13,7 @@
         "string": "c",
         "vector": "c",
         "iterator": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "heap.h": "c"
     }
 }

@@ -30,8 +30,11 @@ void heap_init(Heap* heap, unsigned int size, void (*collector)(HeapBase*), unsi
         hb->size  = size;
         if (i == 3) 
         {
-            hb->limit = hb->base + size / 2;
-        } else {
+            printf("Right init\n");
+            hb->limit = hb->base + (size / 2);
+        } 
+        else
+        {
             hb->limit = hb->base + size;
         }
         hb->top = hb->base;

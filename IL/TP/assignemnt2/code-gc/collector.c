@@ -13,7 +13,7 @@
 #include <stddef.h> 
 #include <errno.h>
 #include <string.h>
-
+int count_collector = 0;
 size_t tamanho = sizeof(_block_header);
 
 void relocate(char* start, char* end);
@@ -306,7 +306,7 @@ void relocate(char* start, char* end)
       if (q->marked==1 )
       {
          _block_header*  dest = ((_block_header*) q->forwardingAdress)-1;
-         memcpy(dest,q, q->size+tamanho);
+         memcpy(dest,q, sizeof(BiTreeNode)+tamanho);
          dest->marked = 0;
          q->marked = 0;
       }
@@ -318,6 +318,7 @@ void* moveToTenured(_block_header* toMove)
 {
    Heap* tenured= heap->ggc->tenured;
    _block_header* pointer =(_block_header*) my_heap_malloc(tenured->baseHeap,toMove->size);
+
    if (pointer == NULL)
    {
       fprintf(stderr, "Error: NO SPACE IN TENURED\n");
@@ -326,8 +327,7 @@ void* moveToTenured(_block_header* toMove)
    }
    else 
    {
-      //printf("Space In Tenured\n");
-      size_t size_transfer = toMove->size +tamanho;
+      size_t size_transfer = sizeof(BiTreeNode)+sizeof(_block_header);
       memcpy(pointer-1, toMove, size_transfer);
       return pointer;
    }
@@ -336,17 +336,21 @@ void* moveToTenured(_block_header* toMove)
 
 void* normal_copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList)
 {
-   fromRef->survived++;
    _block_header* toRef = (_block_header*)*free;
+   BiTreeNode* node =(BiTreeNode*) (fromRef+1);
+
    *free = *free + fromRef->size + tamanho;
-   memcpy(toRef, fromRef, toRef->size+tamanho);
+
+   memcpy(toRef, fromRef, sizeof(BiTreeNode)+sizeof(_block_header));
    list_addlast(workList,toRef+1);
+   node = (BiTreeNode*)(toRef+1);
    return toRef+1;
 }
 void* copy(HeapBase* hb, _block_header* fromRef, char** free, List* workList)
 {
    if (heap->ggc != NULL)
    {
+      fromRef->survived++;
       char* compareRef = (char*) fromRef;
       Heap* eden = heap->ggc->eden;
       if (hb->base <= compareRef && compareRef < (hb->top))
@@ -373,17 +377,18 @@ void copy_collection_gc(HeapBase* hb)
 {
    char* toSpace;
    char* fromSpace;
-   if (hb->top >= hb->base + hb->size/2)
-   {
-      fromSpace = hb->base + hb->size/2;
-      toSpace = hb->base;
-      hb->limit = hb->base + hb->size/2;
-   }
-   else 
+
+   if (hb->limit == hb->base + hb->size/2)
    {
       fromSpace = hb->base;
       toSpace = hb->base + hb->size/2;
       hb->limit = hb->base + hb->size;
+   }
+   else 
+   {
+      fromSpace = hb->base + hb->size/2;
+      toSpace = hb->base;
+      hb->limit = hb->base + hb->size/2;
 
    }
    char* free = toSpace;
@@ -408,6 +413,7 @@ void copy_collection_gc(HeapBase* hb)
       BiTreeNode* node  = list_getfirst(workList);
       list_removefirst(workList);
       _block_header* q = ((_block_header*)node->left)-1;
+      
       if (node->left != NULL)
       {
          node->left = copy(hb,q, &free, workList);
@@ -419,9 +425,11 @@ void copy_collection_gc(HeapBase* hb)
          node->right = copy(hb,q, &free, workList);
       }
    }
+   count_collector++;
    printf(" Previous heap->top %p\n", hb->top);
-   printf("FromSpace %p , toSpace %p ,New heap->top %p new heap->limit %p\n",fromSpace, toSpace, free, hb->limit);
-   hb->top = free;
+   printf("FromSpace %p , toSpace %p , New heap->top %p new heap->limit %p, size allocated : %zd total space : %d percentage : %d\n",
+       fromSpace, toSpace, free, hb->limit, (size_t)(hb->limit - free), hb->size/2,
+       (int)(((size_t)(hb->limit - free) * 100) / (hb->size/2)));   hb->top = free;
    printf("gcing()...\n");
    return;
 }
