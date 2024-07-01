@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "stddef.h": "c",
+        "list.h": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "collector.h": "c",
+        "random": "c",
+        "globals.h": "c",
+        "deque": "c",
+        "string": "c",
+        "vector": "c",
+        "iterator": "c",
+        "stdlib.h": "c",
+        "heap.h": "c"
+    }
+}
