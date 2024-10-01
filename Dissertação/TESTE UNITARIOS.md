@@ -1,0 +1,1 @@
+MOCHA JAVASCRIPT. Por cada regra de producação e regra semantica pelo menos um testes. Estimativa de tempo em produzir cada uma das regras fatorizando tambem o tempo que demora a verificar se a regra esta bem escrita 
