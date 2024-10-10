@@ -1,0 +1,19 @@
+{
+  "name": "python3_12",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "### About files:  - PythonParser.g4    is the ANTLR4 parser grammar that based on the official [Python PEG grammar](https://docs.python.org/3.12/reference/grammar.html)",
+  "main": "Python3Parser.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "antlr4": "^4.13.2"
+  }
+}
