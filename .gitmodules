@@ -1,3 +1,6 @@
 [submodule "Dissertação/transpilerToJs"]
 	path = Dissertação/transpilerToJs
 	url = https://github.com/bmarrao/transpilerToJs
+[submodule "Dissertação/transpilerToJavaScript"]
+	path = Dissertação/transpilerToJavaScript
+	url = https://github.com/bmarrao/transpilerToJs
